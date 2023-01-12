@@ -68,6 +68,7 @@ transaction_Data = client.query('SELECT * FROM eth.recent_transactions LIMIT 10;
 * **url** (optional) : URL to the endpoint to connect to (default: grpc+tls://flight.spiceai.io).
 * **tls\_root\_cert** (optional): path to specific certificate to use for the TLS connection.
 
+The query will timeout if it has not completed within 15 mins and a TimeoutError exception will be raised. 
 ### Contributing
 
 Contribute to or file an issue with the `spicepy` library at [https://github.com/spiceai/spicepy](https://github.com/spiceai/spicepy)
