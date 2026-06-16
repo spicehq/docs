@@ -5,20 +5,32 @@ icon: ship
 
 # Kubernetes Operator
 
-The Spice.ai Kubernetes Operator automates the deployment, scaling, and lifecycle management of Spice.ai workloads on Kubernetes. It provides two Custom Resource Definitions (CRDs):
+The Spice.ai Kubernetes Operator automates the deployment, scaling, and lifecycle management of Spice.ai workloads on Kubernetes. It provides two Custom Resource Definitions (CRDs), unified under the `spice.ai/v2beta1` API version:
 
-- **`SpicepodSet`** (`spice.ai/v1`) — Deploys and manages Spicepod replicas as a `Deployment` or per-replica `StatefulSet`s.
-- **`SpicepodCluster`** (`spice.ai/v1alpha1`) — Deploys a distributed query cluster with scheduler and executor nodes, secured with auto-provisioned mTLS certificates.
+- **`SpicepodSet`** (`spice.ai/v2beta1`) — Deploys and manages Spicepod replicas as one or more suffixed `StatefulSet`s.
+- **`SpicepodCluster`** (`spice.ai/v2beta1`) — Deploys a distributed query cluster with scheduler and executor nodes, secured with auto-provisioned mTLS certificates.
+
+{% hint style="info" %}
+`v2beta1` consolidates the previous `spice.ai/v1` (`SpicepodSet`) and `spice.ai/v1alpha1` (`SpicepodCluster`) schemas. Existing `v1` / `v1alpha1` manifests keep working and are converted automatically — no immediate action required.
+{% endhint %}
+
+For a step-by-step walkthrough, see the [User Guide](user-guide.md). For exhaustive field references, see [SpicepodSet](spicepodset.md) and [SpicepodCluster](spicepodcluster.md).
 
 ## Installation
 
-The Spice Kubernetes Operator is distributed exclusively through the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe and authenticate to the Marketplace ECR registry, then install:
+### Prerequisites
+
+- Kubernetes 1.33+
+- Helm 3.x
+
+The Spice Kubernetes Operator is distributed through the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe and authenticate to the Marketplace ECR registry, then install. The chart installs and updates the CRDs by default (`installCRDs: true`).
 
 ### Helm
 
 ```bash
 helm install spiceai-operator \
-  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/charts/spiceai-operator
+  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/charts/spiceai-operator \
+  --namespace spiceai-operator-system --create-namespace
 ```
 
 ### Docker
@@ -27,68 +39,71 @@ helm install spiceai-operator \
 docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-operator:latest
 ```
 
+{% hint style="info" %}
+Multi-architecture (`linux/amd64` and `linux/arm64`) operator images are also published to GitHub Container Registry at `ghcr.io/spicehq/spiceai-operator`. Override the operator image with `--set image.repository=ghcr.io/spicehq/spiceai-operator`; the tag tracks the chart `appVersion` unless pinned with `--set image.tag=<version>`.
+{% endhint %}
+
 ### Helm Values
 
-| Parameter                              | Description                                                                       | Default                                                       |
-| -------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `image.repository`                     | Operator image repository                                                         | `709825985650.dkr.ecr.us-east-1.amazonaws.com`                |
-| `image.name`                           | Operator image name                                                               | `spice-ai/spiceai-operator`                                   |
-| `image.tag`                            | Operator image tag                                                                | `latest`                                                      |
-| `image.pullPolicy`                     | Operator image pull policy                                                        | `IfNotPresent`                                                |
-| `image.pullSecrets`                    | Image pull secrets                                                                | —                                                             |
-| `installCRDs`                          | Install/update CRDs with the chart                                                | `true`                                                        |
-| `serviceAccount.create`                | Create a ServiceAccount for the operator                                          | `true`                                                        |
-| `serviceAccount.name`                  | ServiceAccount name                                                               | (chart name)                                                  |
-| `serviceAccount.annotations`           | Annotations for the operator ServiceAccount (e.g. for IRSA)                       | `{}`                                                          |
-| `resources`                            | CPU/memory `requests` and `limits` for the operator container                     | —                                                             |
-| `nodeSelector` / `tolerations` / `affinity` | Operator pod scheduling                                                      | —                                                             |
-| `serviceMonitor.enabled`               | Enable Prometheus `ServiceMonitor`                                                | `false`                                                       |
-| `serviceMonitor.interval`              | Scrape interval                                                                   | `30s`                                                         |
-| `cluster.domain`                       | Kubernetes cluster domain for internal DNS                                        | `cluster.local`                                               |
-| `pauseCrashloopingPodsThreshold`       | Crashlooping pod threshold before pausing a `SpicepodSet` (`0` disables)          | `10`                                                          |
-| `sidecarInjector.defaultImage`         | Default image used by the sidecar injector when no per-Pod override is set        | (operator default)                                            |
-| `sidecarInjector.defaultImagePullPolicy` | Default pull policy for injected sidecars                                       | (operator default)                                            |
-| `telemetryProperties`                  | Key/value pairs forwarded to the Spice runtime as telemetry properties            | `{}`                                                          |
+| Parameter                                                  | Description                                                                     | Default                       |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------- |
+| `image.repository`                                         | Operator image path (registry + name)                                           | `…/spice-ai/spiceai-operator` |
+| `image.tag`                                                | Operator image tag                                                              | Chart `appVersion`            |
+| `image.pullPolicy`                                         | Operator image pull policy                                                      | `IfNotPresent`                |
+| `image.pullSecrets`                                        | Image pull secrets                                                              | —                             |
+| `installCRDs`                                              | Install/update CRDs with the chart                                              | `true`                        |
+| `serviceAccount.create` / `.name` / `.annotations`         | Operator ServiceAccount (annotations for IRSA)                                  | `true` / chart name / `{}`    |
+| `resources`                                                | CPU/memory `requests` and `limits` for the operator                             | —                             |
+| `nodeSelector` / `tolerations` / `affinity`                | Operator pod scheduling                                                         | —                             |
+| `serviceMonitor.enabled` / `.interval`                     | Prometheus `ServiceMonitor` for the operator                                    | `false` / `30s`               |
+| `clusterDomain`                                            | Kubernetes cluster domain for internal DNS                                      | `cluster.local`               |
+| `pauseCrashloopingPodsThreshold`                           | Crashloop threshold before pausing a `SpicepodSet` (`0` disables)               | `0`                           |
+| `admissionPolicy`                                          | Admission validation strictness: `err` \| `warn` \| `off`                       | `err`                         |
+| `sidecarInjector.enabled`                                  | Enable annotation-based sidecar injection                                       | `true`                        |
+| `sidecarInjector.defaultImage` / `.defaultImagePullPolicy` | Defaults for injected sidecars                                                  | (operator default)            |
+| `watchNamespaces` / `denyNamespaces`                       | Scope the operator to / away from specific namespaces                           | (all namespaces)              |
+| `tls.enabled` / `tls.secretName`                           | Serve the operator API over HTTPS from a `kubernetes.io/tls` Secret             | `false` / —                   |
+| `telemetry.otlp.*`                                         | Push operator metrics to an OTLP collector (see [Operator Metrics](metrics.md)) | disabled                      |
+| `telemetryProperties`                                      | Key/value pairs forwarded to the Spice runtime as telemetry properties          | `{}`                          |
 
 ## Managed Resources
 
 For each `SpicepodSet`, the operator creates and manages:
 
-1. **ServiceAccount** — When `service_account.enabled` and `service_account.create` are `true`.
-2. **Role** — Scoped permissions for Spicepod pods.
-3. **RoleBinding** — Binds the Role to the ServiceAccount.
-4. **ConfigMap** — Stores the `spicepod` YAML, mounted into the pod.
-5. **NetworkPolicy** — Controls ingress/egress traffic.
-6. **Deployment / StatefulSet(s)** — The primary workload.
-7. **Service** — `ClusterIP` service exposing HTTP (`8090`), Flight (`50051`), and metrics (`9090`).
+1. **StatefulSet(s)** — One per replica (each with an ordinal suffix), managing the pods.
+2. **ConfigMap** — Stores the `spicepod` YAML, mounted into the pod.
+3. **Service** — `ClusterIP` service exposing fixed ports HTTP (`8080`), Flight (`50051`), and metrics (`9090`), mapped via `targetPort` to the configured Spiced ports. Disable with `service.enabled: false`.
+4. **NetworkPolicy** — Only when `network.ingress` / `network.egress` is supplied; rules are written verbatim.
+5. **ServiceAccount, Role, RoleBinding** — Only when `serviceAccount.enabled` and `serviceAccount.create` are both `true`.
 
-## Adaptive Workload Deployment
+## Workload Deployment
 
-For simple stateless cases (no `volume`, no `cluster`, `replicas <= 1`), the operator uses a `Deployment`. When `volume`, `cluster`, or `replicas > 1` is configured, the operator creates per-replica `StatefulSet`s with stable pod identities and ordered startup. Switching between modes is automatic when the spec changes.
+Every `SpicepodSet` is deployed as one or more `StatefulSet`s — one per replica, each with an ordinal suffix — so even single-replica workloads get a stable identity, ordered startup, and predictable DNS, with zero-downtime rollouts. Rolling updates, `BlueGreen` cutovers, and standby retention are expressed as parallel suffixed `StatefulSet`s. Pre-existing v0.x `Deployment`-based workloads are reliably grandfathered and continue to reconcile.
 
 ## Features
 
-| Feature                                    | SpicepodSet | SpicepodCluster |
-| ------------------------------------------ | :---------: | :-------------: |
-| Adaptive workload deployment               |      ✓      |        ✓        |
-| Update strategies (`RollingOrdered`, `RollingParallel`, `Parallel`, `BlueGreen`) | ✓ | ✓ |
-| Instant rollback via `spice.ai/rollback`   |      ✓      |        ✓        |
-| Persistent volume with auto-resize         |      ✓      |        ✓        |
-| Zero-replica pausing                       |      ✓      |        ✓        |
-| Crashloop protection                       |      ✓      |        ✓        |
-| Forced rollouts via annotations/labels     |      ✓      |        ✓        |
-| Network policy management                  |      ✓      |        ✓        |
-| Service account configuration (incl. IRSA) |      ✓      |        ✓        |
-| Health probe customization                 |      ✓      |        ✓        |
-| Pod scheduling (affinity, tolerations)     |      ✓      |        ✓        |
-| Sidecar injection via Pod annotations      |      —      |        —        |
-| Automatic mTLS certificates                |      —      |        ✓        |
-| Distributed scheduler/executor topology    |      —      |        ✓        |
-| Prometheus metrics & ServiceMonitor        |      ✓      |        ✓        |
+| Feature                                                              | SpicepodSet | SpicepodCluster |
+| -------------------------------------------------------------------- | :---------: | :-------------: |
+| Workload deployment (suffixed StatefulSets)                          |      ✓      |        ✓        |
+| Update strategies (`RollingOrdered`, `RollingParallel`, `BlueGreen`) |      ✓      |        ✓        |
+| Standby versions & instant rollback (SHA)                            |      ✓      |        —        |
+| Persistent volume with auto-resize                                   |      ✓      |        ✓        |
+| Zero-replica pausing                                                 |      ✓      |        ✓        |
+| Crashloop protection                                                 |      ✓      |        ✓        |
+| Forced rollouts via annotations/labels                               |      ✓      |        ✓        |
+| Network policy management (opt-in)                                   |      ✓      |        ✓        |
+| Service account configuration (incl. IRSA)                           |      ✓      |        ✓        |
+| Health probe customization                                           |      ✓      |        ✓        |
+| Pod scheduling (affinity, tolerations)                               |      ✓      |        ✓        |
+| Admission validation                                                 |      ✓      |        ✓        |
+| Status conditions (`Ready`, `Paused`)                                |      ✓      |        ✓        |
+| Automatic mTLS certificates                                          |      —      |        ✓        |
+| Distributed scheduler/executor topology                              |      —      |        ✓        |
+| Prometheus metrics, ServiceMonitor & OTLP                            |      ✓      |        ✓        |
 
 ## Sidecar Injection
 
-The operator can inject a Spice sidecar into any standard Kubernetes Pod by annotating the Pod template with `spice.ai/inject` and pointing it at a `ConfigMap` in the same namespace that holds your `spicepod.yaml`. For the common case, `spice.ai/inject` can name the ConfigMap directly:
+The operator can inject a Spice sidecar into any standard Kubernetes Pod by annotating the Pod template with `spice.ai/inject: "true"` and pointing `spice.ai/inject-config` at a `ConfigMap` in the same namespace that holds your `spicepod.yaml`:
 
 ```yaml
 apiVersion: v1
@@ -113,7 +128,8 @@ spec:
     metadata:
       labels: { app: app-with-spice }
       annotations:
-        spice.ai/inject: demo-spice-config
+        spice.ai/inject: "true"
+        spice.ai/inject-config: demo-spice-config
     spec:
       containers:
         - name: app
@@ -122,22 +138,22 @@ spec:
 
 ### Supported annotations
 
-| Annotation                     | Default          | Description                                                                                  |
-| ------------------------------ | ---------------- | -------------------------------------------------------------------------------------------- |
-| `spice.ai/inject`              | —                | `true`/`enabled`, `false`/`disabled`, **or** a ConfigMap name (one-annotation shorthand).     |
-| `spice.ai/spicepod-configmap`  | —                | ConfigMap holding the spicepod. Optional when `spice.ai/inject` already names the ConfigMap. |
-| `spice.ai/spicepod-key`        | `spicepod.yaml`  | Key inside the ConfigMap data.                                                               |
-| `spice.ai/image`               | install default  | Override the injected Spice image.                                                           |
-| `spice.ai/image-pull-policy`   | install default  | Override the injected image pull policy.                                                     |
-| `spice.ai/http-port`           | `18090`          | Sidecar HTTP port.                                                                           |
-| `spice.ai/flight-port`         | `15051`          | Sidecar Arrow Flight port.                                                                   |
-| `spice.ai/metrics-port`        | `19090`          | Sidecar Prometheus metrics port.                                                             |
+| Annotation                   | Default         | Description                                                     |
+| ---------------------------- | --------------- | --------------------------------------------------------------- |
+| `spice.ai/inject`            | —               | `"true"` / `"false"` — enable or disable injection for the Pod. |
+| `spice.ai/inject-config`     | —               | ConfigMap holding the spicepod.                                 |
+| `spice.ai/inject-config-key` | `spicepod.yaml` | Key inside the ConfigMap data.                                  |
+| `spice.ai/image`             | install default | Override the injected Spice image.                              |
+| `spice.ai/image-pull-policy` | install default | Override the injected image pull policy.                        |
+| `spice.ai/http-port`         | `18090`         | Sidecar HTTP port.                                              |
+| `spice.ai/flight-port`       | `15051`         | Sidecar Arrow Flight port.                                      |
+| `spice.ai/metrics-port`      | `19090`         | Sidecar Prometheus metrics port.                                |
 
 {% hint style="info" %}
 Injection runs on Pod creation, so place these annotations on the controller's Pod template (e.g. `Deployment.spec.template.metadata.annotations`) and `kubectl rollout restart` to pick up changes. The ConfigMap must already exist when the Pod is created. The webhook rejects Pods whose existing container ports collide with the requested sidecar ports.
 {% endhint %}
 
-Cluster operators can set defaults globally via Helm values `sidecarInjector.defaultImage` and `sidecarInjector.defaultImagePullPolicy`, with per-workload annotations as overrides.
+Cluster operators can set defaults globally via Helm values `sidecarInjector.defaultImage` and `sidecarInjector.defaultImagePullPolicy`, with per-workload annotations as overrides. The sidecar injector is enabled by default (`sidecarInjector.enabled`); disable it with `--no-sidecar-injector`.
 
 ## Operator CLI
 
@@ -153,10 +169,15 @@ spiceai-operator crd --output FILE
 
 | Flag                                  | Default                   | Description                                                  |
 | ------------------------------------- | ------------------------- | ------------------------------------------------------------ |
-| `--http-endpoint`                     | `0.0.0.0:8090`            | Operator HTTP API bind address                                |
-| `--metrics-endpoint`                  | `0.0.0.0:9090`            | Prometheus metrics bind address                              |
+| `--health-probe-bind-address`         | `0.0.0.0:8090`            | Operator HTTP API / health probe bind address                |
+| `--metrics-bind-address`              | `0.0.0.0:9090`            | Prometheus metrics bind address                              |
+| `--webhook-bind-address`              | —                         | Admission / conversion webhook bind address                  |
 | `--operator-namespace`                | `spiceai-operator-system` | Namespace for the operator (used for cluster-shared secrets) |
 | `--cluster-domain`                    | `cluster.local`           | Kubernetes cluster domain                                    |
+| `--admission-policy`                  | `err`                     | Admission validation strictness (`err` \| `warn` \| `off`)   |
+| `--watch-namespaces`                  | (all)                     | Comma-separated namespaces to watch exclusively              |
+| `--deny-namespaces`                   | —                         | Comma-separated namespaces to exclude from watching          |
+| `--enable-sidecar-injector`           | `true`                    | Enable sidecar injection (`--no-sidecar-injector` disables)  |
 | `--pause-crashlooping-pods-threshold` | `10`                      | Dead pod observations before pausing (`0` disables)          |
 | `--telemetry-properties KEY=VALUE`    | —                         | Key/value pairs forwarded to the Spice runtime               |
 | `--verbose`                           | `false`                   | Enable debug-level logging                                   |
@@ -170,11 +191,11 @@ spiceai-operator json-schema --output FILE
 
 ## Operator HTTP API
 
-| Endpoint                                   | Method | Description                                                                              |
-| ------------------------------------------ | ------ | ---------------------------------------------------------------------------------------- |
-| `/health`                                  | GET    | Health check — returns `OK`                                                              |
-| `/{namespace}/{name}`                      | GET    | Pod status for a `SpicepodSet`                                                           |
-| `/{namespace}/{name}?kind=SpicepodCluster` | GET    | Pod status for a `SpicepodCluster`                                                       |
+| Endpoint                                   | Method | Description                        |
+| ------------------------------------------ | ------ | ---------------------------------- |
+| `/health`                                  | GET    | Health check — returns `OK`        |
+| `/{namespace}/{name}`                      | GET    | Pod status for a `SpicepodSet`     |
+| `/{namespace}/{name}?kind=SpicepodCluster` | GET    | Pod status for a `SpicepodCluster` |
 
 The pod-status response includes per-pod details (name, UID, phase, IP, port, start time, Spiced health/readiness, and any error reason/message). For paused `SpicepodSet`s (`replicas: 0`), the response includes `paused: true` with a `pauseReason`.
 
@@ -185,3 +206,19 @@ helm upgrade spiceai-operator \
   oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/charts/spiceai-operator \
   --values my-values.yaml
 ```
+
+`v2beta1` is served with automatic conversion of legacy `v1` / `v1alpha1` resources, so existing manifests continue to apply after the upgrade. See the [User Guide](user-guide.md) for rollout guidance and the per-CRD field changes in [SpicepodSet](spicepodset.md#migrating-from-spiceaiv1) and [SpicepodCluster](spicepodcluster.md).
+
+## Roadmap
+
+Capabilities in active development and planned for the operator include:
+
+- **Leader election** for multi-replica operator high availability.
+- **Custom API-server TLS** with a user-supplied certificate and CA bundle.
+- **Log drains** to forward Spicepod logs to external sinks (Datadog, Splunk, CloudWatch, …).
+- **Audit logging** of operator and workload lifecycle events.
+- **Cedar policy enforcement** distributed to Spicepod pods.
+- **Auto-scaling** via `HorizontalPodAutoscaler` and Spiced-specific metrics.
+- **Backup & restore** of stateful volumes via `VolumeSnapshot`.
+- **Secret rotation** with automatic rolling restarts.
+- **Spice Cloud Platform integration** for centralized fleet management and observability.

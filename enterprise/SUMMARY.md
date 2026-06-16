@@ -28,8 +28,10 @@
 ## Kubernetes Operator
 
 * [Overview](kubernetes/README.md)
+* [User Guide](kubernetes/user-guide.md)
 * [SpicepodSet](kubernetes/spicepodset.md)
 * [SpicepodCluster](kubernetes/spicepodcluster.md)
+* [Operator Metrics](kubernetes/metrics.md)
 
 ## Features
 

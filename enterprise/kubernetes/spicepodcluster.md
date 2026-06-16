@@ -5,11 +5,15 @@ icon: circle-nodes
 
 # SpicepodCluster
 
-A `SpicepodCluster` deploys a distributed query cluster with dedicated scheduler and executor nodes. The operator automatically manages mTLS certificate provisioning, child `SpicepodSet` resources, and cluster topology.
+A `SpicepodCluster` (`spice.ai/v2beta1`) deploys a distributed query cluster with dedicated scheduler and executor nodes. The operator automatically manages mTLS certificate provisioning, child `SpicepodSet` resources, and cluster topology.
+
+{% hint style="info" %}
+`v2beta1` is the current schema. Legacy `spice.ai/v1alpha1` `SpicepodCluster` manifests continue to apply unchanged and are converted automatically. The main renames are `schedulerSetSpec` / `executorSetSpec` → `schedulerSpec` / `executorSpec`, plus the `status` certificate fields; see [Status](#status).
+{% endhint %}
 
 ## Architecture
 
-```
+```text
              ┌─────────────────────┐
              │    Load Balancer    │
              └─────────────────────┘
@@ -32,13 +36,13 @@ Schedulers coordinate query planning and partition assignment; executors perform
 ## Example
 
 ```yaml
-apiVersion: spice.ai/v1alpha1
+apiVersion: spice.ai/v2beta1
 kind: SpicepodCluster
 metadata:
   name: my-cluster
   namespace: default
 spec:
-  schedulerSetSpec:
+  schedulerSpec:
     replicas: 1
     spicepod:
       version: v1
@@ -51,7 +55,7 @@ spec:
       limits:
         cpu: 500m
         memory: 512Mi
-  executorSetSpec:
+  executorSpec:
     replicas: 3
     resources:
       requests:
@@ -62,13 +66,15 @@ spec:
         memory: 2Gi
 ```
 
+Executors pull their Spicepod configuration from the scheduler, so no `spicepod` field is needed on `executorSpec`.
+
 ## Multi-Replica Schedulers
 
 For high availability, deploy multiple schedulers:
 
 ```yaml
 spec:
-  schedulerSetSpec:
+  schedulerSpec:
     replicas: 2
 ```
 
@@ -131,17 +137,20 @@ kubectl get pods -l spice.ai/cluster-role=executor
 
 ## Configuration Inheritance
 
-`SpicepodCluster` creates child `SpicepodSet` resources for schedulers and executors. Both `schedulerSetSpec` and `executorSetSpec` accept the same subset of [`SpicepodSet` fields](spicepodset.md): `image`, `httpPort`, `flightPort`, `metricsPort`, `replicas`, `resources`, `env`, `envFromSource`, `network`, `nodeAffinity`, `tolerations`, `volume`, `serviceAccount`, `annotations`, `labels`, `updateStrategy`, `probes`, `terminationGracePeriodSeconds`, and `cluster`.
+`SpicepodCluster` creates child `SpicepodSet` resources for schedulers and executors. Both `schedulerSpec` and `executorSpec` accept the common [`SpicepodSet` spec fields](spicepodset.md): `image`, `http`, `flight`, `metrics`, `replicas`, `resources`, `env`, `envFromSource`, `network`, `nodeAffinity`, `tolerations`, `volumeClaimTemplate`, `serviceAccount`, `annotations`, `labels`, `updateStrategy`, `terminationGracePeriodSeconds`, and a per-node `cluster` override.
 
-The `executorSetSpec` does **not** accept a `spicepod` field — executors fetch the Spicepod definition from the scheduler at startup via `GetAppDefinition`.
+Notable differences from a standalone `SpicepodSet`:
+
+- `executorSpec` does **not** accept `spicepod` or `probes` — executors fetch the Spicepod definition from the scheduler at startup via `GetAppDefinition` and run without the HTTP server that probes target.
+- The `service` toggle is not available on cluster node specs; the operator manages the headless Services required for mTLS and scheduler/executor discovery.
 
 ### Per-node `cluster` overrides
 
-The `cluster` field on `schedulerSetSpec` / `executorSetSpec` is a small subset (`NodeClusterConfig`) used to override cluster-internal addresses; the operator otherwise auto-populates cluster identity, role, mTLS, and scheduler discovery:
+The `cluster` field on `schedulerSpec` / `executorSpec` is a small subset (`NodeClusterConfig`) used to override cluster-internal addresses; the operator otherwise auto-populates cluster identity, role, mTLS, and scheduler discovery:
 
 ```yaml
 spec:
-  schedulerSetSpec:
+  schedulerSpec:
     cluster:
       bindAddress: "0.0.0.0:50052"
 ```
@@ -152,13 +161,13 @@ spec:
 kubectl get spicepodcluster my-cluster -o yaml
 ```
 
-| Field                       | Description                                                                |
-| --------------------------- | -------------------------------------------------------------------------- |
-| `rootCertificateReady`      | Whether the cluster's root CA has been generated.                          |
-| `rootSecretName`            | Secret holding the root CA certificate and private key.                    |
-| `rootExpiresAt`             | RFC 3339 expiration of the root CA.                                        |
-| `schedulerSpicepodsetName`  | Name of the child scheduler `SpicepodSet`.                                 |
-| `executorSpicepodsetName`   | Name of the child executor `SpicepodSet`.                                  |
-| `schedulerReadyReplicas`    | Ready scheduler replicas.                                                  |
-| `executorReadyReplicas`     | Ready executor replicas.                                                   |
-| `error`                     | Error message if certificate generation or reconciliation failed.          |
+| Field                       | Description                                                                               |
+| --------------------------- | ----------------------------------------------------------------------------------------- |
+| `rootCertificateReady`      | Whether the cluster's root CA has been generated.                                         |
+| `rootCertificateSecretName` | Secret holding the root CA certificate and private key.                                   |
+| `rootCertificateExpiresAt`  | RFC 3339 expiration of the root CA.                                                       |
+| `schedulerSpicepodsetName`  | Name of the child scheduler `SpicepodSet`.                                                |
+| `executorSpicepodsetName`   | Name of the child executor `SpicepodSet`.                                                 |
+| `schedulerReadyReplicas`    | Ready scheduler replicas.                                                                 |
+| `executorReadyReplicas`     | Ready executor replicas.                                                                  |
+| `conditions`                | Standard Kubernetes `Condition`s (`Ready`, `Paused`); supersede the legacy `error` field. |
