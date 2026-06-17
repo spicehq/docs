@@ -137,7 +137,7 @@ kubectl get pods -l spice.ai/cluster-role=executor
 
 ## Configuration Inheritance
 
-`SpicepodCluster` creates child `SpicepodSet` resources for schedulers and executors. Both `schedulerSpec` and `executorSpec` accept the common [`SpicepodSet` spec fields](spicepodset.md): `image`, `http`, `flight`, `metrics`, `replicas`, `resources`, `env`, `envFromSource`, `network`, `nodeAffinity`, `tolerations`, `volumeClaimTemplate`, `serviceAccount`, `annotations`, `labels`, `updateStrategy`, `terminationGracePeriodSeconds`, and a per-node `cluster` override.
+`SpicepodCluster` creates child `SpicepodSet` resources for schedulers and executors. Both `schedulerSpec` and `executorSpec` accept the common [`SpicepodSet` spec fields](spicepodset.md): `image`, `http`, `flight`, `metrics`, `replicas`, `resources`, `env`, `envFromSource`, `network`, `nodeAffinity`, `tolerations`, `volumeClaimTemplates`, `volumeMounts`, `serviceAccount`, `annotations`, `labels`, `updateStrategy`, `terminationGracePeriodSeconds`, and a per-node `cluster` override.
 
 Notable differences from a standalone `SpicepodSet`:
 

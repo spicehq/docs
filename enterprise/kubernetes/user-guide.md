@@ -28,7 +28,7 @@ helm install spiceai-operator \
   --namespace spiceai-operator-system --create-namespace
 ```
 
-The chart installs the `SpicepodSet` and `SpicepodCluster` CRDs by default (`installCRDs: true`). Verify the controller is running:
+The chart installs the `SpicepodSet` and `SpicepodCluster` CRDs by default (`crds.enabled: true`). Verify the controller is running:
 
 ```bash
 kubectl -n spiceai-operator-system get pods
@@ -156,16 +156,18 @@ The Spicepod YAML supports `${secrets:KEY}` references to Kubernetes Secret valu
 
 ### Add persistent storage
 
-Attach a per-replica volume with `volumeClaimTemplate`; the operator creates a `PersistentVolumeClaim` per `StatefulSet`, mounted at `/data`:
+Attach per-replica volumes with the `volumeClaimTemplates` list; the operator creates a `PersistentVolumeClaim` per entry, per `StatefulSet`. The entry named `data` (the default when `metadata.name` is omitted) is auto-mounted at `/data`:
 
 ```yaml
 spec:
-  volumeClaimTemplate:
-    spec:
-      storageClassName: standard
-      resources:
-        requests:
-          storage: 10Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 10Gi
 ```
 
 Increasing the storage request triggers automatic PVC resizing when the `StorageClass` has `allowVolumeExpansion: true`. Shrinking is not supported.

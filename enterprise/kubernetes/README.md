@@ -23,20 +23,20 @@ For a step-by-step walkthrough, see the [User Guide](user-guide.md). For exhaust
 - Kubernetes 1.33+
 - Helm 3.x
 
-The Spice Kubernetes Operator is distributed through the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe and authenticate to the Marketplace ECR registry, then install. The chart installs and updates the CRDs by default (`installCRDs: true`).
+The Spice Kubernetes Operator is distributed through the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe and authenticate to the Marketplace ECR registry, then install. The chart renders and keeps the CRDs by default (`crds.enabled: true`, `crds.keep: true`).
 
 ### Helm
 
 ```bash
 helm install spiceai-operator \
-  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/charts/spiceai-operator \
+  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan:1.0.0-operator-helm \
   --namespace spiceai-operator-system --create-namespace
 ```
 
 ### Docker
 
 ```bash
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-operator:latest
+docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan:1.0.0-operator
 ```
 
 {% hint style="info" %}
@@ -47,22 +47,23 @@ Multi-architecture (`linux/amd64` and `linux/arm64`) operator images are also pu
 
 | Parameter                                                  | Description                                                                     | Default                       |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------- |
-| `image.repository`                                         | Operator image path (registry + name)                                           | `…/spice-ai/spiceai-operator` |
-| `image.tag`                                                | Operator image tag                                                              | Chart `appVersion`            |
+| `image.repository`                                         | Operator image path (registry + name)                                           | `…/spice-ai/spiceai-enterprise-plan` |
+| `image.tag`                                                | Operator image tag (operator-suffixed chart `appVersion`)                       | `1.0.0-operator`              |
 | `image.pullPolicy`                                         | Operator image pull policy                                                      | `IfNotPresent`                |
 | `image.pullSecrets`                                        | Image pull secrets                                                              | —                             |
-| `installCRDs`                                              | Install/update CRDs with the chart                                              | `true`                        |
+| `crds.enabled`                                             | Render the bundled CRDs with the chart                                          | `true`                        |
+| `crds.keep`                                                | Annotate CRDs with `helm.sh/resource-policy: keep` so `helm uninstall` leaves them (and their custom resources) in place | `true`     |
+| `installCRDs`                                              | **Deprecated** — prefer `crds.enabled` / `crds.keep`. A boolean here overrides both (`true` ≡ `{enabled: true, keep: true}`, `false` disables CRD rendering). Leave unset to use the `crds` block. | unset |
 | `serviceAccount.create` / `.name` / `.annotations`         | Operator ServiceAccount (annotations for IRSA)                                  | `true` / chart name / `{}`    |
 | `resources`                                                | CPU/memory `requests` and `limits` for the operator                             | —                             |
 | `nodeSelector` / `tolerations` / `affinity`                | Operator pod scheduling                                                         | —                             |
-| `serviceMonitor.enabled` / `.interval`                     | Prometheus `ServiceMonitor` for the operator                                    | `false` / `30s`               |
+| `serviceMonitor.enabled` / `.interval`                     | Prometheus `ServiceMonitor` for the operator                                    | `false` / `15s`               |
 | `clusterDomain`                                            | Kubernetes cluster domain for internal DNS                                      | `cluster.local`               |
 | `pauseCrashloopingPodsThreshold`                           | Crashloop threshold before pausing a `SpicepodSet` (`0` disables)               | `0`                           |
 | `admissionPolicy`                                          | Admission validation strictness: `err` \| `warn` \| `off`                       | `err`                         |
 | `sidecarInjector.enabled`                                  | Enable annotation-based sidecar injection                                       | `true`                        |
 | `sidecarInjector.defaultImage` / `.defaultImagePullPolicy` | Defaults for injected sidecars                                                  | (operator default)            |
-| `watchNamespaces` / `denyNamespaces`                       | Scope the operator to / away from specific namespaces                           | (all namespaces)              |
-| `tls.enabled` / `tls.secretName`                           | Serve the operator API over HTTPS from a `kubernetes.io/tls` Secret             | `false` / —                   |
+| `namespaces` / `denyNamespaces`                            | Scope the operator to / away from specific namespaces (mutually exclusive)      | (all namespaces)              |
 | `telemetry.otlp.*`                                         | Push operator metrics to an OTLP collector (see [Operator Metrics](metrics.md)) | disabled                      |
 | `telemetryProperties`                                      | Key/value pairs forwarded to the Spice runtime as telemetry properties          | `{}`                          |
 
@@ -157,6 +158,8 @@ Cluster operators can set defaults globally via Helm values `sidecarInjector.def
 
 ## Operator CLI
 
+The released operator image ships only the `run` subcommand. The `crd` and `json-schema` subcommands below are development/tooling helpers compiled into debug builds only — they are not present in the standard release binary, and CRDs are installed via the Helm chart rather than `crd --apply`.
+
 ### `crd` — Output or apply CRD definitions
 
 ```bash
@@ -171,7 +174,7 @@ spiceai-operator crd --output FILE
 | ------------------------------------- | ------------------------- | ------------------------------------------------------------ |
 | `--health-probe-bind-address`         | `0.0.0.0:8090`            | Operator HTTP API / health probe bind address                |
 | `--metrics-bind-address`              | `0.0.0.0:9090`            | Prometheus metrics bind address                              |
-| `--webhook-bind-address`              | —                         | Admission / conversion webhook bind address                  |
+| `--webhook-bind-address`              | `0.0.0.0:8443`            | Admission / conversion webhook bind address                  |
 | `--operator-namespace`                | `spiceai-operator-system` | Namespace for the operator (used for cluster-shared secrets) |
 | `--cluster-domain`                    | `cluster.local`           | Kubernetes cluster domain                                    |
 | `--admission-policy`                  | `err`                     | Admission validation strictness (`err` \| `warn` \| `off`)   |
@@ -191,9 +194,21 @@ spiceai-operator json-schema --output FILE
 
 ## Operator HTTP API
 
+The operator serves an HTTP API on `--health-probe-bind-address` (`0.0.0.0:8090` by default). The standard build exposes only the health and readiness endpoints:
+
+| Endpoint  | Method | Description                                            |
+| --------- | ------ | ------------------------------------------------------ |
+| `/health` | GET    | Health check — returns `OK`                            |
+| `/ready`  | GET    | Readiness probe — `200` once the operator has bootstrapped, `503` otherwise |
+
+### Pod-status API (deprecated)
+
+{% hint style="warning" %}
+The pod-status endpoints below are **deprecated** and slated for removal in a future release. They are **not** compiled into the standard operator build - they are available only in builds with the `status-api` feature enabled, which logs a deprecation warning on startup. Do not rely on them for new integrations.
+{% endhint %}
+
 | Endpoint                                   | Method | Description                        |
 | ------------------------------------------ | ------ | ---------------------------------- |
-| `/health`                                  | GET    | Health check — returns `OK`        |
 | `/{namespace}/{name}`                      | GET    | Pod status for a `SpicepodSet`     |
 | `/{namespace}/{name}?kind=SpicepodCluster` | GET    | Pod status for a `SpicepodCluster` |
 

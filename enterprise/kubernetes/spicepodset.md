@@ -107,19 +107,21 @@ The Spicepod YAML supports `${secrets:KEY}` references to Kubernetes Secret valu
 
 ## Persistent Storage
 
-Add a persistent volume to each pod replica with `volumeClaimTemplate`, which mirrors the upstream `PersistentVolumeClaimTemplate` shape. The operator creates a `PersistentVolumeClaim` as part of each `StatefulSet`, mounted at `/data`:
+Add persistent volumes to each pod replica with `volumeClaimTemplates`, a list whose entries mirror the upstream `PersistentVolumeClaimTemplate` shape. The operator creates a `PersistentVolumeClaim` per entry as part of each `StatefulSet`. The template named `data` (the name defaults to `data` when `metadata.name` is omitted) is auto-mounted at `/data` with no `volumeMounts` entry required; any other template must be paired with an explicit `volumeMounts` entry of the same name:
 
 ```yaml
 spec:
-  volumeClaimTemplate:
-    spec:
-      storageClassName: standard
-      resources:
-        requests:
-          storage: 10Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 10Gi
 ```
 
-The full PVC spec is available, including `accessModes`, `volumeMode`, and `selector`. Increasing `volumeClaimTemplate.spec.resources.requests.storage` triggers automatic PVC resizing, provided the `StorageClass` has `allowVolumeExpansion: true`.
+The full PVC spec is available, including `accessModes`, `volumeMode`, and `selector`. Increasing a template's `spec.resources.requests.storage` triggers automatic PVC resizing, provided the `StorageClass` has `allowVolumeExpansion: true`.
 
 {% hint style="warning" %}
 Volume shrinking is not supported. Decreasing the storage request has no effect on existing PVCs. Under the `BlueGreen` strategy, PVCs behave like ephemeral storage — each generation gets new PVCs, so volume data is not preserved across cutovers.
@@ -286,7 +288,7 @@ spec:
     team: data-platform
 ```
 
-Labels and annotations are `kebab-case`, and the operator's own keys are namespaced under `spice.ai/` (e.g. `spice.ai/app`, `spice.ai/spicepod`, `spice.ai/version`, `spice.ai/cluster`, `spice.ai/cluster-role`, `spice.ai/component`, `spice.ai/sidecar-injected`, `spice.ai/validation-level`). The admission controller **rejects** attempts to set these reserved keys on `spec.annotations` or `spec.labels`.
+Labels and annotations are `kebab-case`, and the operator's own keys are namespaced under `spice.ai/`. Reserved labels are `spice.ai/app`, `spice.ai/spicepod`, `spice.ai/version`, `spice.ai/cluster`, `spice.ai/cluster-role`, `spice.ai/cluster-mtls`, and `spice.ai/component`; reserved annotations are `spice.ai/sidecar-injected`, `spice.ai/observed-generation`, and `spice.ai/validation-level`. The admission controller **rejects** attempts to set these reserved keys on `spec.annotations` or `spec.labels`.
 
 {% hint style="info" %}
 To annotate only the ServiceAccount (e.g. for IRSA), use `serviceAccount.annotations` — those are not propagated to other resources.
@@ -330,7 +332,7 @@ spec:
 
 ## Crashloop Protection
 
-The operator monitors pods for repeated failures, combining two signals: accumulated dead pods (Failed + Succeeded) and pod failure events (`BackOff`, `Killing`, `Evicted`, `OOMKilling`, `Failed`). When a `SpicepodSet` exceeds the configured threshold, the operator pauses the workload (`replicas → 0`), sets `status.pauseReason = CrashLooping`, emits a Warning event, and surfaces the state through `status.conditions`. To resume, fix the configuration and set `replicas` back to the desired count.
+The operator monitors pods for repeated failures, combining two signals: accumulated dead pods (Failed + Succeeded) and pod failure events (`BackOff`, `Evicted`, `OOMKilling`, `Failed`). When a `SpicepodSet` exceeds the configured threshold, the operator pauses the workload (`replicas → 0`), sets `status.pauseReason = CrashLooping`, emits a Warning event, and surfaces the state through `status.conditions`. To resume, fix the configuration and set `replicas` back to the desired count.
 
 Configure the threshold via the operator CLI flag `--pause-crashlooping-pods-threshold` (Helm value `pauseCrashloopingPodsThreshold`). The binary defaults to `10`, but the chart ships `0` (crashloop protection **disabled**) by default — set a positive integer to enable it.
 
@@ -396,8 +398,8 @@ For operator self-telemetry (controller reconcile counts/durations, Kubernetes A
 | `spiceai_image_tag`                                  | `image.tag`                                                               |
 | `httpPort` / `flightPort` / `metricsPort`            | `http.port` / `flight.port` / `metrics.port`                              |
 | `enableService`                                      | `service.enabled`                                                         |
-| `volume.storageClassName` / `volume.storageRequests` | `volumeClaimTemplate.spec.{storageClassName, resources.requests.storage}` |
+| `volume.storageClassName` / `volume.storageRequests` | `volumeClaimTemplates[].spec.{storageClassName, resources.requests.storage}` |
 | `update_strategy`                                    | `updateStrategy` (camelCase; `Parallel` removed)                          |
-| `instantRollback` + `spice.ai/rollback` annotation   | `standbyVersion` (SHA-based; re-apply previous spec)                      |
+| `instantRollback`                                    | `standbyVersion` (SHA-based; re-apply previous spec)                      |
 
 All status timestamps are now RFC 3339 strings, and labels/annotations are `kebab-case` with the legacy `app` label namespaced as `spice.ai/app`. For the full field-by-field guide, see the [operator upgrade guide](https://github.com/spicehq/spice-k8s-operator).

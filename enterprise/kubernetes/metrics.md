@@ -44,11 +44,12 @@ telemetry:
   otlp:
     enabled: true
     endpoint: http://otel-collector.observability.svc:4317
-    protocol: grpc            # grpc | http/protobuf
-    temporality: delta        # cumulative | delta | lowmemory
-    interval: 60s             # export interval
+    protocol: grpc              # grpc | http/protobuf
     headers:
       authorization: "Bearer ${OTLP_TOKEN}"
+    metrics:
+      temporality: delta        # cumulative | delta | lowmemory
+      pushInterval: 30s          # export interval (default 30s)
 ```
 
 These values configure the operator through the standard OpenTelemetry SDK environment variables, which you can also set directly (for example via `extraEnv`):
@@ -61,7 +62,7 @@ These values configure the operator through the standard OpenTelemetry SDK envir
 | `OTEL_EXPORTER_OTLP_HEADERS`                        | Comma-separated `key=value` headers (e.g. authentication).      | `authorization=Bearer abc123`           |
 | `OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE` | Aggregation temporality: `cumulative`, `delta`, or `lowmemory`. | `delta`                                 |
 | `OTEL_METRIC_EXPORT_INTERVAL`                       | Export interval in milliseconds.                                | `60000`                                 |
-| `OTEL_SERVICE_NAME`                                 | `service.name` resource attribute.                              | `spiceai-operator`                      |
+| `OTEL_SERVICE_NAME`                                 | `service.name` resource attribute (default `spice-k8s-operator`). | `spice-k8s-operator`                  |
 | `OTEL_RESOURCE_ATTRIBUTES`                          | Additional resource attributes as `key=value` pairs.            | `deployment.environment=prod`           |
 
 ### Choose the right temporality
