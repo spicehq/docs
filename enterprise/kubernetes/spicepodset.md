@@ -5,18 +5,18 @@ icon: layer-group
 
 # SpicepodSet
 
-A `SpicepodSet` (`spice.ai/v2beta1`) deploys and manages one or more Spicepod replicas. The operator handles the full lifecycle: creating the workload, rolling updates, volume management, health monitoring, and crashloop protection.
+A `SpicepodSet` (`spice.ai/v2`) deploys and manages one or more Spicepod replicas. The operator handles the full lifecycle: creating the workload, rolling updates, volume management, health monitoring, and crashloop protection.
 
 Every `SpicepodSet` is deployed as one or more `StatefulSet`s — one per replica, each with an ordinal suffix — giving every pod a stable identity, ordered startup, and a predictable network hostname, even for single-replica workloads. Rollouts, `BlueGreen` cutovers, and standby retention are all expressed as parallel, suffixed `StatefulSet`s.
 
 {% hint style="info" %}
-`v2beta1` is the current schema. Legacy `spice.ai/v1` `SpicepodSet` manifests continue to apply unchanged and are losslessly converted by the operator, and pre-existing v0.x `Deployment`-based workloads are grandfathered. See [Migrating from `spice.ai/v1`](#migrating-from-spiceaiv1) for the field-by-field mapping.
+`v2` is the current schema. Legacy `spice.ai/v1` `SpicepodSet` manifests continue to apply unchanged and are losslessly converted by the operator, and pre-existing v0.x `Deployment`-based workloads are grandfathered. See [Migrating from `spice.ai/v1`](#migrating-from-spiceaiv1) for the field-by-field mapping.
 {% endhint %}
 
 ## Minimal Example
 
 ```yaml
-apiVersion: spice.ai/v2beta1
+apiVersion: spice.ai/v2
 kind: SpicepodSet
 metadata:
   name: my-spicepod
@@ -387,9 +387,9 @@ For operator self-telemetry (controller reconcile counts/durations, Kubernetes A
 
 ## Migrating from `spice.ai/v1`
 
-`v2beta1` renames several fields to follow standard Kubernetes API conventions. Existing `spice.ai/v1` resources keep working and are converted automatically, but manifests authored natively against `v2beta1` should adopt the new shape.
+`v2` renames several fields to follow standard Kubernetes API conventions. Existing `spice.ai/v1` resources keep working and are converted automatically, but manifests authored natively against `v2` should adopt the new shape.
 
-| `spice.ai/v1`                                        | `spice.ai/v2beta1`                                                        |
+| `spice.ai/v1`                                        | `spice.ai/v2`                                                             |
 | ---------------------------------------------------- | ------------------------------------------------------------------------- |
 | `spicepod: \|` (string-encoded YAML)                 | `spicepod:` (structured object)                                           |
 | `spiceai_image_registry` / `spiceai_image_name`      | `image.repository` (full path)                                            |

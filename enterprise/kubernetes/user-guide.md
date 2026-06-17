@@ -8,7 +8,7 @@ icon: book-open
 This guide walks through deploying and operating Spice.ai on Kubernetes with the operator — from installing the controller to configuring storage, networking, rollouts, scaling, and observability. For exhaustive field references, see [SpicepodSet](spicepodset.md) and [SpicepodCluster](spicepodcluster.md).
 
 {% hint style="info" %}
-All manifests below use the current `spice.ai/v2beta1` API version. Existing `spice.ai/v1` / `spice.ai/v1alpha1` manifests continue to apply and are converted automatically — see [Migrating from `spice.ai/v1`](spicepodset.md#migrating-from-spiceaiv1).
+All manifests below use the current `spice.ai/v2` API version. Existing `spice.ai/v1` / `spice.ai/v1alpha1` manifests continue to apply and are converted automatically — see [Migrating from `spice.ai/v1`](spicepodset.md#migrating-from-spiceaiv1).
 {% endhint %}
 
 ## Prerequisites
@@ -42,7 +42,7 @@ See the [Overview](README.md#helm-values) for the full list of Helm values.
 A `SpicepodSet` is the simplest way to run a Spicepod. Create `spicepodset.yaml`:
 
 ```yaml
-apiVersion: spice.ai/v2beta1
+apiVersion: spice.ai/v2
 kind: SpicepodSet
 metadata:
   name: my-spicepod
@@ -289,7 +289,7 @@ spec:
 For query workloads that benefit from dedicated scheduler and executor nodes, use a `SpicepodCluster`. The operator provisions mTLS certificates and manages child `SpicepodSet`s automatically:
 
 ```yaml
-apiVersion: spice.ai/v2beta1
+apiVersion: spice.ai/v2
 kind: SpicepodCluster
 metadata:
   name: my-cluster
@@ -349,7 +349,7 @@ helm upgrade spiceai-operator \
   --values my-values.yaml
 ```
 
-`v2beta1` is served with automatic conversion of legacy resources, so existing `SpicepodSet` / `SpicepodCluster` manifests continue to apply after the upgrade.
+`v2` is served with automatic conversion of legacy resources, so existing `SpicepodSet` / `SpicepodCluster` manifests continue to apply after the upgrade.
 
 ## Next steps
 

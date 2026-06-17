@@ -5,13 +5,13 @@ icon: ship
 
 # Kubernetes Operator
 
-The Spice.ai Kubernetes Operator automates the deployment, scaling, and lifecycle management of Spice.ai workloads on Kubernetes. It provides two Custom Resource Definitions (CRDs), unified under the `spice.ai/v2beta1` API version:
+The Spice.ai Kubernetes Operator automates the deployment, scaling, and lifecycle management of Spice.ai workloads on Kubernetes. It provides two Custom Resource Definitions (CRDs), unified under the `spice.ai/v2` API version:
 
-- **`SpicepodSet`** (`spice.ai/v2beta1`) — Deploys and manages Spicepod replicas as one or more suffixed `StatefulSet`s.
-- **`SpicepodCluster`** (`spice.ai/v2beta1`) — Deploys a distributed query cluster with scheduler and executor nodes, secured with auto-provisioned mTLS certificates.
+- **`SpicepodSet`** (`spice.ai/v2`) — Deploys and manages Spicepod replicas as one or more suffixed `StatefulSet`s.
+- **`SpicepodCluster`** (`spice.ai/v2`) — Deploys a distributed query cluster with scheduler and executor nodes, secured with auto-provisioned mTLS certificates.
 
 {% hint style="info" %}
-`v2beta1` consolidates the previous `spice.ai/v1` (`SpicepodSet`) and `spice.ai/v1alpha1` (`SpicepodCluster`) schemas. Existing `v1` / `v1alpha1` manifests keep working and are converted automatically — no immediate action required.
+`v2` consolidates the previous `spice.ai/v1` (`SpicepodSet`) and `spice.ai/v1alpha1` (`SpicepodCluster`) schemas. Existing `v1` / `v1alpha1` manifests keep working and are converted automatically — no immediate action required.
 {% endhint %}
 
 For a step-by-step walkthrough, see the [User Guide](user-guide.md). For exhaustive field references, see [SpicepodSet](spicepodset.md) and [SpicepodCluster](spicepodcluster.md).
@@ -207,7 +207,7 @@ helm upgrade spiceai-operator \
   --values my-values.yaml
 ```
 
-`v2beta1` is served with automatic conversion of legacy `v1` / `v1alpha1` resources, so existing manifests continue to apply after the upgrade. See the [User Guide](user-guide.md) for rollout guidance and the per-CRD field changes in [SpicepodSet](spicepodset.md#migrating-from-spiceaiv1) and [SpicepodCluster](spicepodcluster.md).
+`v2` is served with automatic conversion of legacy `v1` / `v1alpha1` resources, so existing manifests continue to apply after the upgrade. See the [User Guide](user-guide.md) for rollout guidance and the per-CRD field changes in [SpicepodSet](spicepodset.md#migrating-from-spiceaiv1) and [SpicepodCluster](spicepodcluster.md).
 
 ## Roadmap
 

@@ -5,10 +5,10 @@ icon: circle-nodes
 
 # SpicepodCluster
 
-A `SpicepodCluster` (`spice.ai/v2beta1`) deploys a distributed query cluster with dedicated scheduler and executor nodes. The operator automatically manages mTLS certificate provisioning, child `SpicepodSet` resources, and cluster topology.
+A `SpicepodCluster` (`spice.ai/v2`) deploys a distributed query cluster with dedicated scheduler and executor nodes. The operator automatically manages mTLS certificate provisioning, child `SpicepodSet` resources, and cluster topology.
 
 {% hint style="info" %}
-`v2beta1` is the current schema. Legacy `spice.ai/v1alpha1` `SpicepodCluster` manifests continue to apply unchanged and are converted automatically. The main renames are `schedulerSetSpec` / `executorSetSpec` → `schedulerSpec` / `executorSpec`, plus the `status` certificate fields; see [Status](#status).
+`v2` is the current schema. Legacy `spice.ai/v1alpha1` `SpicepodCluster` manifests continue to apply unchanged and are converted automatically. The main renames are `schedulerSetSpec` / `executorSetSpec` → `schedulerSpec` / `executorSpec`, plus the `status` certificate fields; see [Status](#status).
 {% endhint %}
 
 ## Architecture
@@ -36,7 +36,7 @@ Schedulers coordinate query planning and partition assignment; executors perform
 ## Example
 
 ```yaml
-apiVersion: spice.ai/v2beta1
+apiVersion: spice.ai/v2
 kind: SpicepodCluster
 metadata:
   name: my-cluster
