@@ -46,6 +46,14 @@ Spice runtime [v2.0-rc.4](https://spiceai.org/releases/v2.0-rc.4) (Apr 30, 2026)
 * Added HashiCorp Vault and Azure Key Vault secret stores.
 * Added MCP Streamable HTTP transport, an Azure Cosmos DB data connector (RC), and promoted the Git connector to RC.
 
+### SDKs
+
+* **spicepy 3.2.0** – Added a DataFrame API, expression DSL, and functions module, plus mTLS client certificate support.
+* **gospice 8.1.0** – Added mTLS client certificate support for mutual TLS authentication.
+* **spice-dotnet 0.4.0** – Added mTLS client certificate support for mutual TLS authentication.
+* **spice-java 0.7.0** – Added mTLS client certificate support for mutual TLS authentication.
+* **spice.js 3.1.1** – Added mTLS client certificate support and updated `protobufjs` in optional dependencies.
+
 <details>
 
 <summary>Bug Fixes</summary>
