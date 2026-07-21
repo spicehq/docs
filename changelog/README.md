@@ -39,6 +39,10 @@ Spice runtime [v2.0.1](https://spiceai.org/releases/v2.0.1) (Jun 17, 2026):
 * Fixed acceleration refresh endpoints and distributed-cluster accelerated serving to work for all accelerated datasets.
 * Fixed authenticated queries to consistently run as the requesting user, correctly scoping per-user results caching.
 
+### SDKs
+
+* **spice-rs 3.2.0** – Added mTLS client certificate support, query bindings, and dataset refresh; Flight connections are now lazy for HTTP-only clients, and Arrow upgraded to v58.
+
 <details>
 
 <summary>Bug Fixes</summary>
