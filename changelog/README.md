@@ -6,6 +6,59 @@ icon: clock-rotate-left
 # Changelog
 
 {% updates format="full" %}
+{% update date="2026-05-31" %}
+## May 2026
+
+### Highlights
+
+* **MCP Streamable HTTP** – Spice apps now support Model Context Protocol connections over Streamable HTTP.
+* **App Pause and Resume** – Apps can be manually paused and resumed, with settings remaining accessible while paused.
+* **Secondary API Keys** – Apps now issue a secondary API key, enabling zero-downtime key rotation.
+* **OAuth Client Expiry and Scopes** – OAuth clients now support expiration and app-level scopes.
+* **Chat and Responses API Improvements** – Improved the OpenAI-compatible `/v1/chat/completions` and `/v1/responses` endpoints.
+* **Model Provider Catalog Updates** – Provider templates now include model retirement notices and current model lists.
+* **Trace History** – Runtime-issued queries are now hidden from trace history by default for a cleaner query view.
+
+### Runtime
+
+**Stable channel**
+
+Spice runtime [v1.11.6](https://spiceai.org/releases/v1.11.6) (May 6, 2026):
+
+* Improved DynamoDB bootstrap ingestion throughput for `refresh_mode: changes` datasets on large tables.
+* Added configurable liveness, readiness, and startup probes to the Helm chart.
+
+**Preview channel**
+
+Spice runtime [v2.0-rc.5](https://spiceai.org/releases/v2.0-rc.5) (May 27, 2026):
+
+* Completed mutual TLS support with certificate hot-reload, optional or required client-certificate modes for HTTP and Flight, and outbound client certificates for FlightSQL and Spice.ai connections.
+* Added MongoDB Change Streams as a native CDC source and durable Kafka CDC offset persistence.
+* Expanded DML write-back with `INSERT`/`UPDATE`/`DELETE` for PostgreSQL and Snowflake, Arrow primary-key upserts, and DuckLake promoted to Beta.
+* Improved Cayenne performance across CDC ingest, background compaction, scan caching, and parallel partition writes.
+* Added SQL user-defined functions in spicepods, provider-aware LLM prompt caching, and Responses API support across all model providers.
+
+Spice runtime [v2.0-rc.4](https://spiceai.org/releases/v2.0-rc.4) (Apr 30, 2026):
+
+* Added an Elasticsearch data connector (Alpha) with hybrid search combining BM25 full-text, kNN vector search, and Reciprocal Rank Fusion.
+* Added native PostgreSQL CDC via WAL logical replication, removing the need for Debezium or Kafka.
+* Added multi-vector embeddings with MaxSim scoring and a `rerank` UDTF for late-interaction retrieval.
+* Added HashiCorp Vault and Azure Key Vault secret stores.
+* Added MCP Streamable HTTP transport, an Azure Cosmos DB data connector (RC), and promoted the Git connector to RC.
+
+<details>
+
+<summary>Bug Fixes</summary>
+
+* Fixed GitHub app installation verification during GitHub connection setup.
+* Fixed app search in the command menu.
+* Fixed memory and connection stream leaks in query handling for improved platform reliability.
+* Fixed enterprise image tags missing from the container images listing.
+
+</details>
+
+{% endupdate %}
+
 {% update date="2026-04-30" %}
 ## April 2026
 
