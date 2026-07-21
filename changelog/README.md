@@ -6,6 +6,52 @@ icon: clock-rotate-left
 # Changelog
 
 {% updates format="full" %}
+{% update date="2026-06-30" %}
+## June 2026
+
+### Highlights
+
+* **Spice v2 Upgrade** – The portal now guides apps on stable v1.x to Spice v2 with an in-app upgrade banner and upgrade guide.
+* **Dedicated Clusters** – Organizations can now run apps on dedicated private clusters with tenant isolation and private connectivity via AWS PrivateLink.
+* **Cluster Management** – The new Clusters page lists an organization's private clusters, and deployments can target specific cluster node groups.
+* **Public App Search** – Added full-text search across public apps on Spice Rack.
+* **Simplified App Endpoints** – Each app now exposes a single data-plane endpoint, with a private endpoint for apps on private clusters.
+* **Searchable GitHub Branches** – Branch selection in GitHub connector settings is now searchable.
+* **Deployment Log Level** – The runtime log level is now configurable per deployment.
+
+### Runtime
+
+**Stable channel**
+
+Spice runtime [v2.0](https://spiceai.org/releases/v2.0-stable) (Jun 5, 2026) — a major release, now generally available:
+
+* **Spice Cayenne (GA)** – The Cayenne data accelerator is generally available on the Vortex compressed columnar format, with a high-throughput CDC write path, `MERGE INTO`, SQL-defined partitioning, and a dedicated compaction runtime.
+* **Distributed Query (GA)** – Multi-active, highly-available distributed query built on Apache Ballista, with object-store-native clustering, distributed ingestion, data-local routing, and async queries via `/v1/queries`.
+* **Enterprise Security** – Mutual TLS across endpoints and connectors, OIDC bearer-token verification, Cedar-based authorization with row- and column-level filtering, and HashiCorp Vault and Azure Key Vault secret stores.
+* **CDC and Write-Back** – Native CDC from MongoDB Change Streams and PostgreSQL WAL, durable Kafka CDC offsets, DML write-back for PostgreSQL, Snowflake, DynamoDB, and Arrow, and DDL with `MERGE INTO` for Iceberg catalogs.
+* **Rust CLI and DataFusion v52** – The `spice` CLI is rewritten in Rust as a single self-contained binary with an async query REPL, and the engine moves to DataFusion v52.
+* v2.0 includes breaking changes — review the [release notes](https://spiceai.org/releases/v2.0-stable) before upgrading.
+
+Spice runtime [v2.0.1](https://spiceai.org/releases/v2.0.1) (Jun 17, 2026):
+
+* Improved Apache Iceberg read performance with parallel file scanning.
+* Fixed S3 refresh-skip so unchanged objects are not re-downloaded, added startup retries for source files that are not yet available, and fixed path-style addressing for dotted bucket names.
+* Fixed acceleration refresh endpoints and distributed-cluster accelerated serving to work for all accelerated datasets.
+* Fixed authenticated queries to consistently run as the requesting user, correctly scoping per-user results caching.
+
+<details>
+
+<summary>Bug Fixes</summary>
+
+* Fixed hosted AI secret linking so newly created apps correctly use the organization's OpenAI secret.
+* Improved app deletion reliability with automatic retries and correct resource cleanup ordering.
+* Fixed async SQL mode detection for clustered deployments.
+* Fixed spicepod validation to prevent unintended payload overwrites on deployment and unpause.
+
+</details>
+
+{% endupdate %}
+
 {% update date="2026-05-31" %}
 ## May 2026
 
