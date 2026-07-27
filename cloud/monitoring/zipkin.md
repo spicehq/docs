@@ -50,9 +50,9 @@ trace_id                          | task                | execution_duration_ms 
 3c75d16b6b4b8da98c551d115e1c049c  | sql_query           | 0.1                   | SQL error: ParserError("Expected:...")
 ```
 
-For more details, see [Task History](https://docs.spice.ai/features/observability/task-history).
+For more details, see [Task History](/features/observability/task-history).
 
 See also:
 
 * [Portal Monitoring](portal.md) - Built-in monitoring in the Spice.ai portal
-* [Metrics API](https://docs.spice.ai/api/runtime-apis/metrics) - Prometheus-compatible metrics endpoint
+* [Metrics API](/api/runtime-apis/metrics) - Prometheus-compatible metrics endpoint

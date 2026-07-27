@@ -9,23 +9,23 @@ icon: circle-info
 
 Browse the topics below to find answers to common questions, troubleshoot issues, or learn how to get the most out of the Spice.ai Cloud Platform.
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>🔧</strong></td><td><strong>Troubleshooting</strong></td><td>Diagnose and fix common issues</td><td><a href="troubleshooting.md">troubleshooting.md</a></td></tr><tr><td><strong>⚙️</strong></td><td><strong>Account &#x26; Billing</strong></td><td>API keys, organizations, and plans</td><td><a href="account-and-billing.md">account-and-billing.md</a></td></tr><tr><td><strong>💾</strong></td><td><strong>Connecting Data</strong></td><td>Data connectors and configuration</td><td><a href="connecting-data.md">connecting-data.md</a></td></tr><tr><td><strong>🤖</strong></td><td><strong>AI &#x26; Models</strong></td><td>AI Gateway, model providers, and inference</td><td><a href="ai-and-models.md">ai-and-models.md</a></td></tr><tr><td><strong>💻</strong></td><td><strong>APIs &#x26; SDKs</strong></td><td>Endpoints, SDKs, and query best practices</td><td><a href="apis-and-sdks.md">apis-and-sdks.md</a></td></tr><tr><td><strong>☘️</strong></td><td><strong>Getting Started</strong></td><td>New to Spice? Start here</td><td><a href="https://docs.spice.ai/getting-started/get-started">get-started</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>🔧</strong></td><td><strong>Troubleshooting</strong></td><td>Diagnose and fix common issues</td><td><a href="troubleshooting.md">troubleshooting.md</a></td></tr><tr><td><strong>⚙️</strong></td><td><strong>Account &#x26; Billing</strong></td><td>API keys, organizations, and plans</td><td><a href="account-and-billing.md">account-and-billing.md</a></td></tr><tr><td><strong>💾</strong></td><td><strong>Connecting Data</strong></td><td>Data connectors and configuration</td><td><a href="connecting-data.md">connecting-data.md</a></td></tr><tr><td><strong>🤖</strong></td><td><strong>AI &#x26; Models</strong></td><td>AI Gateway, model providers, and inference</td><td><a href="ai-and-models.md">ai-and-models.md</a></td></tr><tr><td><strong>💻</strong></td><td><strong>APIs &#x26; SDKs</strong></td><td>Endpoints, SDKs, and query best practices</td><td><a href="apis-and-sdks.md">apis-and-sdks.md</a></td></tr><tr><td><strong>☘️</strong></td><td><strong>Getting Started</strong></td><td>New to Spice? Start here</td><td><a href="/getting-started/get-started">get-started</a></td></tr></tbody></table>
 
 ## Quick Links
 
 | Topic                 | Link                                                    |
 | --------------------- | ------------------------------------------------------- |
-| Getting started guide | [Get Started](https://docs.spice.ai/getting-started/get-started)          |
-| FAQ                   | [Frequently Asked Questions](https://docs.spice.ai/getting-started/faq) |
+| Getting started guide | [Get Started](/getting-started/get-started)          |
+| FAQ                   | [Frequently Asked Questions](/getting-started/faq) |
 | Community support     | [Slack](https://spice.ai/slack)                         |
-| Enterprise support    | [Support](https://docs.spice.ai/help/support)                        |
-| Security & compliance | [Security](https://docs.spice.ai/docs/enterprise/production/security)                     |
-| Changelog             | [What's New](https://docs.spice.ai/changelog)                             |
-| Pricing               | [Plans](https://docs.spice.ai/docs/pricing/plans)                            |
+| Enterprise support    | [Support](/help/support)                        |
+| Security & compliance | [Security](/docs/enterprise/production/security)                     |
+| Changelog             | [What's New](/changelog)                             |
+| Pricing               | [Plans](/docs/pricing/plans)                            |
 
 ## Need More Help?
 
 * **Community support** — Ask questions and get help from the Spice.ai team and community in [Slack](https://spice.ai/slack).
-* **Enterprise support** — [Enterprise plans](https://docs.spice.ai/docs/pricing/plans) include priority support with an SLA. See [Support](https://docs.spice.ai/help/support) for details.
+* **Enterprise support** — [Enterprise plans](/docs/pricing/plans) include priority support with an SLA. See [Support](/help/support) for details.
 * **Report a bug** — File issues on [GitHub](https://github.com/spiceai/spiceai/issues).
 * **Report a vulnerability** — See [Security Reporting](https://github.com/spiceai/spiceai/security/advisories).

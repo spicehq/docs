@@ -355,8 +355,8 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 
 * **Iceberg Table Write Support (Preview)** – Write directly to Iceberg tables using standard SQL `INSERT INTO` commands, no Spark required.
 * **Acceleration Snapshots** – Faster startup with cached acceleration states from S3.
-* **Partitioned** [**S3 Vector Indexes**](https://docs.spice.ai/building-blocks/data-connectors/s3) – Improved scalability and query performance for large datasets.
-* **AI SQL Function (Preview)** – Query LLMs directly in [SQL](https://docs.spice.ai/docs/portal/playground/sql-query-editor) with `ai()` for summarization, classification, or translation.
+* **Partitioned** [**S3 Vector Indexes**](/building-blocks/data-connectors/s3) – Improved scalability and query performance for large datasets.
+* **AI SQL Function (Preview)** – Query LLMs directly in [SQL](/docs/portal/playground/sql-query-editor) with `ai()` for summarization, classification, or translation.
 * **Remote CLI Execution** – Run `spice sql`, `spice search`, and `spice chat` against remote endpoints.
 * **Spice.js SDK v3.0.3** – Updated SDK for Node.js and browsers with simplified query APIs and better compatibility.
 * **Tabbed SQL Editor** – Multi-tab SQL editor in the playground with persistent tab state.
@@ -370,8 +370,8 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 
 * Improved reliability for Iceberg writes and acceleration snapshots.
 * Fixed partition pruning and empty partition handling in queries.
-* Improved [vector search](https://docs.spice.ai/use-cases/enterprise-search#vector-similarity-search-across-disparate-and-legacy-data-systems) stability and default limits (now up to 1,000 results).
-* Improved AI [SQL query](https://docs.spice.ai/docs/portal/playground/sql-query-editor) consistency and async handling.
+* Improved [vector search](/use-cases/enterprise-search#vector-similarity-search-across-disparate-and-legacy-data-systems) stability and default limits (now up to 1,000 results).
+* Improved AI [SQL query](/docs/portal/playground/sql-query-editor) consistency and async handling.
 * General performance and startup time optimizations across data connectors and runtime.
 
 </details>
@@ -383,7 +383,7 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 
 ### Highlights
 
-* [**Hybrid Search (RRF)**](https://docs.spice.ai/use-cases/enterprise-search)**:** Combine [`vector_search`](https://docs.spice.ai/features/search-and-retrieval#vector-search) and `text_search` using the new Reciprocal Rank Fusion (UDTF) for more relevant results; supports per-query rank weights, recency boosting, and configurable decay (`k` = 60.0).
+* [**Hybrid Search (RRF)**](/use-cases/enterprise-search)**:** Combine [`vector_search`](/features/search-and-retrieval#vector-search) and `text_search` using the new Reciprocal Rank Fusion (UDTF) for more relevant results; supports per-query rank weights, recency boosting, and configurable decay (`k` = 60.0).
 * **Acceleration Metrics:** Added detailed Prometheus metrics for dataset refresh and ingestion lag:\
   `dataset_acceleration_max_timestamp_before_refresh_ms`,\
   `dataset_acceleration_max_timestamp_after_refresh_ms`,\
@@ -418,11 +418,11 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 ### Highlights
 
 * **Amazon Bedrock Integration:** Added support for Nova-compatible models via the new Bedrock LLM provider. Configure directly in `Spicepod.yaml` using the `bedrock:` prefix and AWS credentials.
-*   **AWS Redshift Support:** Connect Redshift clusters using the [PostgreSQL ](https://docs.spice.ai/building-blocks/data-connectors/postgres)data connector (`from: postgres:<schema.table>`).
+*   **AWS Redshift Support:** Connect Redshift clusters using the [PostgreSQL ](/building-blocks/data-connectors/postgres)data connector (`from: postgres:<schema.table>`).
 
     Full support for Redshift’s columnar storage and PostgreSQL-compatible types.
 * **Hadoop Catalog for Iceberg:** Added support for Hadoop-based Iceberg catalogs on local (`file://`) or S3 (`s3://`, `s3a://`) storage.
-*   **New** [**Data Connectors**](https://docs.spice.ai/building-blocks/data-connectors/)**:** Kafka Connector for real-time stream ingestion (`from: kafka:<topic>`).
+*   **New** [**Data Connectors**](/building-blocks/data-connectors/)**:** Kafka Connector for real-time stream ingestion (`from: kafka:<topic>`).
 
     MongoDB Connector for querying NoSQL collections (`from: mongodb:<dataset>`).
 * **DataFusion v48 Upgrade:** Performance improvements with DataFusion v48 — 50% smaller expression memory footprint and 10–20% faster query planning. Optimized string and window functions; up to 5.6× faster aggregate queries.
@@ -437,7 +437,7 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 
 <summary>Bug Fixes</summary>
 
-* Fixed [Amazon S3 Vectors](https://docs.spice.ai/building-blocks/data-connectors/s3) API compatibility issue when projecting embedding columns.
+* Fixed [Amazon S3 Vectors](/building-blocks/data-connectors/s3) API compatibility issue when projecting embedding columns.
 * Improved AWS authentication and retry logic for Bedrock providers.
 * Fixed Databricks OpenAI token compatibility.
 * Improved Parquet Reader to support files missing page indexes (`parquet_page_index: auto`).
@@ -478,13 +478,13 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 * **New Data Connectors**\
   Access [Iceberg](https://spiceai.org/docs/components/data-connectors/iceberg) and [Glue](https://spiceai.org/docs/components/data-connectors/glue) data sources directly; step-by-step documentation provided.
 * **Databricks Integration**\
-  OAuth for [Databricks](https://docs.spice.ai/docs/integrations/databricks) is fully automatic; your tokens are handled behind the scenes for all catalog, SQL, and chat actions.
+  OAuth for [Databricks](/docs/integrations/databricks) is fully automatic; your tokens are handled behind the scenes for all catalog, SQL, and chat actions.
 * **Organization Flexibility**\
   Invite members with any email connected to a GitHub account; set specific app limits (e.g., 5 apps per org for Community, 20 for Enterprise).
 * **Observability**\
-  Supports up to 1,000 tasks in [Observability](https://docs.spice.ai/features/observability/).
+  Supports up to 1,000 tasks in [Observability](/features/observability/).
 * **Data & Secrets**\
-  [All secret](https://docs.spice.ai/docs/portal/apps/secrets) names must be uppercase—system now enforces this for new and updated secrets.
+  [All secret](/docs/portal/apps/secrets) names must be uppercase—system now enforces this for new and updated secrets.
 
 <details>
 
@@ -560,7 +560,7 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 * **AI Chat Logs & History**\
   Improved loading and navigation for chat logs; message skeletons, progress bars, and artifact previews added. Message history now supports up to 500 prior messages.
 * **Monitoring Enhancements**\
-  [New app and model performance views](https://docs.spice.ai/docs/portal/monitoring-and-request-logs) allow users to see live status and recent activity for the apps and models they own.
+  [New app and model performance views](/docs/portal/monitoring-and-request-logs) allow users to see live status and recent activity for the apps and models they own.
 
 <details>
 
@@ -579,7 +579,7 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 ### Highlights
 
 * **AI Chat & Playground**\
-  New session handling: users can revisit prior conversations and access a catalog explorer from [Playground](https://docs.spice.ai/docs/portal/playground/ai-chat). Improvements to chat UI display make longer chat sessions and code completions easier to review. Markdown and progress rendering are now supported in chat.
+  New session handling: users can revisit prior conversations and access a catalog explorer from [Playground](/docs/portal/playground/ai-chat). Improvements to chat UI display make longer chat sessions and code completions easier to review. Markdown and progress rendering are now supported in chat.
 * **Spicepod Editor**\
   Choose from multiple AI models and tools directly in the editor sidebar. YAML safety checks alert users about indentation or formatting issues before saving.
 
@@ -622,7 +622,7 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 ### Highlights
 
 * **Spicepod.yaml Configuration**\
-  [Spicepods](https://docs.spice.ai/docs/portal/app-spicepod/spicepod-configuration) now display unique content identifiers (CIDs) for each version deployed, and retaining CID tracking improves history and rollback accuracy. The editor sidebar is more intuitive, supports flexible editing even if no repository is connected, and surfaces volume claim template types.
+  [Spicepods](/docs/portal/app-spicepod/spicepod-configuration) now display unique content identifiers (CIDs) for each version deployed, and retaining CID tracking improves history and rollback accuracy. The editor sidebar is more intuitive, supports flexible editing even if no repository is connected, and surfaces volume claim template types.
 * **Status & History**\
   Deployment status, history, and new monitoring tab allow users to see all current and prior deployments and their identifiers.
 * **User Interface Updates**\
@@ -669,7 +669,7 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 ### Highlights
 
 * **Copilot & Spicepod Integration**\
-  [The Copilot onboarding flow](https://docs.spice.ai/docs/integrations/github-copilot) is now unified and leverages shared spicepod instances for organizational consistency. Deployment status and logs are directly viewable in the Copilot UI.
+  [The Copilot onboarding flow](/docs/integrations/github-copilot) is now unified and leverages shared spicepod instances for organizational consistency. Deployment status and logs are directly viewable in the Copilot UI.
 * **Editor Enhancements**\
   The code editor now highlights YAML formatting errors and enables editing even when a repository isn’t connected. Sample dataset previews and component mapping have been improved. Side panel includes quick access to all relevant settings.
 * **Model & Activity Tracking**\
@@ -779,7 +779,7 @@ Spice runtime [v1.10.3](https://spiceai.org/releases/v1.10.3) (Dec 29, 2025):
 {% update date="2024-06-30" %}
 ## June 2024
 
-The June release included a [C# SDK](https://docs.spice.ai/sdks/sdks/dotnet-sdk) for Spice AI and Spice OSS to allow for development using .Net Standard 2.0 and .Net 6.0 or greater.
+The June release included a [C# SDK](/sdks/sdks/dotnet-sdk) for Spice AI and Spice OSS to allow for development using .Net Standard 2.0 and .Net 6.0 or greater.
 
 **Changes**
 
@@ -803,7 +803,7 @@ The May release included EigenLayer Delegation Manager datasets.  The datasets c
 {% update date="2024-04-30" %}
 ## April 2024
 
-The April release included updates to the Spice SDK's to support querying a local [Spice Runtime](https://github.com/spiceai/spiceai) without requiring a Spice.ai API key.  Details and examples can be found in the [Rust](https://docs.spice.ai/sdks/sdks/rust-sdk/), [Go](https://docs.spice.ai/sdks/sdks/go), [Python](https://docs.spice.ai/sdks/sdks/python-sdk/), and [Node.js](https://docs.spice.ai/sdks/sdks/node.js-sdk/) SDK documentation.
+The April release included updates to the Spice SDK's to support querying a local [Spice Runtime](https://github.com/spiceai/spiceai) without requiring a Spice.ai API key.  Details and examples can be found in the [Rust](/sdks/sdks/rust-sdk/), [Go](/sdks/sdks/go), [Python](/sdks/sdks/python-sdk/), and [Node.js](/sdks/sdks/node.js-sdk/) SDK documentation.
 
 **Ethereum Holesky nodes were shut down and datasets were removed on Thursday, April 25th at 8pm PST.**
 
@@ -863,7 +863,7 @@ The January release added support for the Ethereum [Holesky](https://github.com/
 **New in this release**
 
 1. \[Platform] Added Ethereum Holesky testnet data and API's.
-2. \[Platform] Achieved [SOC 2 Type II compliance](https://docs.spice.ai/docs/enterprise/production/security).
+2. \[Platform] Achieved [SOC 2 Type II compliance](/docs/enterprise/production/security).
 
 **Changes**
 
@@ -886,7 +886,7 @@ The December release focused on stability and performance improvements.
 {% update date="2023-11-30" %}
 ## November 2023
 
-The November release focused on [External Data Sources](https://docs.spice.ai/docs/portal/external-data-sources) and overall performance improvements following the [General Availability (GA)](https://blog.spice.ai/spice-ai-is-generally-available-d76c4289960c) release in October.
+The November release focused on [External Data Sources](/docs/portal/external-data-sources) and overall performance improvements following the [General Availability (GA)](https://blog.spice.ai/spice-ai-is-generally-available-d76c4289960c) release in October.
 
 You can now connect external data sources like PostgreSQL and MySQL to Spice.ai, which are then available to query with SQL including joining with any other Spice.ai dataset in the Spice.ai platform.
 
@@ -898,8 +898,8 @@ Navigation is also easier with the addition of the Command Bar. Simply use **Cmd
 
 **New In this Release**
 
-1. \[Portal] Added PostgreSQL and MySQL external data sources. See the [docs](https://docs.spice.ai/docs/portal/external-data-sources) for details.
-2. \[Portal] Added Dark Mode! Configure via [Profile Settings](https://docs.spice.ai/docs/portal/profile/#dark-mode).
+1. \[Portal] Added PostgreSQL and MySQL external data sources. See the [docs](/docs/portal/external-data-sources) for details.
+2. \[Portal] Added Dark Mode! Configure via [Profile Settings](/docs/portal/profile/#dark-mode).
 3. \[Portal] Added Command Bar navigation.
 4. \[Data] Added `eth.wallet_lst_balances` including rETH, stETH, and cbETH LSTs.
 5. \[Firecache] Upgraded to DuckDB 0.92.
@@ -913,17 +913,17 @@ Navigation is also easier with the addition of the Command Bar. Simply use **Cmd
 
 Spice.ai is now generally available! [Read the announcement](https://blog.spice.ai/spice-ai-is-generally-available-d76c4289960c).
 
-General Availability launches a brand-new collaborative developer experience, v1 APIs and SDKs, over [100 open-source community](https://github.com/spiceai/datasets) and EigenLayer datasets, and a removal of the waitlist. Any developer can now sign-up and use Spice.ai with one of the new [pricing plans](https://docs.spice.ai/docs/pricing/plans), including the $99 developer plan and the complementary [Community Edition](https://docs.spice.ai/docs/pricing/community).
+General Availability launches a brand-new collaborative developer experience, v1 APIs and SDKs, over [100 open-source community](https://github.com/spiceai/datasets) and EigenLayer datasets, and a removal of the waitlist. Any developer can now sign-up and use Spice.ai with one of the new [pricing plans](/docs/pricing/plans), including the $99 developer plan and the complementary [Community Edition](/docs/pricing/community).
 
 **New In this Release**
 
 1. \[HTTP API] Add v1 API:
-   1. [SQL Query API ](https://docs.spice.ai/api/runtime-apis/sql-query/http-api)
+   1. [SQL Query API ](/api/runtime-apis/sql-query/http-api)
    2. Prices API
    3. Gas Fees API
    4. Predictions API
 2. \[Portal] New Portal and developer experience, without waitlist limitations.
-3. \[Portal] New pricing plans are available, [learn more](https://docs.spice.ai/getting-started/pricing).
+3. \[Portal] New pricing plans are available, [learn more](/getting-started/pricing).
 4. \[Portal] Datasets and Views generally available, [learn more](release-notes.md#datasets-and-views).
 5. \[Firecache] Upgraded to DuckDB 0.91.
 6. \[Functions] Upgraded to DuckDB 0.91.
@@ -968,7 +968,7 @@ Note: In both cases, the list is a subset of what is available via the REST API.
 {% update date="2023-08-31" %}
 ## August 2023
 
-The August release expands the functionality of Spice Functions (beta) and [Datasets and Views](https://docs.spice.ai/docs/portal/datasets-and-views).
+The August release expands the functionality of Spice Functions (beta) and [Datasets and Views](/docs/portal/datasets-and-views).
 
 #### Spice Functions
 
@@ -1015,23 +1015,23 @@ Spice Functions has been discontinued.
 Spice Firecache is in beta and initially available for Design Partners. Get in touch for more info.
 {% endhint %}
 
-[Spice Firecache](https://docs.spice.ai/features/federated-sql-query) is a real-time SQL cache that enables developers to cache Spice datasets for high concurrency, blazing fast SQL query up to 10x the performance of general SQL query.
+[Spice Firecache](/features/federated-sql-query) is a real-time SQL cache that enables developers to cache Spice datasets for high concurrency, blazing fast SQL query up to 10x the performance of general SQL query.
 
 The Spice platform completely manages the Spice Firecache data lifecycle, ensuring datasets are real-time updated on triggers like new blocks and with stale data being automatically evicted.
 
-See [federated-sql-query.md](https://docs.spice.ai/features/federated-sql-query "mention") for full documentation on deploying datasets to the Spice Firecache.
+See [federated-sql-query.md](/features/federated-sql-query "mention") for full documentation on deploying datasets to the Spice Firecache.
 
 #### Custom Datasets
 
 Spice now supports the definition and creation of your own private Datasets and Views, which can then be queried with SQL, cached in Spice Firecache, and published publicly to be shared with others.
 
-See [datasets-and-views.md](https://docs.spice.ai/docs/portal/datasets-and-views "mention") for full documentation on creating private Datasets and Views.
+See [datasets-and-views.md](/docs/portal/datasets-and-views "mention") for full documentation on creating private Datasets and Views.
 
 #### Connecting Github Repos
 
 Connecting your Spice.xyz app to a GitHub repository allows you to create custom Datasets and Views, add datasets to Spice Firecache, author Spice Functions, and train AI Models.
 
-See [connect-github.md](https://docs.spice.ai/docs/portal/apps/connect-github "mention") for full documentation on connecting your Github Repo to a Spice App.
+See [connect-github.md](/docs/portal/apps/connect-github "mention") for full documentation on connecting your Github Repo to a Spice App.
 
 **New In this Release**
 
@@ -1479,7 +1479,7 @@ Read more on the [Spice AI blog](https://blog.spice.ai/whats-new-b7f637897df8).
 **Changes**
 
 * Prices dataset now out of preview
-* Added export to CSV results format in addition to existing formats JSON and [Apache Arrow](https://docs.spice.ai/api/runtime-apis/sql-query/apache-arrow-flight-api), for easy use with apps, ML, or libraries like NumPy and Pandas
+* Added export to CSV results format in addition to existing formats JSON and [Apache Arrow](/api/runtime-apis/sql-query/apache-arrow-flight-api), for easy use with apps, ML, or libraries like NumPy and Pandas
 * Added performance improvements for faster queries across existing datasets including `eth.traces`&#x20;
 
 #### Resources
@@ -1583,7 +1583,7 @@ Read more on the [Spice AI blog](https://medium.com/spice-ai/).
 {% update date="2022-06-30" %}
 ## June 2022
 
-This update includes a new [Javascript/Typescript SDK](https://docs.spice.ai/sdks/sdks/node.js-sdk/) for Node.js, an improved [Python SDK](https://docs.spice.ai/sdks/sdks/python-sdk/), and performance improvements for Ethereum tokens and NFT datasets.
+This update includes a new [Javascript/Typescript SDK](/sdks/sdks/node.js-sdk/) for Node.js, an improved [Python SDK](/sdks/sdks/python-sdk/), and performance improvements for Ethereum tokens and NFT datasets.
 
 Ethereum Name Service (ENS) support is also available in beta with the new `ens.domains` dataset.
 
@@ -1591,8 +1591,8 @@ Read more on the [Spice AI blog](https://medium.com/spice-ai/spice-xyz-june-upda
 
 **Changes**
 
-* New [Node.js SDK](https://docs.spice.ai/sdks/sdks/node.js-sdk/)
-* Improved [Python SDK](https://docs.spice.ai/sdks/sdks/python-sdk/)
+* New [Node.js SDK](/sdks/sdks/node.js-sdk/)
+* Improved [Python SDK](/sdks/sdks/python-sdk/)
 * ENS support in beta
   * `ens.domains`
 * Improved performance for `eth.tokens_` and `eth.nft_` prefixed tables
@@ -1610,7 +1610,7 @@ Read more on the [Spice AI blog](https://medium.com/spice-ai/spice-xyz-june-upda
 
 Spice now has some of the best automated token standard detection for erc20, erc721, and erc1155 tokens available. Tokens are detected by their signatures and as they emit events over time, so Spice provides a probability of standards compliance to each contract. Along with this support are now token-specific tables like `eth.tokens_erc1155` and `eth.token_transfers_erc20`. See the entire list Tokens Tables.
 
-Performance is now even better, especially for larger queries, and for results over the HTTP API. We still recommend the [Apache Arrow Flight API](https://docs.spice.ai/api/runtime-apis/sql-query/apache-arrow-flight-api) that's easily accessible via the [Python SDK](https://docs.spice.ai/sdks/sdks/python-sdk/) for production use though.
+Performance is now even better, especially for larger queries, and for results over the HTTP API. We still recommend the [Apache Arrow Flight API](/api/runtime-apis/sql-query/apache-arrow-flight-api) that's easily accessible via the [Python SDK](/sdks/sdks/python-sdk/) for production use though.
 
 WebSocket support is now available in private preview to Design Partners - get in touch if you are interested in custom limits, early access features, and dedicated support.
 

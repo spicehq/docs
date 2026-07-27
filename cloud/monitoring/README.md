@@ -5,7 +5,7 @@ icon: chart-mixed
 
 # Monitoring
 
-Spice Cloud exposes a [Prometheus-compatible metrics endpoint](https://docs.spice.ai/api/runtime-apis/metrics) (`/v1/metrics`) on each app instance. Use it to scrape runtime metrics and build dashboards and alerts in your monitoring platform of choice.
+Spice Cloud exposes a [Prometheus-compatible metrics endpoint](/api/runtime-apis/metrics) (`/v1/metrics`) on each app instance. Use it to scrape runtime metrics and build dashboards and alerts in your monitoring platform of choice.
 
 ```bash
 curl https://<app-cname>.spiceai.io/v1/metrics \
@@ -19,7 +19,7 @@ Pre-built dashboards and setup guides are available:
 * [Datadog](datadog.md) - Scrape metrics with the Datadog Agent's OpenMetrics integration
 * [Zipkin](zipkin.md) - Distributed tracing with Zipkin
 
-For the full list of available metrics, see the [Metrics API reference](https://docs.spice.ai/api/runtime-apis/metrics#available-metrics).
+For the full list of available metrics, see the [Metrics API reference](/api/runtime-apis/metrics#available-metrics).
 
 {% hint style="warning" %}
 The metrics endpoint provides Spice runtime metrics only. Kubernetes pod-level metrics (CPU, memory, etc.) are not currently included.

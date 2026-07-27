@@ -9,7 +9,7 @@ description: Solutions to common issues with the Spice.ai Cloud Platform.
 
 ### API requests return `401 Unauthorized`
 
-- Verify you're using the correct API key for your app. Each app has its own keys — find them in the [Portal](https://docs.spice.ai/docs/portal/apps/api-keys) under your app's settings.
+- Verify you're using the correct API key for your app. Each app has its own keys — find them in the [Portal](/docs/portal/apps/api-keys) under your app's settings.
 - If you recently regenerated a key, the old key is immediately invalidated. Update all clients to use the new key.
 - Ensure the API key is passed correctly:
   - **HTTP API**: Include the `X-API-Key` header.
@@ -24,7 +24,7 @@ Each app has **two API keys**. To rotate without downtime:
 2. Update all clients to use Key 2.
 3. Regenerate **Key 1**.
 
-See [API Keys](https://docs.spice.ai/docs/portal/apps/api-keys) for details.
+See [API Keys](/docs/portal/apps/api-keys) for details.
 
 ## SQL Queries
 
@@ -36,30 +36,30 @@ See [API Keys](https://docs.spice.ai/docs/portal/apps/api-keys) for details.
   SELECT * FROM "MyTable"
   ```
 
-- Confirm the dataset is configured in your app's [Spicepod](https://docs.spice.ai/docs/portal/app-spicepod/spicepod-configuration) and the app has been deployed.
+- Confirm the dataset is configured in your app's [Spicepod](/docs/portal/app-spicepod/spicepod-configuration) and the app has been deployed.
 - Ensure the data connector credentials (secrets) are correct and the source is accessible.
 
 ### Query times out or is slow
 
-- **Use data acceleration.** Accelerated datasets are cached locally and queries run significantly faster. See [Data Acceleration](https://docs.spice.ai/features/data-acceleration/).
+- **Use data acceleration.** Accelerated datasets are cached locally and queries run significantly faster. See [Data Acceleration](/features/data-acceleration/).
 - **Use `LIMIT`** to reduce result set size during development.
 - **Use Arrow Flight** instead of HTTP for large result sets — it has no row-count limits and streams results efficiently.
-- **Apply `ORDER BY` with `LIMIT`/`OFFSET`** when retrieving large datasets in chunks. See [Best Practices](https://docs.spice.ai/docs/reference/best-practices).
+- **Apply `ORDER BY` with `LIMIT`/`OFFSET`** when retrieving large datasets in chunks. See [Best Practices](/docs/reference/best-practices).
 
 ### HTTP SQL API returns truncated results
 
 The HTTP SQL API has row and timeout limits. If you're hitting these:
 
-- Use the [Arrow Flight API](https://docs.spice.ai/api/runtime-apis/sql-query/apache-arrow-flight-api) or an [SDK](https://docs.spice.ai/sdks/sdks/python-sdk/) for unlimited streaming results.
+- Use the [Arrow Flight API](/api/runtime-apis/sql-query/apache-arrow-flight-api) or an [SDK](/sdks/sdks/python-sdk/) for unlimited streaming results.
 - Add `LIMIT` and `OFFSET` clauses to paginate results.
 
 ## Data Connectors
 
 ### Data connector fails to connect
 
-- Verify the connection credentials are stored as [secrets](https://docs.spice.ai/docs/portal/apps/secrets) in your app and referenced correctly in the Spicepod using `${secrets:SECRET_NAME}` syntax.
+- Verify the connection credentials are stored as [secrets](/docs/portal/apps/secrets) in your app and referenced correctly in the Spicepod using `${secrets:SECRET_NAME}` syntax.
 - Confirm the data source is network-accessible from Spice.ai Cloud (check firewalls, IP allowlists, VPC peering).
-- Check the [Data Connectors](https://docs.spice.ai/building-blocks/data-connectors/) documentation for connector-specific configuration requirements.
+- Check the [Data Connectors](/building-blocks/data-connectors/) documentation for connector-specific configuration requirements.
 
 ### Data refresh fails with schema mismatch
 
@@ -79,15 +79,15 @@ When connecting to object stores (S3, ABFS, etc.):
 
 ### AI chat returns errors or empty responses
 
-- Confirm a [model is configured](https://docs.spice.ai/features/ai-gateway) in your app's Spicepod and the app is deployed.
-- Ensure the model provider API key (e.g., OpenAI, Anthropic) is stored as a [secret](https://docs.spice.ai/docs/portal/apps/secrets) and referenced correctly.
+- Confirm a [model is configured](/features/ai-gateway) in your app's Spicepod and the app is deployed.
+- Ensure the model provider API key (e.g., OpenAI, Anthropic) is stored as a [secret](/docs/portal/apps/secrets) and referenced correctly.
 - After adding or changing a secret, **redeploy the app** — secret changes don't take effect until the next deployment.
 
 ### Model not available or not responding
 
-- Check the model name matches a supported model from your configured [model provider](https://docs.spice.ai/building-blocks/model-providers/).
+- Check the model name matches a supported model from your configured [model provider](/building-blocks/model-providers/).
 - Verify the provider's API is operational (e.g., check OpenAI's status page).
-- Review request logs in the [Portal Monitoring](https://docs.spice.ai/docs/portal/monitoring-and-request-logs) for error details.
+- Review request logs in the [Portal Monitoring](/docs/portal/monitoring-and-request-logs) for error details.
 
 ## Secrets
 
@@ -101,18 +101,18 @@ This is by design. Secret values are **write-only** — they cannot be retrieved
 
 ### Changes to secrets not taking effect
 
-Secret changes require a **new deployment** before they take effect. After updating secrets, trigger a new deployment in the [Portal](https://docs.spice.ai/docs/portal/app-spicepod/deployments).
+Secret changes require a **new deployment** before they take effect. After updating secrets, trigger a new deployment in the [Portal](/docs/portal/app-spicepod/deployments).
 
 ## Deployments
 
 ### App is paused
 
-On the [Community Plan](https://docs.spice.ai/docs/pricing/community), applications that receive no API requests for 7 consecutive days are automatically paused. To restore:
+On the [Community Plan](/docs/pricing/community), applications that receive no API requests for 7 consecutive days are automatically paused. To restore:
 
 1. Go to your app in the [Portal](https://spice.ai).
 2. Resume the app.
 
-[Paid plans](https://docs.spice.ai/docs/pricing/plans) do not auto-pause.
+[Paid plans](/docs/pricing/plans) do not auto-pause.
 
 ## Arrow Flight
 
@@ -126,6 +126,6 @@ If you encounter certificate verification errors when connecting via Arrow Fligh
 
 ## Still stuck?
 
-- Search the [FAQ](https://docs.spice.ai/getting-started/faq) for your question.
+- Search the [FAQ](/getting-started/faq) for your question.
 - Ask in [Slack](https://spice.ai/slack) for community support.
-- [Enterprise plans](https://docs.spice.ai/docs/pricing/plans) include priority support with an SLA.
+- [Enterprise plans](/docs/pricing/plans) include priority support with an SLA.

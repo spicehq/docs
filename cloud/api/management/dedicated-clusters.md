@@ -96,9 +96,9 @@ Reassigning an app changes its data and Flight endpoints. Clients that pin the o
 
 The app and `GET /v1/clusters` responses return the cluster's `endpoint` — the URL clients connect to.
 
-It serves the same APIs (SQL, search, and LLM over HTTP, plus Apache Arrow Flight), and authentication is unchanged — the app's [API key](https://docs.spice.ai/docs/portal/apps/api-keys) or platform credentials work exactly as on shared infrastructure. For Apache Arrow Flight, the endpoint's host is used with `-data` replaced by `-flight`, over `grpc+tls://<host>:443`.
+It serves the same APIs (SQL, search, and LLM over HTTP, plus Apache Arrow Flight), and authentication is unchanged — the app's [API key](/docs/portal/apps/api-keys) or platform credentials work exactly as on shared infrastructure. For Apache Arrow Flight, the endpoint's host is used with `-data` replaced by `-flight`, over `grpc+tls://<host>:443`.
 
-With the [SDKs](https://docs.spice.ai/sdks/sdks/), the endpoint replaces the `data.spiceai.io` / `flight.spiceai.io` defaults. For example, with the [Python SDK](https://docs.spice.ai/sdks/sdks/python-sdk) over Flight:
+With the [SDKs](/sdks/sdks/), the endpoint replaces the `data.spiceai.io` / `flight.spiceai.io` defaults. For example, with the [Python SDK](/sdks/sdks/python-sdk) over Flight:
 
 ```python
 from spicepy import Client

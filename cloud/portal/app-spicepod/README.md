@@ -42,7 +42,7 @@ models:
 
 #### Datasets[​](https://docs.spiceai.org/getting-started/spicepods#datasets) <a href="#datasets" id="datasets"></a>
 
-Datasets in a Spicepod can be sourced from various locations, including local files or remote databases. They can be materialized and accelerated using different engines such as DuckDB, SQLite, or PostgreSQL to optimize performance ([learn more](https://docs.spice.ai/features/data-acceleration)).
+Datasets in a Spicepod can be sourced from various locations, including local files or remote databases. They can be materialized and accelerated using different engines such as DuckDB, SQLite, or PostgreSQL to optimize performance ([learn more](/features/data-acceleration)).
 
 #### Catalogs[​](https://docs.spiceai.org/getting-started/spicepods#catalogs) <a href="#catalogs" id="catalogs"></a>
 

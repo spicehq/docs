@@ -7,26 +7,26 @@ description: Connect your databases, warehouses, lakes, and APIs to Spice.ai Clo
 
 ## Overview
 
-Spice.ai supports [federated SQL queries](https://docs.spice.ai/features/federated-sql-query) across a wide range of data sources. Data connectors let you query external data directly or replicate it into Spice for accelerated access.
+Spice.ai supports [federated SQL queries](/features/federated-sql-query) across a wide range of data sources. Data connectors let you query external data directly or replicate it into Spice for accelerated access.
 
-For the full list of connectors and configuration options, see [Data Connectors](https://docs.spice.ai/building-blocks/data-connectors/).
+For the full list of connectors and configuration options, see [Data Connectors](/building-blocks/data-connectors/).
 
 ## Supported Data Sources
 
 | Category                 | Connectors                                                                                                                                                                                                                               |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Relational databases** | [PostgreSQL](https://docs.spice.ai/building-blocks/data-connectors/postgres), [MySQL](https://docs.spice.ai/building-blocks/data-connectors/mysql), [MSSQL](https://docs.spice.ai/building-blocks/data-connectors/mssql), [ClickHouse](https://docs.spice.ai/building-blocks/data-connectors/clickhouse) |
-| **Data warehouses**      | [Snowflake](https://docs.spice.ai/building-blocks/data-connectors/snowflake), [Databricks](https://docs.spice.ai/building-blocks/data-connectors/databricks), [Dremio](https://docs.spice.ai/building-blocks/data-connectors/dremio)                                                     |
-| **Data lakes & formats** | [S3](https://docs.spice.ai/building-blocks/data-connectors/s3), [Delta Lake](https://docs.spice.ai/building-blocks/data-connectors/delta-lake), [ABFS](https://docs.spice.ai/building-blocks/data-connectors/abfs)                                                                       |
-| **APIs & other**         | [GraphQL](https://docs.spice.ai/building-blocks/data-connectors/graphql), [GitHub](https://docs.spice.ai/building-blocks/data-connectors/github), [SharePoint](https://docs.spice.ai/building-blocks/data-connectors/sharepoint)                                                         |
-| **Streaming**            | [Debezium CDC](https://docs.spice.ai/building-blocks/data-connectors/debezium)                                                                                                                                                                           |
-| **Embedded / local**     | [DuckDB](https://docs.spice.ai/building-blocks/data-connectors/duckdb), [SQLite](https://docs.spice.ai/features/data-acceleration/sqlite-data-accelerator)                                                                                                              |
+| **Relational databases** | [PostgreSQL](/building-blocks/data-connectors/postgres), [MySQL](/building-blocks/data-connectors/mysql), [MSSQL](/building-blocks/data-connectors/mssql), [ClickHouse](/building-blocks/data-connectors/clickhouse) |
+| **Data warehouses**      | [Snowflake](/building-blocks/data-connectors/snowflake), [Databricks](/building-blocks/data-connectors/databricks), [Dremio](/building-blocks/data-connectors/dremio)                                                     |
+| **Data lakes & formats** | [S3](/building-blocks/data-connectors/s3), [Delta Lake](/building-blocks/data-connectors/delta-lake), [ABFS](/building-blocks/data-connectors/abfs)                                                                       |
+| **APIs & other**         | [GraphQL](/building-blocks/data-connectors/graphql), [GitHub](/building-blocks/data-connectors/github), [SharePoint](/building-blocks/data-connectors/sharepoint)                                                         |
+| **Streaming**            | [Debezium CDC](/building-blocks/data-connectors/debezium)                                                                                                                                                                           |
+| **Embedded / local**     | [DuckDB](/building-blocks/data-connectors/duckdb), [SQLite](/features/data-acceleration/sqlite-data-accelerator)                                                                                                              |
 
 ## Adding a Data Source
 
 ### 1. Store credentials as secrets
 
-Data source credentials should be stored as [secrets](https://docs.spice.ai/docs/portal/apps/secrets) in your app. In the Portal, go to your app → **Secrets** and create entries for connection strings, access keys, or tokens.
+Data source credentials should be stored as [secrets](/docs/portal/apps/secrets) in your app. In the Portal, go to your app → **Secrets** and create entries for connection strings, access keys, or tokens.
 
 {% hint style="info" %}
 Secret values are write-only and cannot be retrieved after saving.
@@ -54,7 +54,7 @@ Commit and deploy your app to make the dataset available for querying.
 
 ## Data Acceleration
 
-For faster queries, enable [data acceleration](https://docs.spice.ai/features/data-acceleration/) to cache datasets in a local engine:
+For faster queries, enable [data acceleration](/features/data-acceleration/) to cache datasets in a local engine:
 
 ```yaml
 datasets:
@@ -66,10 +66,10 @@ datasets:
 ```
 
 Available acceleration engines:
-- [Arrow](https://docs.spice.ai/features/data-acceleration/in-memory-arrow-data-accelerator) — In-memory, fastest performance.
-- [DuckDB](https://docs.spice.ai/features/data-acceleration/duckdb-data-accelerator) — Embedded analytical engine.
-- [SQLite](https://docs.spice.ai/features/data-acceleration/sqlite-data-accelerator) — Lightweight, persistent.
-- [PostgreSQL](https://docs.spice.ai/features/data-acceleration/postgresql-data-accelerator) — Full-featured relational engine.
+- [Arrow](/features/data-acceleration/in-memory-arrow-data-accelerator) — In-memory, fastest performance.
+- [DuckDB](/features/data-acceleration/duckdb-data-accelerator) — Embedded analytical engine.
+- [SQLite](/features/data-acceleration/sqlite-data-accelerator) — Lightweight, persistent.
+- [PostgreSQL](/features/data-acceleration/postgresql-data-accelerator) — Full-featured relational engine.
 
 ## Common Issues
 
@@ -99,7 +99,7 @@ Spice infers the schema at deployment time. If the source schema changes, refres
 
 ## Further Reading
 
-- [Data Connectors reference](https://docs.spice.ai/building-blocks/data-connectors/)
-- [Data Acceleration](https://docs.spice.ai/features/data-acceleration/)
-- [Federated SQL Query](https://docs.spice.ai/features/federated-sql-query)
-- [Data Connectors](https://docs.spice.ai/building-blocks/data-connectors/)
+- [Data Connectors reference](/building-blocks/data-connectors/)
+- [Data Acceleration](/features/data-acceleration/)
+- [Federated SQL Query](/features/federated-sql-query)
+- [Data Connectors](/building-blocks/data-connectors/)

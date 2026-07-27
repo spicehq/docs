@@ -47,7 +47,7 @@ curl -H "Authorization: Bearer <your-pat-token>" \
   https://api.spice.ai/v1/apps
 ```
 
-Learn more: [Personal Access Tokens](https://docs.spice.ai/docs/portal/profile/personal-access-tokens)
+Learn more: [Personal Access Tokens](/docs/portal/profile/personal-access-tokens)
 
 ### 2. OAuth 2.0 Client Credentials
 
@@ -195,22 +195,22 @@ https://api.spice.ai/v1/docs/openapi.json
 
 Official SDKs are available for popular languages:
 
-* [Python SDK](https://docs.spice.ai/sdks/sdks/python-sdk)
-* [Node.js SDK](https://docs.spice.ai/sdks/sdks/node.js-sdk)
-* [Go SDK](https://docs.spice.ai/sdks/sdks/go)
-* [Rust SDK](https://docs.spice.ai/sdks/sdks/rust-sdk)
+* [Python SDK](/sdks/sdks/python-sdk)
+* [Node.js SDK](/sdks/sdks/node.js-sdk)
+* [Go SDK](/sdks/sdks/go)
+* [Rust SDK](/sdks/sdks/rust-sdk)
 
 ## Endpoints
 
-* [Health](https://docs.spice.ai/api/management-api/management/health) - API health check
-* [Regions](https://docs.spice.ai/api/management-api/management/regions) - List available deployment regions
-* [Apps](https://docs.spice.ai/api/management-api/management/apps) - Manage Spice apps
-* [Deployments](https://docs.spice.ai/api/management-api/management/deployments) - Deploy and manage app deployments
-* [Secrets](https://docs.spice.ai/api/management-api/management/secrets) - Manage app secrets
-* [API Keys](https://docs.spice.ai/api/management-api/management/api-keys) - Manage app API keys
-* [Members](https://docs.spice.ai/api/management-api/management/members) - Manage organization members
+* [Health](/api/management-api/management/health) - API health check
+* [Regions](/api/management-api/management/regions) - List available deployment regions
+* [Apps](/api/management-api/management/apps) - Manage Spice apps
+* [Deployments](/api/management-api/management/deployments) - Deploy and manage app deployments
+* [Secrets](/api/management-api/management/secrets) - Manage app secrets
+* [API Keys](/api/management-api/management/api-keys) - Manage app API keys
+* [Members](/api/management-api/management/members) - Manage organization members
 * [Metrics](../metrics.md) - Scrape per-app runtime metrics
-* [Container Images](https://docs.spice.ai/docs/portal/app-spicepod/spice-runtime-versions) - List available runtime versions
+* [Container Images](/docs/portal/app-spicepod/spice-runtime-versions) - List available runtime versions
 
 ## Terraform Provider
 
@@ -272,4 +272,4 @@ Have questions or running into issues?
 
 * [GitHub Issues](https://github.com/spicehq/spiceai/issues)
 * [Community Discord](https://discord.gg/spiceai)
-* [Support](https://docs.spice.ai/help/support)
+* [Support](/help/support)

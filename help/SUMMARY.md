@@ -6,4 +6,4 @@
 * [Connecting Data](connecting-data.md)
 * [AI & Models](ai-and-models.md)
 * [APIs & SDKs](apis-and-sdks.md)
-* [Support](https://docs.spice.ai/help/support)
+* [Support](/help/support)

@@ -221,7 +221,7 @@ Because each fact row lives in exactly one partition and joins independently, th
 
 ### Iceberg catalog scans
 
-Scans of [Iceberg catalog](https://docs.spice.ai/building-blocks/data-connectors/delta-lake) tables are distributed across executors. An Iceberg scan holds a live table handle that cannot be serialized, so the scheduler ships a *recipe* instead — the table reference plus the scan's projection, filters, and limit. Each executor resolves the same table and replays the scan locally, which means catalog credentials are never sent over the wire.
+Scans of [Iceberg catalog](/building-blocks/data-connectors/delta-lake) tables are distributed across executors. An Iceberg scan holds a live table handle that cannot be serialized, so the scheduler ships a *recipe* instead — the table reference plus the scan's projection, filters, and limit. Each executor resolves the same table and replays the scan locally, which means catalog credentials are never sent over the wire.
 
 Single-node sessions are unaffected — the scan is planned exactly as it would be without a cluster.
 

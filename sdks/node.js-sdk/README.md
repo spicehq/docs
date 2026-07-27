@@ -95,7 +95,7 @@ The response includes:
 
 #### Other methods
 
-* `nsql(query, options?)` — generate and run SQL from a natural language question. See the [Text-to-SQL API](https://docs.spice.ai/api/runtime-apis/nsql).
+* `nsql(query, options?)` — generate and run SQL from a natural language question. See the [Text-to-SQL API](/api/runtime-apis/nsql).
 * `search(query, options?)` — run a search query against the app's datasets.
 * `refreshAcceleration(dataset, options?)` — trigger a refresh of an accelerated dataset.
 * `isSpiceReady()` and `isSpiceHealthy()` — check the runtime's readiness and health.

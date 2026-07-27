@@ -5,7 +5,7 @@ pagination_next: null
 
 # Spice.ai Data Connector
 
-The [Spice.ai](https://spice.ai/) Data Connector enables federated SQL query across datasets in the [Spice.ai Cloud Platform](https://docs.spice.ai/building-blocks/datasets). Access to these datasets requires a free [Spice.ai account](https://spice.ai/login).
+The [Spice.ai](https://spice.ai/) Data Connector enables federated SQL query across datasets in the [Spice.ai Cloud Platform](/building-blocks/datasets). Access to these datasets requires a free [Spice.ai account](https://spice.ai/login).
 
 ## Configuration
 

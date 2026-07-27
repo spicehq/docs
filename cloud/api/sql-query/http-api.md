@@ -4,9 +4,9 @@ description: Query with SQL via the HTTP API
 
 # HTTP API
 
-Data may be queried by posting SQL to the `/v1/sql` API and `/v1/firesql` API for Firecached data. For documentation on federated / accelerated SQL query, see [Federated SQL Query](https://docs.spice.ai/features/federated-sql-query).
+Data may be queried by posting SQL to the `/v1/sql` API and `/v1/firesql` API for Firecached data. For documentation on federated / accelerated SQL query, see [Federated SQL Query](/features/federated-sql-query).
 
-See [Tables](https://docs.spice.ai/docs/portal/playground/sql-query-editor) for a list of tables to query or browse the example queries listed in the menu.
+See [Tables](/docs/portal/playground/sql-query-editor) for a list of tables to query or browse the example queries listed in the menu.
 
 #### Requirements and limitations
 

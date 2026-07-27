@@ -18,4 +18,4 @@ SELECT * FROM "MyTable";
 SELECT * FROM "MyTable"."MixedCaseColumn";
 ```
 
-This behavior also applies to [dataset names](https://docs.spice.ai/building-blocks/data-connectors#identifier-case-sensitivity-and-quoting) configured in the `from` and `name` fields of the spicepod.
+This behavior also applies to [dataset names](/building-blocks/data-connectors#identifier-case-sensitivity-and-quoting) configured in the `from` and `name` fields of the spicepod.
