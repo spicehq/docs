@@ -62,8 +62,8 @@ curl https://us-west-2-prod-aws-data.spiceai.io/v1/metrics \
 
 The metrics output is compatible with standard monitoring systems. Pre-built dashboards and setup guides are available:
 
-* [Grafana & Prometheus](../../monitoring/grafana.md) - Scrape metrics with Prometheus, visualize in Grafana
-* [Datadog](../../monitoring/datadog.md) - Scrape metrics with the Datadog Agent's OpenMetrics integration
+* [Grafana & Prometheus](https://docs.spice.ai/docs/monitoring/monitoring/grafana) - Scrape metrics with Prometheus, visualize in Grafana
+* [Datadog](https://docs.spice.ai/docs/monitoring/monitoring/datadog) - Scrape metrics with the Datadog Agent's OpenMetrics integration
 * **OpenTelemetry** - Use the OTEL Prometheus receiver
 
 {% hint style="warning" %}
@@ -242,7 +242,7 @@ In addition to these core metrics, individual components can expose their own me
 
 See also:
 
-* [Monitoring](../../monitoring/) - Set up dashboards with Grafana, Prometheus, or Datadog
-* [Apps API](/broken/pages/Cxualhhbj3JVjFycQplA) - Manage your apps
-* [API Keys](/broken/pages/C2SEPG58kdQqhs4SL9B7) - Manage app API keys
-* [Observability](../../features/observability/) - Observability features in the portal
+* [Monitoring](https://docs.spice.ai/docs/monitoring/monitoring) - Set up dashboards with Grafana, Prometheus, or Datadog
+* [Apps API](https://docs.spice.ai/api/management-api/management/apps) - Manage your apps
+* [API Keys](https://docs.spice.ai/api/management-api/management/api-keys) - Manage app API keys
+* [Observability](https://docs.spice.ai/features/observability) - Observability features in the portal

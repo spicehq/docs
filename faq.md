@@ -25,19 +25,19 @@ See [Distributions](https://docs.spice.ai/docs/enterprise/getting-started/distri
 
 ### How much does Spice.ai Cloud cost?
 
-It's free to [get an API key](https://spice.ai) to use the [Community Edition](/broken/pages/TswKQuxvMpeSWfvqFhxa).
+It's free to [get an API key](https://spice.ai) to use the [Community Edition](https://docs.spice.ai/docs/pricing/community).
 
-Customers who need resource limits, service-level guarantees, or priority support we offer [high-value paid tiers](../pricing/plans.md) based on usage.
+Customers who need resource limits, service-level guarantees, or priority support we offer [high-value paid tiers](https://docs.spice.ai/docs/pricing/plans) based on usage.
 
 ### What level of support do you offer?
 
-We offer enterprise-grade support with an SLA [for Enterprise Plans](../pricing/plans.md).
+We offer enterprise-grade support with an SLA [for Enterprise Plans](https://docs.spice.ai/docs/pricing/plans).
 
-For standard plans we offer [best-effort community support](https://github.com/spicehq/cloud-docs/blob/trunk/broken-reference/README.md) in Discord.
+For standard plans we offer [best-effort community support](https://spice.ai/slack) in Discord.
 
 ### What's your approach to security and compliance?
 
-See [Security](../security/security.md). The Spice.ai Cloud Platform is SOC 2 Type II compliant.
+See [Security](https://docs.spice.ai/docs/enterprise/production/security). The Spice.ai Cloud Platform is SOC 2 Type II compliant.
 
 ### What SQL query engine/dialect do you support?
 
@@ -45,15 +45,15 @@ Spice.ai OSS is built on [Apache DataFusion](https://datafusion.apache.org/) as 
 
 ### What AI capabilities does Spice provide?
 
-Spice provides unified APIs for data and AI workflows, including model inference, embeddings, and an [AI gateway](../features/ai-gateway.md) supporting OpenAI, Anthropic, Amazon Bedrock, and xAI. Spice also includes advanced tools such as [vector and hybrid search](../features/search-and-retrieval.md), text-to-SQL, and data sampling.
+Spice provides unified APIs for data and AI workflows, including model inference, embeddings, and an [AI gateway](https://docs.spice.ai/features/ai-gateway) supporting OpenAI, Anthropic, Amazon Bedrock, and xAI. Spice also includes advanced tools such as [vector and hybrid search](https://docs.spice.ai/features/search-and-retrieval), text-to-SQL, and data sampling.
 
 ### What AI model providers does Spice support?
 
-Spice supports local model serving (e.g. Llama) and gateways to hosted AI platforms including OpenAI, Anthropic, xAI, and Amazon Bedrock. See [Model Providers](../building-blocks/model-providers/) for details.
+Spice supports local model serving (e.g. Llama) and gateways to hosted AI platforms including OpenAI, Anthropic, xAI, and Amazon Bedrock. See [Model Providers](https://docs.spice.ai/building-blocks/model-providers) for details.
 
 ### Can Spice handle federated queries?
 
-Yes. Spice natively supports [federated SQL queries](../features/federated-sql-query.md) across disparate data sources with advanced query push-down capabilities, executing portions of queries directly on source databases to reduce data transfer and improve performance.
+Yes. Spice natively supports [federated SQL queries](https://docs.spice.ai/features/federated-sql-query) across disparate data sources with advanced query push-down capabilities, executing portions of queries directly on source databases to reduce data transfer and improve performance.
 
 ### Can Spice integrate with existing BI tools?
 
@@ -64,13 +64,13 @@ Yes. Spice integrates with BI tools through standard SQL interfaces (ODBC, JDBC,
 Yes. Spice supports streaming ingestion from several sources:
 
 - **Native PostgreSQL logical replication** (recommended for PostgreSQL sources). Spice connects directly to the source using Postgres' `wal_level=logical` and streams `INSERT`/`UPDATE`/`DELETE` events into the accelerator. See [PostgreSQL Logical Replication](https://spiceai.org/docs/features/cdc/postgres-replication) in the OSS documentation.
-- **[DynamoDB Streams](../building-blocks/data-connectors/dynamodb.md)** for Amazon DynamoDB sources — Spice consumes the table's change stream and applies `INSERT`/`UPDATE`/`DELETE` events to the accelerator with `refresh_mode: changes`.
-- **[Apache Kafka](../building-blocks/data-connectors/kafka.md)** for event-streaming topics — Spice consumes records directly with `refresh_mode: append` for real-time, append-only acceleration.
-- **[Debezium](../building-blocks/data-connectors/debezium.md)** (over Kafka) for sources where Debezium is already deployed, or for databases without a native Spice CDC path (MySQL, SQL Server, etc.).
+- **[DynamoDB Streams](https://docs.spice.ai/building-blocks/data-connectors/dynamodb)** for Amazon DynamoDB sources — Spice consumes the table's change stream and applies `INSERT`/`UPDATE`/`DELETE` events to the accelerator with `refresh_mode: changes`.
+- **[Apache Kafka](https://docs.spice.ai/building-blocks/data-connectors/debezium)** for event-streaming topics — Spice consumes records directly with `refresh_mode: append` for real-time, append-only acceleration.
+- **[Debezium](https://docs.spice.ai/building-blocks/data-connectors/debezium)** (over Kafka) for sources where Debezium is already deployed, or for databases without a native Spice CDC path (MySQL, SQL Server, etc.).
 
 ### How do I keep an accelerated dataset incrementally up-to-date?
 
-For sources with a monotonically-increasing version column (e.g. `updated_at`), Spice incrementally ingests new and modified records using `time_column` + `refresh_mode: append`, with `refresh_append_overlap` to tolerate clock skew and `retention_period` to evict old or soft-deleted records. See [Incremental Ingestion](../features/data-acceleration/README.md#incremental-ingestion) for configuration details and examples.
+For sources with a monotonically-increasing version column (e.g. `updated_at`), Spice incrementally ingests new and modified records using `time_column` + `refresh_mode: append`, with `refresh_append_overlap` to tolerate clock skew and `retention_period` to evict old or soft-deleted records. See [Incremental Ingestion](https://docs.spice.ai/features/data-acceleration/README#incremental-ingestion) for configuration details and examples.
 
 ### Does Spice support schema evolution?
 

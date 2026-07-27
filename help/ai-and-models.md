@@ -9,27 +9,27 @@ description: Use the AI Gateway for LLM inference, embeddings, and search across
 
 Spice.ai provides an **OpenAI-compatible AI Gateway** that lets you access multiple model providers through a unified API. This enables LLM inference, embeddings, vector search, and RAG workflows.
 
-See [AI Gateway](../features/ai-gateway.md) for full feature details.
+See [AI Gateway](https://docs.spice.ai/features/ai-gateway) for full feature details.
 
 ## Supported Model Providers
 
 | Provider     | Documentation                                                     |
 | ------------ | ----------------------------------------------------------------- |
-| OpenAI       | [OpenAI](../building-blocks/model-providers/openai.md)            |
-| Anthropic    | [Anthropic](../building-blocks/model-providers/anthropic.md)      |
-| Azure OpenAI | [Azure](../building-blocks/model-providers/azure.md)              |
-| xAI (Grok)   | [XAI](../building-blocks/model-providers/xai.md)                  |
-| Hugging Face | [Hugging Face](../building-blocks/model-providers/huggingface.md) |
-| Perplexity   | [Perplexity](../building-blocks/model-providers/perplexity.md)    |
-| Spice.ai     | [SpiceAI](../building-blocks/model-providers/spiceai.md)          |
+| OpenAI       | [OpenAI](https://docs.spice.ai/building-blocks/model-providers/openai)            |
+| Anthropic    | [Anthropic](https://docs.spice.ai/building-blocks/model-providers/anthropic)      |
+| Azure OpenAI | [Azure](https://docs.spice.ai/building-blocks/model-providers/azure)              |
+| xAI (Grok)   | [XAI](https://docs.spice.ai/building-blocks/model-providers/xai)                  |
+| Hugging Face | [Hugging Face](https://docs.spice.ai/building-blocks/model-providers/huggingface) |
+| Perplexity   | [Perplexity](https://docs.spice.ai/building-blocks/model-providers/perplexity)    |
+| Spice.ai     | [SpiceAI](https://docs.spice.ai/building-blocks/model-providers/spiceai)          |
 
-See [Model Providers](../building-blocks/model-providers/) for the complete list.
+See [Model Providers](https://docs.spice.ai/building-blocks/model-providers/) for the complete list.
 
 ## Setting Up AI in Your App
 
 ### 1. Add a model provider secret
 
-Store your model provider API key as a [secret](../portal/apps/secrets.md) in your app (e.g., `OPENAI_API_KEY`).
+Store your model provider API key as a [secret](https://docs.spice.ai/docs/portal/apps/secrets) in your app (e.g., `OPENAI_API_KEY`).
 
 ### 2. Configure a model in your Spicepod
 
@@ -47,7 +47,7 @@ Deploy your app to make the model available.
 
 ### 4. Use the API
 
-Send requests to the [LLM API](../api/openai-api.md):
+Send requests to the [LLM API](https://docs.spice.ai/api/runtime-apis/openai-api):
 
 ```bash
 curl https://data.spiceai.io/v1/chat/completions \
@@ -67,18 +67,18 @@ The AI Gateway exposes an OpenAI-compatible interface at `https://data.spiceai.i
 
 ### Custom tools & system prompts
 
-Configure custom tools and system prompts in your model configuration to tailor AI behavior. See [AI Gateway](../features/ai-gateway.md) for configuration options.
+Configure custom tools and system prompts in your model configuration to tailor AI behavior. See [AI Gateway](https://docs.spice.ai/features/ai-gateway) for configuration options.
 
 ### Vector search & RAG
 
-Spice supports [vector and hybrid search](../features/search-and-retrieval.md) for retrieval-augmented generation (RAG) workflows:
+Spice supports [vector and hybrid search](https://docs.spice.ai/features/search-and-retrieval) for retrieval-augmented generation (RAG) workflows:
 
-- Configure [embeddings](../building-blocks/embeddings/) for your datasets.
-- Use the [Search API](../api/search.md) for semantic search.
+- Configure [embeddings](https://docs.spice.ai/building-blocks/embeddings/) for your datasets.
+- Use the [Search API](https://docs.spice.ai/api/runtime-apis/search) for semantic search.
 
 ### Observability
 
-All AI requests include full [OpenTelemetry observability](../features/observability/) for tracing request flows, latency, and errors.
+All AI requests include full [OpenTelemetry observability](https://docs.spice.ai/features/observability/) for tracing request flows, latency, and errors.
 
 ## Common Issues
 
@@ -99,8 +99,8 @@ These typically come from the upstream model provider (e.g., OpenAI). Check your
 
 ## Further Reading
 
-- [AI Gateway](../features/ai-gateway.md)
-- [LLM API reference](../api/openai-api.md)
-- [Search & Retrieval](../features/search-and-retrieval.md)
-- [Model Providers](../building-blocks/model-providers/)
-- [Semantic Models](../features/semantic-models.md)
+- [AI Gateway](https://docs.spice.ai/features/ai-gateway)
+- [LLM API reference](https://docs.spice.ai/api/runtime-apis/openai-api)
+- [Search & Retrieval](https://docs.spice.ai/features/search-and-retrieval)
+- [Model Providers](https://docs.spice.ai/building-blocks/model-providers/)
+- [Semantic Models](https://docs.spice.ai/features/semantic-models)

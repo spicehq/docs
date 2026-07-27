@@ -9,7 +9,7 @@ The Spice.ai Cloud Platform exposes two sets of APIs: **Runtime APIs** for query
 
 ## Runtime APIs
 
-Runtime APIs are served at `https://data.spiceai.io` and authenticated with [App API keys](../portal/apps/api-keys.md).
+Runtime APIs are served at `https://data.spiceai.io` and authenticated with [App API keys](https://docs.spice.ai/docs/portal/apps/api-keys).
 
 | API                      | Endpoint                       | Documentation                                            |
 | ------------------------ | ------------------------------ | -------------------------------------------------------- |
@@ -24,18 +24,18 @@ Runtime APIs are served at `https://data.spiceai.io` and authenticated with [App
 
 ## Management API
 
-The Management API is served at `https://api.spice.ai` and authenticated with [Personal Access Tokens](../portal/profile/personal-access-tokens.md) or OAuth client credentials.
+The Management API is served at `https://api.spice.ai` and authenticated with [Personal Access Tokens](https://docs.spice.ai/docs/portal/profile/personal-access-tokens) or OAuth client credentials.
 
 | Endpoint         | Documentation                                              |
 | ---------------- | ---------------------------------------------------------- |
-| Apps             | [Apps API](/broken/pages/Cxualhhbj3JVjFycQplA)             |
-| Deployments      | [Deployments API](/broken/pages/cW4Y9zvF1YF9X2ExU15D)      |
-| Secrets          | [Secrets API](/broken/pages/jux7LfeRfZnBFKMpjIXA)          |
-| API Keys         | [API Keys API](/broken/pages/C2SEPG58kdQqhs4SL9B7)         |
-| Members          | [Members API](/broken/pages/fDcgKtae3y2pEzLWtbVg)          |
-| Regions          | [Regions API](/broken/pages/6ZPPX3ncuyaq7usBYCzO)          |
-| Container Images | [Container Images API](/broken/pages/5fsccwHHHi12wJt5s0Ca) |
-| Health           | [Health API](/broken/pages/MMiAVKRYaydEPCc1zdZU)           |
+| Apps             | [Apps API](https://docs.spice.ai/api/management-api/management/apps)             |
+| Deployments      | [Deployments API](https://docs.spice.ai/api/management-api/management/deployments)      |
+| Secrets          | [Secrets API](https://docs.spice.ai/api/management-api/management/secrets)          |
+| API Keys         | [API Keys API](https://docs.spice.ai/api/management-api/management/api-keys)         |
+| Members          | [Members API](https://docs.spice.ai/api/management-api/management/members)          |
+| Regions          | [Regions API](https://docs.spice.ai/api/management-api/management/regions)          |
+| Container Images | [Container Images API](https://docs.spice.ai/docs/portal/app-spicepod/spice-runtime-versions) |
+| Health           | [Health API](https://docs.spice.ai/api/management-api/management/health)           |
 
 See the full [Management API reference](management/) for authentication, scopes, rate limits, and examples.
 

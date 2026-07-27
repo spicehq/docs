@@ -4,7 +4,7 @@ icon: arrow-right-from-arc
 
 # Transfer
 
-You can transfer an App's ownership to another [**organization**](/broken/pages/05CWejAJRFHeBbS9KyeQ)**.**
+You can transfer an App's ownership to another [**organization**](https://docs.spice.ai/docs/portal/organizations)**.**
 
 {% hint style="info" %}
 App transfer is currently limited to organizations you have access to.

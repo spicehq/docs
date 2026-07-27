@@ -116,7 +116,7 @@ Converts natural language queries into SQL and executes them.
   * `model` (string, optional): Model to use for SQL generation. When omitted, the single compatible model configured in the app is used; if none or more than one is configured, the request fails.
   * `sample_data_enabled` (boolean, optional): Include sample data in context (default: `false`).
 
-See the [Text-to-SQL API](../../cloud/api/nsql.md) for the full contract.
+See the [Text-to-SQL API](https://docs.spice.ai/api/runtime-apis/nsql) for the full contract.
 
 ```javascript
 const result = await spiceClient.nsql('Show me the top 5 customers by total sales');

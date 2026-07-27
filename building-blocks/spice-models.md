@@ -13,15 +13,15 @@ Spice Models enable the training and use of ML models natively on the Spice plat
 
 The platform currently supports time-series forecasting models, with other categories of models planned.
 
-Hosted models have first-class access to co-located data for training and inferencing including: [Spice managed datasets](/broken/pages/JnKPswDs1OXhUD2OxR0K), [user managed datasets](../portal/external-data-sources.md), and [custom datasets and views](../portal/datasets-and-views.md). Additionally, [Spice Firecache](../features/federated-sql-query.md) can be leveraged to train and infer up to 10x faster.
+Hosted models have first-class access to co-located data for training and inferencing including: [Spice managed datasets](https://github.com/spiceai/datasets), [user managed datasets](https://docs.spice.ai/docs/portal/external-data-sources), and [custom datasets and views](https://docs.spice.ai/docs/portal/datasets-and-views). Additionally, [Spice Firecache](https://docs.spice.ai/features/federated-sql-query) can be leveraged to train and infer up to 10x faster.
 
 ### Defining a Model
 
-Models are defined using a [model manifest](/broken/pages/kBNlZsrTXSmL6zaiY8bm) YAML file. Model details such as data requirements, architecture, training parameters, and other important hyperparameters are defined in the `model.yaml.`
+Models are defined using a [model manifest](https://github.com/spiceai/samples/tree/trunk/.spice/models) YAML file. Model details such as data requirements, architecture, training parameters, and other important hyperparameters are defined in the `model.yaml.`
 
-Add a `model.yaml` file to the repository path `/models/[model_name]/model.yaml` of a [GitHub connected Spice app](../portal/apps/connect-github.md), replacing `[model_name]` with the desired model name.
+Add a `model.yaml` file to the repository path `/models/[model_name]/model.yaml` of a [GitHub connected Spice app](https://docs.spice.ai/docs/portal/apps/connect-github), replacing `[model_name]` with the desired model name.
 
-Refer to the [Models YAML specification](/broken/pages/kBNlZsrTXSmL6zaiY8bm) for all available configuration options.
+Refer to the [Models YAML specification](https://github.com/spiceai/samples/tree/trunk/.spice/models) for all available configuration options.
 
 For example model manifests, see the [models samples repo](https://github.com/spiceai/samples/tree/trunk/.spice/models).
 
@@ -73,6 +73,6 @@ Clicking **Predict** will demonstrate calling the predictions API using lookback
 
 The **Training Runs** page provides training details including a copyable `curl` command to make a prediction from the command line.
 
-For details on the API, see [Prediction Documentation](/broken/pages/2C09l89bwNrM5jRF0xSx).&#x20;
+For details on the API, see Prediction Documentation.&#x20;
 
 <figure><img src="../.gitbook/assets/CleanShot 2024-01-30 at 11.00.34@2x.png" alt=""><figcaption><p>Detailed training run page with the predictions API</p></figcaption></figure>
