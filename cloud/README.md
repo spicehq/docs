@@ -29,7 +29,7 @@ This documentation covers the **Spice.ai Cloud Platform**.
 For the self-hostable **Spice.ai OSS** runtime, visit [**docs.spiceai.org**](https://docs.spiceai.org).
 {% endhint %}
 
-<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>:rocket:</strong></td><td><strong>Get Started</strong></td><td>Sign up and run your first query in minutes</td><td><a href="getting-started/get-started/">get-started</a></td></tr><tr><td><strong>:zap:</strong></td><td><strong>Federated SQL Query</strong></td><td>Query across any data source with one SQL interface</td><td><a href="/broken/pages/BAR8Dpx6oKXyrfmiHXyC">Broken link</a></td></tr><tr><td><strong>:robot:</strong></td><td><strong>AI Gateway</strong></td><td>OpenAI-compatible API for LLM inference</td><td><a href="/broken/pages/hA54hkUt5wHuVhwyvawp">Broken link</a></td></tr><tr><td><strong>:mag:</strong></td><td><strong>Search &#x26; Retrieval</strong></td><td>Vector and hybrid search for RAG workflows</td><td><a href="/broken/pages/JyUtOgBpN04WM4vzH1tc">Broken link</a></td></tr><tr><td><strong>:plug:</strong></td><td><strong>Data Connectors</strong></td><td>Connect to 30+ databases, warehouses, and lakes</td><td><a href="/broken/pages/TqUYlnf0jpMU6k3dv9vL">Broken link</a></td></tr><tr><td><strong>:bar_chart:</strong></td><td><strong>Monitoring</strong></td><td>Observe performance with Grafana, Datadog, and more</td><td><a href="monitoring/">monitoring</a></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th><th></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td><strong>🚀</strong></td><td><strong>Get Started</strong></td><td>Sign up and run your first query in minutes</td><td><a href="getting-started/get-started/">get-started</a></td></tr><tr><td><strong>⚡</strong></td><td><strong>Federated SQL Query</strong></td><td>Query across any data source with one SQL interface</td><td><a href="https://docs.spice.ai/features/federated-sql-query">federated-sql-query</a></td></tr><tr><td><strong>🤖</strong></td><td><strong>AI Gateway</strong></td><td>OpenAI-compatible API for LLM inference</td><td><a href="https://docs.spice.ai/features/ai-gateway">ai-gateway</a></td></tr><tr><td><strong>🔍</strong></td><td><strong>Search &#x26; Retrieval</strong></td><td>Vector and hybrid search for RAG workflows</td><td><a href="https://docs.spice.ai/features/search-and-retrieval">search-and-retrieval</a></td></tr><tr><td><strong>🔌</strong></td><td><strong>Data Connectors</strong></td><td>Connect to 30+ databases, warehouses, and lakes</td><td><a href="https://docs.spice.ai/building-blocks/data-connectors">data-connectors</a></td></tr><tr><td><strong>📊</strong></td><td><strong>Monitoring</strong></td><td>Observe performance with Grafana, Datadog, and more</td><td><a href="monitoring/">monitoring</a></td></tr></tbody></table>
 
 ## What You Can Do
 
@@ -42,13 +42,13 @@ With the **Spice.ai Cloud Platform** you can:
 
 ## Use Cases
 
-| Use Case                                                | Description                                                |
-| ------------------------------------------------------- | ---------------------------------------------------------- |
-| [Agentic AI Apps](/broken/pages/Htbt6mfTcYSy0azWnmpj)   | Build AI agent backends with unified data and model access |
-| [Database CDN](/broken/pages/US5IOWJ5hGfesfTfdBDI)      | Cache and accelerate hot data for low-latency applications |
-| [Data Lakehouse](/broken/pages/vH4nBFHrLZZwb5ztSydo)    | Federated queries across warehouses, lakes, and databases  |
-| [Enterprise Search](/broken/pages/QRldH6OhgWuSs1LYU3b0) | Semantic search across enterprise data sources             |
-| [Enterprise RAG](/broken/pages/RBFXqV0lWDKWsBjt8yT5)    | Retrieval-augmented generation with your own data          |
+| Use Case                                                              | Description                                                |
+| --------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [Agentic AI Apps](https://docs.spice.ai/use-cases/agentic-ai-apps)   | Build AI agent backends with unified data and model access |
+| [Database CDN](https://docs.spice.ai/use-cases/database-cdn)         | Cache and accelerate hot data for low-latency applications |
+| [Data Lakehouse](https://docs.spice.ai/use-cases/data-lakehouse)     | Federated queries across warehouses, lakes, and databases  |
+| [Enterprise Search](https://docs.spice.ai/use-cases/enterprise-search) | Semantic search across enterprise data sources           |
+| [Enterprise RAG](https://docs.spice.ai/use-cases/enterprise-rag)     | Retrieval-augmented generation with your own data          |
 
 {% columns %}
 {% column %}
@@ -61,7 +61,7 @@ Get up and running in minutes:
 3. [Add a dataset and query data](getting-started/get-started/step-2-add-dataset-and-query-data.md)
 4. [Add an AI model and chat](getting-started/get-started/step-3-add-ai-model-and-chat-with-your-app.md)
 
-<a href="getting-started/get-started/" class="button primary" data-icon="rocket-launch">Get started</a> <a href="api/sql-query/" class="button secondary" data-icon="terminal">API reference</a>
+<a href="getting-started/get-started/" class="button primary" data-icon="rocket-launch">Get started</a> <a href="https://docs.spice.ai/api/runtime-apis/sql-query" class="button secondary" data-icon="terminal">API reference</a>
 {% endcolumn %}
 
 {% column %}
@@ -85,4 +85,4 @@ print(df)
 * **Slack** — Ask questions and get help from the team at [spice.ai/slack](https://spice.ai/slack).
 * **GitHub** — File issues and contribute at [github.com/spiceai/spiceai](https://github.com/spiceai/spiceai).
 * **Enterprise support** — [Paid plans](pricing/plans.md) include priority support with an SLA.
-* **Help Center** — Browse the [Help Center](help/) for troubleshooting, guides, and FAQs.
+* **Help Center** — Browse the [Help Center](https://docs.spice.ai/help) for troubleshooting, guides, and FAQs.
