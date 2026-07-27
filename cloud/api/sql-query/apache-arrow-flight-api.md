@@ -10,7 +10,7 @@ This setup enables high-speed access to your data in [Python](https://arrow.apac
 
 ### SDKs
 
-It's recommended to use the Spice.ai SDKs to connect and query the Arrow Flight endpoint. SDKs are available for [Python](/sdks/sdks/python-sdk), [Node.js](/sdks/sdks/node.js-sdk), [Go](/sdks/sdks/go), [Rust](/sdks/sdks/rust-sdk), [Java](/sdks/sdks/java-sdk), and [Dotnet](/sdks/sdks/dotnet-sdk).
+It's recommended to use the Spice.ai SDKs to connect and query the Arrow Flight endpoint. SDKs are available for [Python](../../../sdks/python-sdk/), [Node.js](../../../sdks/node.js-sdk/), [Go](../../../sdks/go.md), [Rust](../../../sdks/rust-sdk/), [Java](../../../sdks/java-sdk.md), and [Dotnet](../../../sdks/dotnet-sdk.md).
 
 In Python, query results can be easily converted to Pandas or NumPy formats.
 

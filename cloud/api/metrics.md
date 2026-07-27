@@ -62,8 +62,8 @@ curl https://us-west-2-prod-aws-data.spiceai.io/v1/metrics \
 
 The metrics output is compatible with standard monitoring systems. Pre-built dashboards and setup guides are available:
 
-* [Grafana & Prometheus](/docs/monitoring/monitoring/grafana) - Scrape metrics with Prometheus, visualize in Grafana
-* [Datadog](/docs/monitoring/monitoring/datadog) - Scrape metrics with the Datadog Agent's OpenMetrics integration
+* [Grafana & Prometheus](../monitoring/grafana.md) - Scrape metrics with Prometheus, visualize in Grafana
+* [Datadog](../monitoring/datadog.md) - Scrape metrics with the Datadog Agent's OpenMetrics integration
 * **OpenTelemetry** - Use the OTEL Prometheus receiver
 
 {% hint style="warning" %}
@@ -242,7 +242,7 @@ In addition to these core metrics, individual components can expose their own me
 
 See also:
 
-* [Monitoring](/docs/monitoring/monitoring) - Set up dashboards with Grafana, Prometheus, or Datadog
-* [Apps API](/api/management-api/management/apps) - Manage your apps
-* [API Keys](/api/management-api/management/api-keys) - Manage app API keys
-* [Observability](/features/observability) - Observability features in the portal
+* [Monitoring](../monitoring/) - Set up dashboards with Grafana, Prometheus, or Datadog
+* [Apps API](./management/) - Manage your apps
+* [API Keys](./management/) - Manage app API keys
+* [Observability](../../features/observability/) - Observability features in the portal

@@ -47,7 +47,7 @@ curl -H "Authorization: Bearer <your-pat-token>" \
   https://api.spice.ai/v1/apps
 ```
 
-Learn more: [Personal Access Tokens](/docs/portal/profile/personal-access-tokens)
+Learn more: [Personal Access Tokens](../../portal/profile/personal-access-tokens.md)
 
 ### 2. OAuth 2.0 Client Credentials
 
@@ -195,22 +195,22 @@ https://api.spice.ai/v1/docs/openapi.json
 
 Official SDKs are available for popular languages:
 
-* [Python SDK](/sdks/sdks/python-sdk)
-* [Node.js SDK](/sdks/sdks/node.js-sdk)
-* [Go SDK](/sdks/sdks/go)
-* [Rust SDK](/sdks/sdks/rust-sdk)
+* [Python SDK](../../../sdks/python-sdk/)
+* [Node.js SDK](../../../sdks/node.js-sdk/)
+* [Go SDK](../../../sdks/go.md)
+* [Rust SDK](../../../sdks/rust-sdk/)
 
 ## Endpoints
 
-* [Health](/api/management-api/management/health) - API health check
-* [Regions](/api/management-api/management/regions) - List available deployment regions
-* [Apps](/api/management-api/management/apps) - Manage Spice apps
-* [Deployments](/api/management-api/management/deployments) - Deploy and manage app deployments
-* [Secrets](/api/management-api/management/secrets) - Manage app secrets
-* [API Keys](/api/management-api/management/api-keys) - Manage app API keys
-* [Members](/api/management-api/management/members) - Manage organization members
+* [Health](./) - API health check
+* [Regions](./) - List available deployment regions
+* [Apps](./) - Manage Spice apps
+* [Deployments](./) - Deploy and manage app deployments
+* [Secrets](./) - Manage app secrets
+* [API Keys](./) - Manage app API keys
+* [Members](./) - Manage organization members
 * [Metrics](../metrics.md) - Scrape per-app runtime metrics
-* [Container Images](/docs/portal/app-spicepod/spice-runtime-versions) - List available runtime versions
+* [Container Images](../../portal/app-spicepod/spice-runtime-versions.md) - List available runtime versions
 
 ## Terraform Provider
 
@@ -272,4 +272,4 @@ Have questions or running into issues?
 
 * [GitHub Issues](https://github.com/spicehq/spiceai/issues)
 * [Community Discord](https://discord.gg/spiceai)
-* [Support](/help/support)
+* [Support](../../../help/support.md)

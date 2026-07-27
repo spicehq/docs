@@ -17,16 +17,16 @@ The Playground SQL Explorer is the fastest way to get started with federated que
 
 <figure><img src="../.gitbook/assets/CleanShot 2026-01-09 at 00.43.27@2x.png" alt=""><figcaption><p>The Playground SQL Query Editor.</p></figcaption></figure>
 
-See [sql-query-editor.md](/docs/portal/playground/sql-query-editor) for further documentation on using the SQL Query Editor.
+See [sql-query-editor.md](../cloud/portal/playground/sql-query-editor.md) for further documentation on using the SQL Query Editor.
 
 ### Apache Arrow Flight API
 
-For production applications, leveraging the high-performance [Apache Arrow Flight](/api/runtime-apis/sql-query/apache-arrow-flight-api) endpoint is recommended. The Spice SDKs always query using Arrow Flight.
+For production applications, leveraging the high-performance [Apache Arrow Flight](../cloud/api/sql-query/apache-arrow-flight-api.md) endpoint is recommended. The Spice SDKs always query using Arrow Flight.
 
-See [apache-arrow-flight-api.md](/api/runtime-apis/sql-query/apache-arrow-flight-api) for further documentation on using Apache Arrow Flight APIs.
+See [apache-arrow-flight-api.md](../cloud/api/sql-query/apache-arrow-flight-api.md) for further documentation on using Apache Arrow Flight APIs.
 
 ### HTTP API
 
 SQL Query is also accessible via a standard HTTP API.
 
-See [http-api.md](/api/runtime-apis/sql-query/http-api) for further documentation on using the HTTP SQL API.
+See [http-api.md](../cloud/api/sql-query/http-api.md) for further documentation on using the HTTP SQL API.

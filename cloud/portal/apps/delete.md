@@ -25,4 +25,4 @@ Only app owners and organization admins can delete apps.
 
 ## Delete via API
 
-Apps can also be deleted programmatically. See the [Apps Management API](/api/management-api/management/apps#delete-app) for details.
+Apps can also be deleted programmatically. See the [Apps Management API](../../api/management/README.md#delete-app) for details.

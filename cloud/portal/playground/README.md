@@ -25,11 +25,11 @@ The **APIs** section provides a console for each runtime API. Requests are built
 * **Query** — SQL over HTTP.
 * **Search** — search over the app's datasets.
 * **AI Completions** and **AI Responses** — model inference.
-* **NSQL** and **NSQL Context** — natural-language querying, and the context block Spice supplies to the model. See [Text-to-SQL API](/api/runtime-apis/nsql).
-* **Metrics** — runtime metrics in Prometheus format. See [Metrics API](/api/runtime-apis/metrics).
+* **NSQL** and **NSQL Context** — natural-language querying, and the context block Spice supplies to the model. See [Text-to-SQL API](../../api/nsql.md).
+* **Metrics** — runtime metrics in Prometheus format. See [Metrics API](../../api/metrics.md).
 * **Control-Plane** — app and deployment operations.
 
-See the [API Reference](/api) for the full contract behind each one.
+See the [API Reference](../../api/) for the full contract behind each one.
 
 ## SDKs & CLI
 

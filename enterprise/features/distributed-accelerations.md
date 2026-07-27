@@ -159,7 +159,7 @@ Recommended cluster pattern: set `snapshots: enabled` on owning executors (write
 
 ## Observability
 
-Distributed accelerations emit metrics through the cluster meter alongside the standard [acceleration metrics](/api/runtime-apis/metrics):
+Distributed accelerations emit metrics through the cluster meter alongside the standard [acceleration metrics](../../cloud/api/metrics.md):
 
 | Metric                                  | Where      | Description                                                                  |
 | --------------------------------------- | ---------- | ---------------------------------------------------------------------------- |

@@ -27,7 +27,7 @@ In the data source menu, provide the following options:
 
 * `Host:Port` - set to `flight.spiceai.io:443` to connect to the Spice.ai Cloud Platform
 * `Auth Type` - set to `token`
-* `Token` - set to your [Spice.ai API key](/docs/portal/apps/api-keys).
+* `Token` - set to your [Spice.ai API key](../portal/apps/api-keys.md).
 
 Once these options are set, click "Save & Test". Grafana should report "OK" if the configuration is correct.
 

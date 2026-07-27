@@ -5,7 +5,7 @@ icon: chart-line
 
 # Grafana & Prometheus
 
-Spice Cloud can be monitored with Grafana using the [Metrics endpoint](/api/runtime-apis/metrics) and a pre-built dashboard available in the [Spice repository](https://github.com/spiceai/spiceai/blob/trunk/monitoring/grafana-dashboard.json).
+Spice Cloud can be monitored with Grafana using the [Metrics endpoint](../api/metrics.md) and a pre-built dashboard available in the [Spice repository](https://github.com/spiceai/spiceai/blob/trunk/monitoring/grafana-dashboard.json).
 
 ## Prometheus Configuration
 
@@ -25,7 +25,7 @@ scrape_configs:
       X-API-Key: <API_KEY>
 ```
 
-Replace `<app-cname>` with your app's CNAME (e.g. `us-west-2-prod-aws-data`) and `<API_KEY>` with your [app API key](/docs/portal/apps/api-keys).
+Replace `<app-cname>` with your app's CNAME (e.g. `us-west-2-prod-aws-data`) and `<API_KEY>` with your [app API key](../portal/apps/api-keys.md).
 
 ## Import Grafana Dashboard
 
@@ -41,5 +41,5 @@ In addition to metrics monitoring, Grafana can query Spice Cloud data directly u
 
 See also:
 
-* [Metrics API](/api/runtime-apis/metrics) - Endpoint reference and full list of available metrics
+* [Metrics API](../api/metrics.md) - Endpoint reference and full list of available metrics
 * [Datadog](datadog.md) - Alternative monitoring with Datadog

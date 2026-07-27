@@ -52,7 +52,7 @@ curl -X POST https://<app-cname>.spiceai.io/v1/nsql \
 Returns the context block Spice injects into `/v1/nsql` model requests: the in-scope dataset schemas, the SQL dialect and engine details, and the available function groups. Use it to inspect or tune what the model sees.
 
 {% hint style="warning" %}
-This endpoint requires Spice runtime **v2.1.0 or later**. Apps pinned to an earlier version return `404`. See [Spice Runtime Versions](/docs/portal/app-spicepod/spice-runtime-versions).
+This endpoint requires Spice runtime **v2.1.0 or later**. Apps pinned to an earlier version return `404`. See [Spice Runtime Versions](../portal/app-spicepod/spice-runtime-versions.md).
 {% endhint %}
 
 ### Headers
@@ -108,4 +108,4 @@ The `Accept` header requested a type other than `text/markdown`, `text/plain`, o
 
 ## In the Portal
 
-Both endpoints have an interactive console in the Playground under **APIs** — **NSQL** and **NSQL Context**. The NSQL Context console builds the request from the options above and shows the returned block. See [Playground](/docs/portal/playground).
+Both endpoints have an interactive console in the Playground under **APIs** — **NSQL** and **NSQL Context**. The NSQL Context console builds the request from the options above and shows the returned block. See [Playground](../portal/playground/).

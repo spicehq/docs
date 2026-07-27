@@ -4,7 +4,7 @@ icon: arrow-right-from-arc
 
 # Transfer
 
-You can transfer an App's ownership to another [**organization**](/docs/portal/organizations)**.**
+You can transfer an App's ownership to another [**organization**](../organizations.md)**.**
 
 {% hint style="info" %}
 App transfer is currently limited to organizations you have access to.

@@ -39,6 +39,6 @@ For full details, see the [Portal Monitoring](../portal/monitoring-and-request-l
 
 See also:
 
-* [Metrics API](/api/runtime-apis/metrics) - Scrape metrics programmatically for external dashboards
+* [Metrics API](../api/metrics.md) - Scrape metrics programmatically for external dashboards
 * [Grafana & Prometheus](grafana.md) - Self-hosted monitoring with Grafana
 * [Datadog](datadog.md) - Monitoring with Datadog

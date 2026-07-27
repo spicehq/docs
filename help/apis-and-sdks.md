@@ -13,11 +13,11 @@ Spice.ai exposes two sets of APIs: **runtime APIs** (for querying data and AI) a
 
 | API                | Endpoint                                      | Auth                  | Documentation                                                   |
 | ------------------ | --------------------------------------------- | --------------------- | --------------------------------------------------------------- |
-| SQL (HTTP)         | `https://data.spiceai.io/v1/sql`              | `X-API-Key` header    | [HTTP API](/api/runtime-apis/sql-query/http-api)                        |
-| SQL (Arrow Flight) | `grpc+tls://flight.spiceai.io`                | Password in handshake | [Arrow Flight API](/api/runtime-apis/sql-query/apache-arrow-flight-api) |
-| LLM Chat           | `https://data.spiceai.io/v1/chat/completions` | `X-API-Key` header    | [LLM API](/api/runtime-apis/openai-api)                                 |
-| Search             | `https://data.spiceai.io/v1/search`           | `X-API-Key` header    | [Search API](/api/runtime-apis/search)                                  |
-| Health             | `https://data.spiceai.io/health`              | None                  | [Health API](/api/runtime-apis/health)                                  |
+| SQL (HTTP)         | `https://data.spiceai.io/v1/sql`              | `X-API-Key` header    | [HTTP API](../cloud/api/sql-query/http-api.md)                        |
+| SQL (Arrow Flight) | `grpc+tls://flight.spiceai.io`                | Password in handshake | [Arrow Flight API](../cloud/api/sql-query/apache-arrow-flight-api.md) |
+| LLM Chat           | `https://data.spiceai.io/v1/chat/completions` | `X-API-Key` header    | [LLM API](../cloud/api/openai-api.md)                                 |
+| Search             | `https://data.spiceai.io/v1/search`           | `X-API-Key` header    | [Search API](../cloud/api/search.md)                                  |
+| Health             | `https://data.spiceai.io/health`              | None                  | [Health API](../cloud/api/health.md)                                  |
 
 ### Management API
 
@@ -25,13 +25,13 @@ The Management API at `https://api.spice.ai/v1/` uses **personal access tokens**
 
 | Endpoint    | Documentation                                       |
 | ----------- | --------------------------------------------------- |
-| Apps        | [Apps API](/api/management-api/management/apps)               |
-| Deployments | [Deployments API](/api/management-api/management/deployments) |
-| API Keys    | [API Keys API](/api/management-api/management/api-keys)       |
-| Secrets     | [Secrets API](/api/management-api/management/secrets)         |
-| Members     | [Members API](/api/management-api/management/members)         |
+| Apps        | [Apps API](../cloud/api/management/)               |
+| Deployments | [Deployments API](../cloud/api/management/) |
+| API Keys    | [API Keys API](../cloud/api/management/)       |
+| Secrets     | [Secrets API](../cloud/api/management/)         |
+| Members     | [Members API](../cloud/api/management/)         |
 
-See the full [Management API reference](/api/management-api/management).
+See the full [Management API reference](../cloud/api/management/).
 
 ## SDKs
 
@@ -39,12 +39,12 @@ Official SDKs handle authentication, serialization, and connection management fo
 
 | Language | Package                      | Documentation                       |
 | -------- | ---------------------------- | ----------------------------------- |
-| Python   | `spicepy`                    | [Python SDK](/sdks/sdks/python-sdk/)   |
-| Node.js  | `@spiceai/spiceai`           | [Node.js SDK](/sdks/sdks/node.js-sdk/) |
-| Go       | `github.com/spiceai/gospice` | [Go SDK](/sdks/sdks/go)             |
-| Rust     | `spiceai`                    | [Rust SDK](/sdks/sdks/rust-sdk/)       |
-| Java     |                              | [Java SDK](/sdks/sdks/java-sdk)     |
-| .NET     |                              | [Dotnet SDK](/sdks/sdks/dotnet-sdk) |
+| Python   | `spicepy`                    | [Python SDK](../sdks/python-sdk/)   |
+| Node.js  | `@spiceai/spiceai`           | [Node.js SDK](../sdks/node.js-sdk/) |
+| Go       | `github.com/spiceai/gospice` | [Go SDK](../sdks/go.md)             |
+| Rust     | `spiceai`                    | [Rust SDK](../sdks/rust-sdk/)       |
+| Java     |                              | [Java SDK](../sdks/java-sdk.md)     |
+| .NET     |                              | [Dotnet SDK](../sdks/dotnet-sdk.md) |
 
 ### Quick example (Python)
 
@@ -98,7 +98,7 @@ df['rolling_avg'] = df['value'].rolling(7).mean()
 
 ### Use data acceleration for repeated queries
 
-Enable [data acceleration](/features/data-acceleration/) on frequently queried datasets to avoid hitting the source on every request.
+Enable [data acceleration](../features/data-acceleration/) on frequently queried datasets to avoid hitting the source on every request.
 
 ## Common Issues
 
@@ -117,13 +117,13 @@ The HTTP API has built-in row and timeout limits. Switch to Arrow Flight or an S
 
 ### Management API returns `401`
 
-The Management API uses **personal access tokens**, not app API keys. Generate a token under [Profile → Personal Access Tokens](/docs/portal/profile/personal-access-tokens).
+The Management API uses **personal access tokens**, not app API keys. Generate a token under [Profile → Personal Access Tokens](../cloud/portal/profile/personal-access-tokens.md).
 
 ## Further Reading
 
-- [SQL Query API](/api/runtime-apis/sql-query)
-- [LLM API](/api/runtime-apis/openai-api)
-- [Search API](/api/runtime-apis/search)
-- [Best Practices](/docs/reference/best-practices)
+- [SQL Query API](../cloud/api/sql-query/)
+- [LLM API](../cloud/api/openai-api.md)
+- [Search API](../cloud/api/search.md)
+- [Best Practices](../cloud/best-practices.md)
 - [SQL Reference](../reference/sql-reference.md)
 - [Arrow Flight Samples](../reference/arrow-flight-samples.md)

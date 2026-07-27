@@ -13,13 +13,13 @@ Spice Models enable the training and use of ML models natively on the Spice plat
 
 The platform currently supports time-series forecasting models, with other categories of models planned.
 
-Hosted models have first-class access to co-located data for training and inferencing including: [Spice managed datasets](https://github.com/spiceai/datasets), [user managed datasets](/docs/portal/external-data-sources), and [custom datasets and views](/docs/portal/datasets-and-views). Additionally, [Spice Firecache](/features/federated-sql-query) can be leveraged to train and infer up to 10x faster.
+Hosted models have first-class access to co-located data for training and inferencing including: [Spice managed datasets](https://github.com/spiceai/datasets), [user managed datasets](../cloud/portal/external-data-sources.md), and [custom datasets and views](../cloud/portal/datasets-and-views.md). Additionally, [Spice Firecache](../features/federated-sql-query.md) can be leveraged to train and infer up to 10x faster.
 
 ### Defining a Model
 
 Models are defined using a [model manifest](https://github.com/spiceai/samples/tree/trunk/.spice/models) YAML file. Model details such as data requirements, architecture, training parameters, and other important hyperparameters are defined in the `model.yaml.`
 
-Add a `model.yaml` file to the repository path `/models/[model_name]/model.yaml` of a [GitHub connected Spice app](/docs/portal/apps/connect-github), replacing `[model_name]` with the desired model name.
+Add a `model.yaml` file to the repository path `/models/[model_name]/model.yaml` of a [GitHub connected Spice app](../cloud/portal/apps/connect-github.md), replacing `[model_name]` with the desired model name.
 
 Refer to the [Models YAML specification](https://github.com/spiceai/samples/tree/trunk/.spice/models) for all available configuration options.
 

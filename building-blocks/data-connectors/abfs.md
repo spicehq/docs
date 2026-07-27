@@ -8,7 +8,7 @@ The Azure BlobFS (ABFS) Data Connector enables federated SQL queries on files st
 
 When a folder path is provided, all the contained files will be loaded.
 
-File formats are specified using the `file_format` parameter, as described in [Object Store File Formats](/building-blocks/data-connectors#object-store-file-formats).
+File formats are specified using the `file_format` parameter, as described in [Object Store File Formats](./README.md#object-store-file-formats).
 
 ```yaml
 datasets:
@@ -60,7 +60,7 @@ SELECT COUNT(*) FROM cool_dataset;
 
 | Parameter name              | Description                                                                                                                                                                                                     |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `file_format`               | Specifies the data format. Required if not inferrable from `from`. Options: `parquet`, `csv`. Refer to [Object Store File Formats](/building-blocks/data-connectors#object-store-file-formats) for details. |
+| `file_format`               | Specifies the data format. Required if not inferrable from `from`. Options: `parquet`, `csv`. Refer to [Object Store File Formats](./README.md#object-store-file-formats) for details. |
 | `abfs_account`              | Azure storage account name                                                                                                                                                                                      |
 | `abfs_sas_string`           | SAS (Shared Access Signature) Token to use for authorization                                                                                                                                                    |
 | `abfs_endpoint`             | Storage endpoint, default: `https://{account}.blob.core.windows.net`                                                                                                                                            |
@@ -123,7 +123,7 @@ Configure service principal authentication by setting the `abfs_access_key` para
 
 ## Supported file formats
 
-Specify the file format using `file_format` parameter. More details in [Object Store File Formats](/building-blocks/data-connectors#object-store-file-formats).
+Specify the file format using `file_format` parameter. More details in [Object Store File Formats](./README.md#object-store-file-formats).
 
 ## Examples
 

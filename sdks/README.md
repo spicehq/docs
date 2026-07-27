@@ -5,9 +5,9 @@ icon: code
 
 # SDKs
 
-Client SDKs connect to a Spice app over [Apache Arrow Flight](/api/runtime-apis/sql-query/apache-arrow-flight-api) and return results as Apache Arrow record batches, which convert cheaply into the dataframe type of each language. They are the recommended way to query Spice from application code.
+Client SDKs connect to a Spice app over [Apache Arrow Flight](../cloud/api/sql-query/apache-arrow-flight-api.md) and return results as Apache Arrow record batches, which convert cheaply into the dataframe type of each language. They are the recommended way to query Spice from application code.
 
-Every SDK connects to either **Spice.ai Cloud** or a **local Spice runtime**. Authentication against Cloud uses an app [API key](/docs/portal/apps/api-keys).
+Every SDK connects to either **Spice.ai Cloud** or a **local Spice runtime**. Authentication against Cloud uses an app [API key](../cloud/portal/apps/api-keys.md).
 
 | Language            | Package                         | Latest      | Documentation                       |
 | ------------------- | ------------------------------- | ----------- | ----------------------------------- |
@@ -33,4 +33,4 @@ Most SDKs default to the **local** runtime for Flight. Connecting to Spice.ai Cl
 
 ## Choosing between an SDK and the APIs directly
 
-An SDK is preferable for application code: it handles the Flight handshake, authentication headers, and retries. Query directly against the [HTTP API](/api/runtime-apis/sql-query/http-api) or [Arrow Flight API](/api/runtime-apis/sql-query/apache-arrow-flight-api) when a language has no SDK, or for one-off requests from a shell.
+An SDK is preferable for application code: it handles the Flight handshake, authentication headers, and retries. Query directly against the [HTTP API](../cloud/api/sql-query/http-api.md) or [Arrow Flight API](../cloud/api/sql-query/apache-arrow-flight-api.md) when a language has no SDK, or for one-off requests from a shell.

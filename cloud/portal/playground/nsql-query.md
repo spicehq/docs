@@ -30,4 +30,4 @@ Enabling **Sample data** sends sample values from the app's datasets to the conf
 
 ## Using the API
 
-The same capability is available outside the Portal through `POST /v1/nsql`, and the context Spice supplies to the model can be retrieved with `GET /v1/nsql/context`. See the [Text-to-SQL API](/api/runtime-apis/nsql).
+The same capability is available outside the Portal through `POST /v1/nsql`, and the context Spice supplies to the model can be retrieved with `GET /v1/nsql/context`. See the [Text-to-SQL API](../../api/nsql.md).

@@ -4,7 +4,7 @@ description: 'Instructions for using models hosted on the Spice Cloud Platform w
 
 # Spice Cloud Platform
 
-To use a model hosted on the [Spice Cloud Platform](/building-blocks/spice-models), specify the `spice.ai` path in the `from` field.
+To use a model hosted on the [Spice Cloud Platform](../spice-models.md), specify the `spice.ai` path in the `from` field.
 
 Example:
 
