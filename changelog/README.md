@@ -11,8 +11,6 @@ icon: clock-rotate-left
 
 ### Highlights
 
-* **Bring Your Own Cloud** – Apps can now be deployed into an organization's own AWS account in any commercial AWS region, with a private control connection and per-app deploy location; own-AWS deploys require an Enterprise plan.
-* **Standalone Instances** – Self-managed Spice runtimes can be enrolled into an organization with an adoption code, then attached to an app and operated from the portal alongside hosted apps.
 * **Real-Time Analytics Onboarding** – A guided flow builds a change-data-capture app from PostgreSQL, MySQL, MongoDB, or DynamoDB, with region selection, connection probes, and a guided sample to explore.
 * **App Templates** – Create App now opens with a template gallery, including Real-time Replica, AI Data Warehouse, Datalake Accelerator, and Distributed Query, alongside Start from scratch.
 * **Organization Connections** – Reusable org-level connections are generally available; credentials are stored as secrets and injected at deploy, connections can be linked to app datasets and models, and members can manage them.
