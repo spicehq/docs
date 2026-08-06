@@ -6,6 +6,72 @@ icon: clock-rotate-left
 # Changelog
 
 {% updates format="full" %}
+{% update date="2026-07-31" %}
+## July 2026
+
+### Highlights
+
+* **Bring Your Own Cloud** – Apps can now be deployed into an organization's own AWS account in any commercial AWS region, with a private control connection and per-app deploy location; own-AWS deploys require an Enterprise plan.
+* **Standalone Instances** – Self-managed Spice runtimes can be enrolled into an organization with an adoption code, then attached to an app and operated from the portal alongside hosted apps.
+* **Real-Time Analytics Onboarding** – A guided flow builds a change-data-capture app from PostgreSQL, MySQL, MongoDB, or DynamoDB, with region selection, connection probes, and a guided sample to explore.
+* **App Templates** – Create App now opens with a template gallery, including Real-time Replica, AI Data Warehouse, Datalake Accelerator, and Distributed Query, alongside Start from scratch.
+* **Organization Connections** – Reusable org-level connections are generally available; credentials are stored as secrets and injected at deploy, connections can be linked to app datasets and models, and members can manage them.
+* **Spice Rack Package Registry** – [spicerack.org](https://spicerack.org) is rebuilt as a package registry with package and publisher pages, search, and a public JSON API; a spicepod package is generated after each successful deploy.
+* **AI Coding Agents over MCP** – Apps can be connected to Claude, Codex, and Grok over MCP, with control-plane and data-plane MCP endpoints listed under Settings → Endpoints.
+* **Nightly Update Channel** – Nightly is now self-service alongside Stable and Preview, with documentation links that match the runtime version an app is running and a v2 manifest upgrade path.
+* **App Navigation and Configuration** – App navigation moves to two tiers, from 11 top-level tabs to 6 — Home, Playground, Build, Observability, Deployments, and Settings — and Views and Workers are now configurable from the portal, with the code editor as the advanced surface.
+* **Observability** – Deployed runtime errors surface on app pages with a dedicated Issues page and per-issue AI help; app monitoring charts render regardless of readiness with deploy and ready markers; and cluster monitoring splits into Overview and Usage pages with configurable time ranges.
+* **Playground Improvements** – Rebuilt schema- and context-aware SQL autocomplete, a new NSQL Context page under Playground APIs, and native search in the `Cmd+K` command menu.
+* **Model Catalog Refresh** – Added `claude-opus-5`, the Moonshot (Kimi) provider, `grok-imagine-video-1.5`, and the current OpenAI realtime and audio families, with retiring models marked.
+* **Organization Access and Limits** – Members can manage connections, secrets, and app secret links; organizations support multiple Owners; viewers are read-only across app-scoped writes; and the per-organization app-count limit has been removed.
+
+### Runtime
+
+**Stable channel**
+
+Spice runtime [v2.1.0](https://spiceai.org/releases/v2.1.0) (Jul 9, 2026) — a minor release:
+
+* **High-Throughput Cayenne CDC** – An in-memory CDC tier, a dedicated compaction runtime, and write-path optimizations cut replication lag on high-volume change-data-capture workloads.
+* **PostgreSQL Replication at Scale** – Multiple `refresh_mode: changes` datasets on a connection can share one `pg_replication_slot`, with unchanged-TOAST recovery and transient walsender contention retried across rolling deploys.
+* **Distributed Query** – Ballista distributes Iceberg catalog table scans across executors, broadcasts small dimension tables for distributed joins, and shares scheduler job state so the scheduler can fail over without losing in-flight work.
+* **DataFusion v54** – The engine upgrades to DataFusion v54 (folding in v53), Arrow v58.3, and Vortex v0.74, bringing faster joins, scans, and query planning.
+* **Adaptive Self-Tuning (Experimental)** – Opt-in `cayenne_tuning` derives Cayenne configuration from detected hardware and schema, or runs a closed-loop controller that adapts to live workload against operator SLOs.
+* Added a `GET /v1/nsql/context` endpoint that returns the dialect, dataset schemas, and functions injected into `/v1/nsql` requests, native GLM model support with distributed inference, Kafka mutual TLS, and `on_schema_change` widening-only and `drop_and_recreate` policies.
+
+Spice runtime [v2.1.2](https://spiceai.org/releases/v2.1.2) (Jul 29, 2026):
+
+* Added the `on_full_refresh` parameter for file-mode DuckDB accelerations, reclaiming disk space on every full refresh so database files stay compact and disk usage stays predictable.
+* Upgraded the DuckDB engine to v1.5.5.
+
+Spice runtime [v2.1.1](https://spiceai.org/releases/v2.1.1) (Jul 21, 2026):
+
+* Fixed a deadlock that could stop Cayenne datasets using `partition_by` from becoming ready on their initial refresh.
+* Empty (zero-row) SQL result sets are now cached, so queries that legitimately return no rows are served from the results cache.
+* Reduced planning latency for repeated queries on multi-file Parquet datasets by caching footer statistics across queries.
+* Fixed an idle append refresh marking a Cayenne dataset unhealthy, and restored the AWS Bedrock embedding `truncation` parameters.
+
+### SDKs
+
+* **[spice-java 0.7.0](https://github.com/spiceai/spice-java/releases/tag/v0.7.0)** – Parameterized queries move to native Arrow Flight SQL prepared statements with statement caching, plus mTLS client certificates and health, readiness, and runtime status checks.
+
+<details>
+
+<summary>Bug Fixes</summary>
+
+* Fixed the billing page returning an error when an organization's subscription had been removed.
+* Fixed empty SQL responses rendering as null data in the playground.
+* Fixed dead links, command-palette gaps, and orphaned navigation entries across the portal, and raised the navigation bar so tucked tabs stay visible.
+* Models now render from the app's current Spicepod configuration.
+* PostgreSQL primary-key detection in the connection probe now reads the system catalog.
+* App monitoring metrics now route to the app's own data plane rather than falling back to a managed endpoint.
+* The portal now degrades gracefully when optional external services are unavailable.
+* GitHub registry secret errors now surface as recoverable Spicepod save errors instead of failing the save.
+* System-managed tags are hidden from the app tags editor, and the return path from logs now leads back to Deployments.
+
+</details>
+
+{% endupdate %}
+
 {% update date="2026-06-30" %}
 ## June 2026
 
