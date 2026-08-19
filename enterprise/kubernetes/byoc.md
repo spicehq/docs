@@ -149,14 +149,9 @@ The kubelet scrape does not use the operator's own credentials. The chart create
 
 ### Kubelet TLS verification
 
-The kubelet serves `/metrics/resource` over HTTPS. By default, the operator **verifies** the kubelet's serving certificate against the cluster CA and refuses to scrape a kubelet it cannot verify. Many clusters — including default **EKS, GKE, and AKS** clusters — use self-signed kubelet serving certificates that fail this check. To find out which case applies to your cluster, run:
+The kubelet serves `/metrics/resource` over HTTPS. By default, the operator **verifies** the kubelet's serving certificate against the cluster CA and refuses to scrape a kubelet it cannot verify. Many clusters — including default **EKS, GKE, and AKS** clusters — use self-signed kubelet serving certificates that fail this check.
 
-```bash
-kubectl get csr | grep kubelet-serving
-```
-
-- **Approved requests appear** — your cluster issues kubelet certificates from its own CA. The default configuration works; set neither option below.
-- **No output** — your kubelets self-sign. Container CPU/memory collection needs one of these two options (set at most one):
+Start with the default (verification enabled) and let the operator tell you whether a change is needed. When the kubelet certificates cannot be verified, the operator logs the reason at startup and counts each skipped scrape on the metric `spiceai_operator_managed_metrics_scrape_total{source="kubelet",result="tls_error"}`. Spice runtime metrics keep flowing regardless — only the container CPU/memory graphs stay empty. A rising `tls_error` count means container CPU/memory collection needs one of these two options (set at most one):
 
 | Option                              | Helm value                              | Behavior                                                                                                                             |
 | ----------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -169,7 +164,13 @@ These options mirror `metrics-server`'s `--kubelet-certificate-authority` and `-
 With `kubeletInsecureTls: true`, the scrape presents its metrics-only token to whatever answers on the node's address, without proof it is the kubelet. That token can only read node metrics — nothing else — but prefer `kubeletCaSecret` wherever the cluster can provide a CA. The operator logs a warning at startup while verification is disabled.
 {% endhint %}
 
-If neither option is set and the kubelet certificates cannot be verified, the operator logs the reason at startup and counts each skipped scrape on the metric `spiceai_operator_managed_metrics_scrape_total{source="kubelet",result="tls_error"}`. Spice runtime metrics keep flowing regardless — only the container CPU/memory graphs stay empty.
+To confirm how your cluster issues kubelet serving certificates, check for approved `kubelet-serving` certificate signing requests:
+
+```bash
+kubectl get csr | grep kubelet-serving
+```
+
+Approved requests mean the cluster issues kubelet serving certificates from its own CA, and the default configuration works. **No output is inconclusive** — Kubernetes garbage-collects CSR objects, and kubelet certificates can be provisioned without a retained CSR — so do not switch to `kubeletInsecureTls` on that signal alone. Rely on the `tls_error` count above, or inspect the issuer of the certificate a kubelet serves on port `10250`.
 
 ## Configuration reference
 
@@ -227,7 +228,7 @@ Enabling managed mode adds these objects, beyond the standard operator installat
 - **ConfigMap** — `spice-managed-mode-pause` in the operator's namespace, used as a pause gate (see below).
 - **Namespaces** — the operator creates the application namespace before it applies a manifest sent from Spice.ai Cloud, when that namespace does not exist yet.
 
-Secret values sent from Spice.ai Cloud are sealed with two layers of public-key encryption (HPKE): one to a key that persists across restarts, and one to a key that exists only in the operator's memory for the current connection. There is no plaintext path.
+Secret values sent from Spice.ai Cloud are sealed with two layers of public-key encryption (HPKE): one to a key that persists across restarts, and one to a key that exists only in the operator's memory for the current connection. There is no plaintext delivery path — the operator rejects a payload that fails either layer. This encryption protects the values in transit only: after decryption, the operator stores them as standard Kubernetes Secrets, so protection at rest depends on your cluster's Secret encryption and access controls.
 
 ### Pause behavior
 
