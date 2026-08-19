@@ -29,6 +29,7 @@
 
 * [Overview](kubernetes/README.md)
 * [User Guide](kubernetes/user-guide.md)
+* [Bring-Your-Own-Cluster (BYOC)](kubernetes/byoc.md)
 * [SpicepodSet](kubernetes/spicepodset.md)
 * [SpicepodCluster](kubernetes/spicepodcluster.md)
 * [Operator Metrics](kubernetes/metrics.md)
