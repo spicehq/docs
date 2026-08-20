@@ -276,7 +276,6 @@ Search the operator logs for `managed mode` first — every failure mode below l
 
 | Message contains                                                             | Cause and fix                                                                                                                             |
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `bootstrapToken was replaced by spice.managedMode.enrollmentToken`           | The values use the old pre-release key names. Rename `bootstrapToken` → `enrollmentToken` and `bootstrapTokenSecret` → `enrollmentTokenSecret`. |
 | `requires either enrollmentToken/enrollmentTokenSecret … or both mtlsSecret and caSecret` | `enabled: true` was set with no identity source. Provide an enrollment token, or a full pre-provisioned identity.               |
 | `mtlsSecret and caSecret must be set together`                               | Half of a pre-provisioned identity. Set both, or neither.                                                                                    |
 | `instanceId is required with a pre-provisioned identity`                     | Add `instanceId` (and `endpoint`) when using `mtlsSecret` + `caSecret`.                                                                      |
@@ -326,15 +325,15 @@ Fix the value named in the message and roll the deployment. If the pod crash-loo
 
 ### Container CPU/memory graphs are empty
 
-Check the scrape counter on the operator's Prometheus endpoint (see [Operator Metrics](metrics.md)):
+Check the `result` label on the `spiceai_operator_managed_metrics_scrape_total{source="kubelet"}` counter, exposed on the operator's Prometheus endpoint (see [Operator Metrics](metrics.md)):
 
 ```bash
 kubectl -n spiceai-operator-system port-forward deploy/spiceai-operator 9090:9090
 curl -s http://localhost:9090/metrics | grep managed_metrics
 ```
 
-| `result` label on `…managed_metrics_scrape_total{source="kubelet"}` | Cause and fix                                                                                                                          |
-| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Scrape `result` label | Cause and fix                                                                                                                          |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `tls_error`                                                           | The kubelet serving certificate cannot be verified — the common case on EKS/GKE/AKS. Set `kubeletCaSecret` or `kubeletInsecureTls: true` (see [Kubelet TLS verification](#kubelet-tls-verification)). |
 | `no_client`                                                           | `kubeletCaSecret` points at an unreadable or empty CA. The startup log names the reason.                                                  |
 | `forbidden`                                                           | The token authenticated, but authorization failed — the `spiceai-operator-kubelet-metrics` ClusterRole or binding is missing. Reinstall or repair the chart RBAC. |
