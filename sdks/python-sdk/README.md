@@ -57,7 +57,7 @@ pd = data.read_pandas()
 * **flight\_url** (string): Arrow Flight endpoint (default: `grpc://localhost:50051`). Use `grpc+tls://` for TLS and `grpc://` for plaintext.
 * **http\_url** (string): HTTP endpoint, used for dataset refreshes (default: `http://localhost:8090`).
 
-  Both default to the **local runtime**. Cloud endpoints are region-specific — substitute your app's region for `us-east-1` in `grpc+tls://us-east-1-prod-aws-flight.spiceai.io` and `https://us-east-1-prod-aws-data.spiceai.io`. The region-agnostic `flight.spiceai.io` and `data.spiceai.io` hostnames are retired and no longer resolve for this SDK.
+  Both default to the **local runtime**, so querying Spice.ai Cloud means passing the Cloud endpoint explicitly. The examples on this page use `us-east-1`; for a project in another region, substitute your project's CNAME — see [Default endpoints](../README.md#default-endpoints). The region-agnostic `flight.spiceai.io` and `data.spiceai.io` hostnames also still work, and resolve to the `us-east-1` endpoints.
 * **tls\_root\_cert** (Path or string): Path to the TLS certificate to use for the secure connection (omit for automatic detection).
 * **user\_agent** (string): Overrides the reported user agent.
 

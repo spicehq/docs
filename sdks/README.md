@@ -51,8 +51,10 @@ Each SDK ships defaults for both Cloud and a local runtime. The exact values and
 Most SDKs default to the **local** runtime for Flight. Connecting to Spice.ai Cloud generally requires setting the Cloud endpoint explicitly, or calling the SDK's Cloud helper — supplying an API key alone is not always enough. Each page states what its own defaults are.
 {% endhint %}
 
-{% hint style="danger" %}
-**The Cloud hosts above are region-agnostic, and the Python SDK no longer accepts them.** From `spicepy` v4.0.0 the Cloud endpoints are region-specific — `grpc+tls://<region>-prod-aws-flight.spiceai.io` and `https://<region>-prod-aws-data.spiceai.io`, defaulting to `us-east-1` — and the SDK documents `flight.spiceai.io` / `data.spiceai.io` as no longer valid. Substitute your app's region. The other SDK pages still show the region-agnostic hosts; see [spicehq/docs#160](https://github.com/spicehq/docs/issues/160) for the per-SDK audit.
+{% hint style="info" %}
+**The Cloud hosts above are region-agnostic aliases for the `us-east-1` endpoints.** They remain valid for every SDK, but they only ever reach `us-east-1`. If your project runs in another region, point the SDK at your project's own endpoint instead — the HTTP host is `https://<project-cname>.spiceai.io`, and the Flight host is the same name with `-data` replaced by `-flight`. For a project whose CNAME is `us-west-2-prod-aws-data`, that is `https://us-west-2-prod-aws-data.spiceai.io` for HTTP and `us-west-2-prod-aws-flight.spiceai.io` port `443` for Flight. Spell the Flight address the way your own SDK's page documents it — the SDKs differ, and only some accept a URI scheme: `spicepy` takes `grpc+tls://<host>`, while `gospice` takes `<host>:443` and passes anything that is not `grpc://` to gRPC unchanged. The portal shows the CNAME for each project.
+
+`spicepy` v4.0.0 sets `config.DEFAULT_FLIGHT_URL` / `DEFAULT_HTTP_URL` to the explicit `us-east-1` hostnames for this reason; passing the region-agnostic names to any SDK still works.
 {% endhint %}
 
 ## Choosing between an SDK and the APIs directly
