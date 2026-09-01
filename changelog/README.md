@@ -6,6 +6,83 @@ icon: clock-rotate-left
 # Changelog
 
 {% updates format="full" %}
+{% update date="2026-08-31" %}
+## August 2026
+
+### Highlights
+
+* **[Cloud Connect](https://spiceai.org/docs/deployment/cloud/cloud-connect) (Private Preview)** – You can attach a self-hosted Spice runtime to the Spice.ai Cloud Platform. Run `spice cloud link` to enroll an instance. The portal then monitors it, deploys to it, and runs playground SQL against it. Your data stays on your own host.
+* **Bring Your Own Cloud (Private Preview)** – Spice.ai deploys a project into your own AWS account, in any commercial AWS region. The portal runs playground SQL, monitoring, and logs against that cluster. This needs an Enterprise plan.
+* **Projects** – Spice.ai renames apps to projects across the portal and the management API. The `/v1/projects` routes are canonical. Every `/v1/apps` route continues to work permanently, so your CLI, Terraform, and SDK integrations do not change.
+* **Project Monitors (Private Preview)** – Observability adds monitors for queries, models, HTTP, memory, and dataset status. A monitor sends email to project members, or it posts to an HTTPS URL. The email names the condition, the observed value, and recent history, with a chart.
+* **Data Reactions (Private Preview)** – A When/Then editor builds a reaction that runs when a task fails, a query is too slow, or a row matches. Reactions use managed [Drasi](https://drasi.io/).
+* **Debezium CDC Without Kafka** – A project accepts Debezium change events at `POST /v1/datasets/{name}/cdc`, in JSON or Avro. You do not need a Kafka bus.
+* **Dedicated Cluster Egress IPs** – Settings → Runtime shows the egress IPs a dedicated cluster connects out from. You can add them to the allow-list of a database, an API, or a firewall. This needs an Enterprise plan.
+* **Organization Discovery** – The new `GET /v1/orgs` endpoint lists the organizations a management credential can reach.
+* **Model Catalog Refresh** – The catalog adds `grok-4.6` and `gemini-3.7-flash`, and makes each one the default for its provider. Spice.ai marks the retired OpenAI, Google, and Bedrock models.
+* **Faster Portal** – Portal routes load less JavaScript, so pages open faster. The playground restores your chat, search, and text-to-SQL when you return to it.
+
+### Runtime
+
+**Stable channel**
+
+Spice runtime [v2.2.0](https://spiceai.org/releases/v2.2.0) (Aug 25, 2026) — a minor release:
+
+* **Cloud Connect** – A self-hosted runtime links to the Spice.ai Cloud Platform for management and observability. Run `spice cloud link` to enroll a standalone runtime.
+* **MySQL CDC** – The MySQL data connector reads `refresh_mode: changes`. The runtime applies binlog inserts, updates, and deletes as they commit. A GTID position survives a failover to a new primary.
+* **PostgreSQL Catalog CDC (Alpha)** – A PostgreSQL catalog accepts `refresh_mode: changes`. One configuration replicates every table that the `include` patterns match, with no per-table setup.
+* **Debezium CDC Without Kafka** – Any Debezium source plugin can stream change events to `POST /v1/datasets/{name}/cdc`, in JSON or Avro. Spice.ai keeps the existing Kafka path.
+* **Faster Search** – Vector and full-text indexes add a warm in-memory tier by default. `cosine_distance` uses SIMD instructions, and full-text search applies stemming and pushes SQL filters into the index.
+* **Operations** – The new `runtime.query.timeout` setting bounds every query. Each log record from a query carries the query's trace ID, so you can filter the logs by one ID.
+
+Spice runtime [v2.1.5](https://spiceai.org/releases/v2.1.5) (Aug 12, 2026):
+
+* The runtime clears cached results reliably after a refresh, a write, a retention change, or an update to a dependent local dataset.
+* Cayenne counts the memory it needs to prepare query results. Accelerated tables share the available memory, so large and concurrent workloads stay within the configured limit.
+* A refresh or a write on a dataset with many cached results no longer holds up health checks.
+* Cache dashboards now report the total space, the space in use, stored results, requests, and reuse on every refresh.
+
+Spice runtime [v2.1.4](https://spiceai.org/releases/v2.1.4) (Aug 6, 2026):
+
+* A dataset with a UTC timestamp column, such as an Iceberg `timestamptz` column, failed to load when accelerated with DuckDB. These datasets now load and become ready.
+* Retention policies now apply cleanly on DuckDB-accelerated datasets. A policy that combines a time window with a condition also applies.
+* The runtime crashed in rare cases when a client cancelled a query. This is corrected.
+
+Spice runtime [v2.1.3](https://spiceai.org/releases/v2.1.3) (Aug 4, 2026):
+
+* The new `runtime.cpu.cores` setting sets the number of cores the runtime targets. Thread pools, query partitioning, and accelerator concurrency all derive from it.
+* Cayenne deployments keep more memory available to queries. The runtime reserves the compaction pool only for accelerations that can compact into it.
+* Cayenne accelerates an Iceberg dataset that has a `timestamptz` column. The runtime now reads a fixed-offset time zone.
+* A federated `LEFT JOIN` with a `WHERE` filter on the left table returned every row. Filters now stay on the side of the join they came from.
+
+### SDKs
+
+* **[spicepy 4.0.0](https://github.com/spiceai/spicepy/releases/tag/v4.0.0)** – spicepy adds a lazy DataFrame API and an expression DSL, asynchronous queries, search, natural language to SQL, and mTLS.
+* **[spice-rs 4.0.0](https://github.com/spiceai/spice-rs/releases/tag/v4.0.0)** – spice-rs adds asynchronous query jobs, dataset refresh, mTLS, search, and natural language to SQL. `Client::query()` now submits a query asynchronously.
+* **[gospice 9.0.0](https://github.com/spiceai/gospice/releases/tag/v9.0.0)** – gospice adds asynchronous queries, mTLS, search, and per-component runtime status. It upgrades Arrow to match DataFusion 54.
+* **[spice.js 3.2.0](https://github.com/spiceai/spice.js/releases/tag/v3.2.0)** – spice.js adds asynchronous queries, mTLS, and `nsqlGenerateSql`. A query falls back to HTTP when the Flight endpoint is not available.
+* **[spice-java 0.8.0](https://github.com/spiceai/spice-java/releases/tag/v0.8.0)** – spice-java adds `search()`, `nsql()`, and active-query management. `query()` now submits a query asynchronously.
+* **[spice-dotnet 0.4.0](https://github.com/spiceai/spice-dotnet/releases/tag/v0.4.0)** – spice-dotnet adds mTLS client certificates, health and readiness checks, `SearchAsync`, and `Nsql`.
+
+<details>
+
+<summary>Bug Fixes</summary>
+
+* Connection probes for PostgreSQL and MySQL now verify TLS and trust the certificate authorities of Amazon RDS. You can retry a probe that failed.
+* The playground waits for a project to report ready before you query it.
+* The Issues list reports a failed scan instead of a load that never ends. The portal hides issues from a terminated instance, and you can dismiss an issue.
+* Request Logs now says why it is empty. It no longer claims that there are no logs.
+* Monitoring shows CPU in millicores when a project sets no CPU limit. Quantile charts stay readable when histogram buckets are empty.
+* The acceleration refresh chart shows the maximum refresh time.
+* A project card no longer shows Ready next to a warning.
+* Spice.ai answers `409` for a duplicate project name, and the project list refreshes after a create that failed.
+* A spicepod save that failed after publication is now unpublished, so the portal restores the manifest the database records.
+* Inner sidebars no longer cover the portal banners. A link that opens a new tab announces itself, and three inputs get back a visible focus indicator.
+
+</details>
+
+{% endupdate %}
+
 {% update date="2026-07-31" %}
 ## July 2026
 
