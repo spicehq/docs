@@ -64,7 +64,7 @@ Spice runtime [v2.2.0](https://spiceai.org/releases/v2.2.0) (Aug 25, 2026) — a
 * **[gospice 9.0.0](https://github.com/spiceai/gospice/releases/tag/v9.0.0)** – gospice adds asynchronous queries, mTLS, search, and per-component runtime status, and it upgrades Arrow to match DataFusion 54. `Query` now submits a query asynchronously. Use `Sql` for the previous synchronous behavior.
 * **[spice.js 3.2.0](https://github.com/spiceai/spice.js/releases/tag/v3.2.0)** – spice.js adds asynchronous queries, mTLS, and `nsqlGenerateSql`. `query()` now submits a query asynchronously, and `sql()` keeps the previous synchronous behavior. A query falls back to HTTP when the Flight endpoint is not available.
 * **[spice-java 0.8.0](https://github.com/spiceai/spice-java/releases/tag/v0.8.0)** – spice-java adds `search()`, `nsql()`, and active-query management. `query()` now submits a query asynchronously. Use `sql()` for the previous synchronous behavior.
-* **[spice-dotnet 0.4.0](https://github.com/spiceai/spice-dotnet/releases/tag/v0.4.0)** – spice-dotnet adds mTLS client certificates, health and readiness checks, `SearchAsync`, and `NsqlAsync`. `Sql` and `SqlWithParamsAsync` replace the previous `Query` and `QueryWithParams` methods.
+* **[spice-dotnet 0.4.0](https://github.com/spiceai/spice-dotnet/releases/tag/v0.4.0)** – spice-dotnet adds mTLS client certificates, health and readiness checks, `SearchAsync`, and `NsqlAsync`. `QueryAsync` now submits a query asynchronously. Use `SqlAsync` for the previous synchronous behavior.
 
 <details>
 
