@@ -37,7 +37,7 @@ Inline SQL user-defined functions (`from: sql`) are available in every distribut
 
 ## Default Distribution
 
-Includes all standard data connectors, embedded data accelerators (Spice Cayenne, DuckDB, SQLite), AI/ML model inference (LLMs, embeddings), search capabilities (vector and BM-25 full-text search), and the default memory allocator (snmalloc).
+Includes all standard data connectors, embedded data accelerators (Spice Cayenne, DuckDB, SQLite), AI/ML model inference (LLMs, embeddings), and search capabilities (vector and BM-25 full-text search). It links the system allocator; see [Allocator Variants](#allocator-variants) to run against a different one.
 
 ## Data-Only Distribution
 
@@ -75,9 +75,11 @@ docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterp
 
 Different memory allocators can significantly impact performance depending on workload characteristics. Enterprise provides production-ready allocator variant images.
 
-### snmalloc (Default)
+The allocator is selected when the runtime is built, and a build links exactly one. The Default distribution enables no allocator feature, so it links the system allocator.
 
-The default allocator, optimized for concurrent workloads. Reduces memory usage 10-20% compared to jemalloc/mimalloc.
+### snmalloc
+
+Optimized for concurrent workloads.
 
 ### jemalloc
 
@@ -97,7 +99,7 @@ docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterp
 
 ### System Allocator
 
-Uses the system's default allocator (glibc malloc on Linux).
+Uses the system's default allocator (glibc malloc on Linux). This is what the Default distribution links.
 
 ```bash
 docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-sysalloc
