@@ -281,5 +281,5 @@ In a [`SpicepodCluster`](../kubernetes/spicepodcluster.md), the scheduler is the
 - [Authentication](authentication.md)
 - [Security](../production/security.md)
 - [Distributed Query](distributed-query.md)
-- [Authorization recipe](https://github.com/spiceai/cookbook/tree/trunk/authorization) — a runnable example covering multi-tenancy, row-level security, PII masking, and RBAC
+- [Authorization recipe](https://github.com/spiceai/cookbook/tree/trunk/authorization) — a runnable example covering multi-tenancy, row-level security, PII masking, and role-based access control
 - [Cedar policy language reference](https://docs.cedarpolicy.com/)
