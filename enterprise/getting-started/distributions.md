@@ -84,7 +84,7 @@ Optimized for concurrent workloads.
 Alternative allocator that may perform better for certain memory allocation patterns. Marketplace images carry the `-jemalloc` suffix and are published from `2.2.1-enterprise` onwards:
 
 ```bash
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:<version>-enterprise-jemalloc
+docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-jemalloc
 ```
 
 ### mimalloc
