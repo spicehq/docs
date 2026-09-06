@@ -148,7 +148,7 @@ For Kubernetes deployments, prefer the External Secrets Operator or SOPS-encrypt
 `SpicepodCluster` provisions a self-signed root CA and issues per-node leaf certificates automatically. Production checklist:
 
 - [ ] `allowInsecureConnections` is **not** set on the `SpicepodCluster` (default).
-- [ ] An alert on `spiced_cluster_certificate_expiry_seconds < 7 * 24 * 3600` is wired up. See [Observability](observability.md#alerts).
+- [ ] An alert on `spiceai_operator_cluster_ca_expiry_timestamp_seconds - time() < 7 * 24 * 3600` is wired up. See [Observability](observability.md#alerts).
 - [ ] The CA secret backup procedure is documented \u2014 loss of the CA forces a full cluster certificate re-issuance.
 
 For deployments that require a customer-managed CA (for example, an enterprise PKI or HashiCorp Vault), issue the root CA externally and pass it to the operator via the [mTLS configuration](../features/mtls.md).

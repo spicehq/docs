@@ -101,7 +101,7 @@ curl -sf http://<service>:8090/health
 curl -sf http://<service>:8090/v1/ready
 ```
 
-Re-run the smoke-test query suite. Verify the [Grafana dashboard](observability.md#grafana-dashboard) shows steady query latency and no spike in `spiced_query_total{result="error"}`.
+Re-run the smoke-test query suite. Verify the [Grafana dashboard](observability.md#grafana-dashboard) shows steady query latency and no spike in `query_failures`.
 
 For `SpicepodCluster`, additionally verify that all executors have re-registered:
 
