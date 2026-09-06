@@ -25,7 +25,14 @@ Tags are versioned and immutable — there is no `latest` tag. See [Docker](dock
 
 ## Helm Chart
 
-A Marketplace-specific Helm chart is published to the same registry, one per image variant. The chart takes the name of the ECR repository it ships in, and its version appends `-helm` to the variant tag, so the `spiceai-enterprise-byol` chart at `2.2.1-enterprise-models-helm` deploys the `2.2.1-enterprise-models` image:
+A Marketplace-specific Helm chart is published to the same registry, one per image variant. The chart takes the name of the ECR repository it ships in, and its version appends `-helm` to the variant tag, so the `spiceai-enterprise-byol` chart at `2.2.1-enterprise-models-helm` deploys the `2.2.1-enterprise-models` image.
+
+Authenticate Helm against the registry first — the chart is pulled over OCI from the same private registry as the images:
+
+```bash
+aws ecr get-login-password --region us-east-1 \
+  | helm registry login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
+```
 
 ```bash
 helm install spiceai \
