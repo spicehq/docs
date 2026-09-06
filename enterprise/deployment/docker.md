@@ -13,8 +13,8 @@ Replace `<repo>` below with either `spiceai-enterprise-byol` (Bring Your Own Lic
 
 | Image                                                                                        | Description                                                                                        |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise-models`   | Default distribution with AI/ML model support                                                      |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise`          | Default distribution                                                                               |
+| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise-models`   | Default distribution: data connectors, accelerators, search, and AI/ML model inference                                                      |
+| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise`          | Data-only distribution: excludes AI/ML model inference                                                                               |
 | `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise-jemalloc` | jemalloc [allocator variant](../getting-started/distributions.md#allocator-variants), from `2.2.1`  |
 
 {% hint style="info" %}

@@ -30,7 +30,7 @@ A Marketplace-specific Helm chart is published to the same registry, one per ima
 ```bash
 helm install spiceai \
   oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol \
-  --version <version>-enterprise-models-helm \
+  --version 2.2.1-enterprise-models-helm \
   --set spicepod.name=my-app
 ```
 
