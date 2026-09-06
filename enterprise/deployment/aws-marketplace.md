@@ -17,18 +17,24 @@ Spice.ai Enterprise is available on AWS Marketplace with two licensing models:
 Enterprise images are published to the AWS Marketplace ECR registry and support both `amd64` and `arm64` architectures:
 
 ```
-709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:<tag>
-709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan:<tag>
+709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:<version>-enterprise-models
+709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan:<version>-enterprise-models
 ```
+
+Tags are versioned and immutable — there is no `latest` tag. See [Docker](docker.md) for the published variants.
 
 ## Helm Chart
 
-A Marketplace-specific Helm chart (`spiceai-enterprise`) is provided with the ECR image pre-configured:
+A Marketplace-specific Helm chart is published to the same registry, one per image variant. The chart takes the name of the ECR repository it ships in, and its version appends `-helm` to the variant tag, so the `spiceai-enterprise-byol` chart at `2.2.1-enterprise-models-helm` deploys the `2.2.1-enterprise-models` image:
 
 ```bash
-helm install spiceai-enterprise ./chart \
+helm install spiceai \
+  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol \
+  --version <version>-enterprise-models-helm \
   --set spicepod.name=my-app
 ```
+
+The chart arrives with `image.repository` and `image.tag` pre-configured for that variant. See [Helm Chart](helm-chart.md) for the full values reference.
 
 ## ECR Pull Access
 

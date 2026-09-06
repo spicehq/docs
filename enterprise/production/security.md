@@ -20,7 +20,7 @@ For protocol-level details, see [Authentication](../features/authentication.md) 
 spec:
   spiceai_image_registry: 709825985650.dkr.ecr.us-east-1.amazonaws.com
   spiceai_image_name: spice-ai/spiceai-enterprise-byol
-  spiceai_image_tag: latest-models@sha256:1f4a...
+  spiceai_image_tag: 2.2.1-enterprise-models@sha256:1f4a...
 ```
 
 - Verify image signatures with `cosign verify` against the Spice.ai public key prior to admission. Wire this into the cluster's image policy webhook (Kyverno, OPA Gatekeeper, AWS Signer).
