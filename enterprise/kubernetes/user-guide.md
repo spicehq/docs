@@ -20,7 +20,16 @@ All manifests below use the current `spice.ai/v2` API version. Existing `spice.a
 
 ## 1. Install the operator
 
-The operator is distributed as an OCI Helm chart. Subscribe to the [AWS Marketplace](../deployment/aws-marketplace.md) listing, authenticate to the Marketplace ECR registry, then install into its own namespace:
+The operator is distributed as an OCI Helm chart. Subscribe to the [AWS Marketplace](../deployment/aws-marketplace.md) listing, then authenticate Helm against the Marketplace ECR registry — the chart is pulled over OCI from that private registry:
+
+```bash
+aws ecr get-login-password --region us-east-1 \
+  | helm registry login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
+```
+
+The login is valid for 12 hours; re-run it when the token expires.
+
+Install the operator into its own namespace:
 
 ```bash
 helm install spiceai-operator \

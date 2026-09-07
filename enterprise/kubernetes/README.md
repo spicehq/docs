@@ -23,9 +23,18 @@ For a step-by-step walkthrough, see the [User Guide](user-guide.md). For exhaust
 - Kubernetes 1.33+
 - Helm 3.x
 
-The Spice Kubernetes Operator is distributed through the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe and authenticate to the Marketplace ECR registry, then install. The chart renders and keeps the CRDs by default (`crds.enabled: true`, `crds.keep: true`).
+The Spice Kubernetes Operator is distributed through the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe to the listing, then authenticate Helm against the Marketplace ECR registry — the chart is pulled over OCI from that private registry. The chart renders and keeps the CRDs by default (`crds.enabled: true`, `crds.keep: true`).
 
 ### Helm
+
+```bash
+aws ecr get-login-password --region us-east-1 \
+  | helm registry login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
+```
+
+The login is valid for 12 hours; re-run it when the token expires.
+
+Install the operator:
 
 ```bash
 helm install spiceai-operator \
