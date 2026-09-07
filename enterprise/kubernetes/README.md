@@ -22,6 +22,7 @@ For a step-by-step walkthrough, see the [User Guide](user-guide.md). For exhaust
 
 - Kubernetes 1.33+
 - Helm 3.x
+- AWS CLI (`aws`) installed and configured with credentials for the account subscribed to the [AWS Marketplace](../deployment/aws-marketplace.md) listing
 
 The Spice Kubernetes Operator is distributed through the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe to the listing, then authenticate Helm against the Marketplace ECR registry — the chart is pulled over OCI from that private registry. The chart renders and keeps the CRDs by default (`crds.enabled: true`, `crds.keep: true`).
 

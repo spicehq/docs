@@ -12,6 +12,7 @@ This guide walks through deploying Spice.ai Enterprise on Kubernetes using the S
 - Kubernetes 1.33.0+
 - Helm 3.19.0+
 - `kubectl` configured with cluster access
+- AWS CLI (`aws`) installed and configured with credentials for the account subscribed to the [AWS Marketplace](../deployment/aws-marketplace.md) listing
 
 ## Step 1: Install the Spice Kubernetes Operator
 

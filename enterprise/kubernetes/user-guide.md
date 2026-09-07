@@ -16,6 +16,7 @@ All manifests below use the current `spice.ai/v2` API version. Existing `spice.a
 - Kubernetes 1.33+
 - Helm 3.x
 - `kubectl` configured for your cluster
+- AWS CLI (`aws`) installed and configured with credentials for the account subscribed to the [AWS Marketplace](../deployment/aws-marketplace.md) listing
 - Access to a Spice runtime image (the enterprise image is pulled from the AWS Marketplace ECR registry; a [pull secret](#use-a-private-registry) is required)
 
 ## 1. Install the operator
