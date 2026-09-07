@@ -36,7 +36,7 @@ A model capable of SQL generation must be configured in the project's spicepod. 
 | `prompt_cache_key`    | string     | —       | A stable key forwarded to the model for provider-specific prompt caching.                                                            |
 
 ```bash
-curl -X POST https://<project-cname>.spiceai.io/v1/nsql \
+curl -X POST "https://<project-cname>.spiceai.io/v1/nsql" \
   -H "X-API-Key: <project-api-key>" \
   -H "Content-Type: application/json" \
   -d '{

@@ -25,11 +25,11 @@ A public project is indexed on [SpiceRack](https://spicerack.org), the package r
 Other users install the published Spicepod in one of three ways:
 
 ```bash
-spice add <org-name>/<project-name>
+spice add "<org-name>/<project-name>"
 ```
 
 ```bash
-spice connect <org-name>/<project-name>
+spice connect "<org-name>/<project-name>"
 ```
 
 ```yaml
