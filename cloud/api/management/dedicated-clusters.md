@@ -5,7 +5,7 @@ icon: server
 
 # Dedicated Clusters
 
-An organization on an enterprise plan can have one or more **dedicated clusters**: Spice-managed, single-tenant infrastructure where an organization's projects run only alongside other projects from the same organization — never on shared infrastructure. Each cluster has its own `cluster_name`, isolated network, and connection endpoint.
+An organization on an enterprise plan can have one or more **dedicated clusters**: Spice-managed, single-tenant infrastructure where an organization's projects run only alongside other projects from the same organization — never on shared infrastructure. Each cluster has its own `cluster_name` and isolated network.
 
 Dedicated clusters are provisioned by Spice.ai and requested through [support](https://spice.ai/support). Once a cluster is provisioned and registered to an organization, it is available to the Management API and in the Portal's project-creation picker.
 
@@ -34,7 +34,7 @@ curl -H "Authorization: Bearer <token>" \
 ```
 
 - **`cluster_name`** — the cluster's identifier, used when creating or reassigning projects.
-- **`endpoint`** — the cluster's data-plane endpoint (an `https://` URL); projects running on the cluster are reached at this URL.
+- **`endpoint`** — the cluster's data-plane endpoint (an `https://` URL); projects running on the cluster are reached at this URL. More than one cluster in the list can report the same `endpoint`, so match a cluster on `cluster_name` rather than on `endpoint`.
 
 ## Creating a project on a dedicated cluster
 
