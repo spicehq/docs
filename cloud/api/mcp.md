@@ -43,7 +43,7 @@ Sends a JSON-RPC message to the project's MCP server.
 | `413`  | Payload too large. The maximum message size is 32 MiB.                                  |
 
 ```bash
-curl -X POST https://<project-cname>.spiceai.io/v1/mcp \
+curl -X POST "https://<project-cname>.spiceai.io/v1/mcp" \
   -H "X-API-Key: <project-api-key>" \
   -H "Content-Type: application/json" \
   -H "Accept: application/json, text/event-stream" \
@@ -81,13 +81,13 @@ The portal generates the registration command for a project. Open the project, s
 Keep the project API key in an environment variable rather than writing it into a command or a config file:
 
 ```bash
-export SPICE_API_KEY=<project-api-key>
+export SPICE_API_KEY="<project-api-key>"
 ```
 
 ### Claude Code
 
 ```bash
-claude mcp add --transport http spice https://<project-cname>.spiceai.io/v1/mcp \
+claude mcp add --transport http spice "https://<project-cname>.spiceai.io/v1/mcp" \
   --header "X-API-Key: $SPICE_API_KEY"
 ```
 
@@ -104,7 +104,7 @@ env_http_headers = { "X-API-Key" = "SPICE_API_KEY" }
 ### Grok CLI
 
 ```bash
-grok mcp add --transport http spice https://<project-cname>.spiceai.io/v1/mcp \
+grok mcp add --transport http spice "https://<project-cname>.spiceai.io/v1/mcp" \
   --header "X-API-Key: $SPICE_API_KEY"
 ```
 

@@ -54,7 +54,7 @@ Always upgrade the operator (and its CRDs) before bumping runtime images to a ne
 ```bash
 helm upgrade spiceai-operator \
   oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/charts/spiceai-operator \
-  --version <NEW_VERSION> \
+  --version "<NEW_VERSION>" \
   --values my-values.yaml
 ```
 
@@ -90,15 +90,15 @@ Watch the rollout status:
 
 ```bash
 kubectl get spicepodset -n spiceai
-kubectl get pods -n spiceai -l spice.ai/app=<NAME>
+kubectl get pods -n spiceai -l spice.ai/app="<NAME>"
 ```
 
 Confirm the new replicas are healthy:
 
 ```bash
-kubectl exec -it <pod> -- /spiced --version
-curl -sf http://<service>:8090/health
-curl -sf http://<service>:8090/v1/ready
+kubectl exec -it "<pod>" -- /spiced --version
+curl -sf "http://<service>:8090/health"
+curl -sf "http://<service>:8090/v1/ready"
 ```
 
 Re-run the smoke-test query suite. Verify the [Grafana dashboard](observability.md#grafana-dashboard) shows steady query latency and no spike in `query_failures`.
@@ -106,7 +106,7 @@ Re-run the smoke-test query suite. Verify the [Grafana dashboard](observability.
 For `SpicepodCluster`, additionally verify that all executors have re-registered:
 
 ```bash
-kubectl get spicepodcluster <NAME> -o jsonpath='{.status.executors.ready}'
+kubectl get spicepodcluster "<NAME>" -o jsonpath='{.status.executors.ready}'
 ```
 
 ### Step 5 \u2014 Promote
@@ -131,13 +131,13 @@ The operator triggers a rolling rollback under the configured `update_strategy`.
 For Helm-only deployments (no operator):
 
 ```bash
-helm rollback spiceai <REVISION>
+helm rollback spiceai "<REVISION>"
 ```
 
 ### Roll back the operator
 
 ```bash
-helm rollback spiceai-operator <REVISION>
+helm rollback spiceai-operator "<REVISION>"
 ```
 
 CRD rollbacks are **not** automatic. If the new CRDs added required fields, downgrade the CRDs explicitly:

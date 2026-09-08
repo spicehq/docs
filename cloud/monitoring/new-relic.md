@@ -72,7 +72,7 @@ When `metric_prefix` is combined with the `metrics` whitelist, the whitelist ent
 The New Relic infrastructure agent can scrape the metrics endpoint instead, which suits an estate already collecting Prometheus targets through New Relic.
 
 ```bash
-curl https://<project-cname>.spiceai.io/v1/metrics \
+curl "https://<project-cname>.spiceai.io/v1/metrics" \
   -H "X-API-Key: <API_KEY>"
 ```
 
