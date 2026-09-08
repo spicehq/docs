@@ -11,6 +11,10 @@ Spice.ai Enterprise enforces fine-grained authorization using [Cedar](https://ww
 Cedar-based authorization policy is a **Spice.ai Enterprise** feature. It is layered on top of [Authentication](authentication.md) — authentication establishes _who_ the principal is; policy decides _what_ they can do.
 {% endhint %}
 
+{% hint style="success" %}
+The [Authorization recipe](https://github.com/spiceai/cookbook/tree/trunk/authorization) is a runnable version of the patterns described here — multi-tenancy, row-level security, PII masking, and role-based access control — enforced from a single Spicepod. It ships a local identity provider and pre-issued tokens for five demo users, so each policy can be observed from more than one identity.
+{% endhint %}
+
 ## Authorization Model
 
 Policy evaluation is the standard Cedar `(principal, action, resource, context)` decision. Spice.ai supplies an embedded Cedar schema that defines the entity types, actions, and attributes available in policies.
@@ -277,4 +281,5 @@ In a [`SpicepodCluster`](../kubernetes/spicepodcluster.md), the scheduler is the
 - [Authentication](authentication.md)
 - [Security](../production/security.md)
 - [Distributed Query](distributed-query.md)
+- [Authorization recipe](https://github.com/spiceai/cookbook/tree/trunk/authorization) — a runnable example covering multi-tenancy, row-level security, PII masking, and role-based access control
 - [Cedar policy language reference](https://docs.cedarpolicy.com/)
