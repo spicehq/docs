@@ -12,10 +12,20 @@ This guide walks through deploying Spice.ai Enterprise on Kubernetes using the S
 - Kubernetes 1.33.0+
 - Helm 3.19.0+
 - `kubectl` configured with cluster access
+- AWS CLI (`aws`) installed and configured with credentials for the account subscribed to the [AWS Marketplace](../deployment/aws-marketplace.md) listing
 
 ## Step 1: Install the Spice Kubernetes Operator
 
-The operator is distributed via the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe and authenticate to the Marketplace ECR registry first, then install:
+The operator is distributed via the [AWS Marketplace](../deployment/aws-marketplace.md) Spice.ai Enterprise listing. Subscribe to the listing, then authenticate Helm against the Marketplace ECR registry — the chart is pulled over OCI from that private registry:
+
+```bash
+aws ecr get-login-password --region us-east-1 \
+  | helm registry login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
+```
+
+The login is valid for 12 hours; re-run it when the token expires.
+
+Install the operator:
 
 ```bash
 helm install spiceai-operator \
