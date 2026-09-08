@@ -29,6 +29,14 @@ Each deployment listed on the **Deployments** tab reports a status derived from 
 
 **Ready with errors** distinguishes a deployment that started successfully from one that works. The instances pass their health checks, but the runtime inside them is reporting problems — a dataset that cannot connect, or a model that fails to load. A failing health check is the stronger signal, so a deployment that is both unhealthy and reporting errors shows **Unhealthy**.
 
+A deployment that reports **Failed** carries the reason it failed. The portal shows it with the deployment, and the [Management API](../../api/README.md) returns it as the deployment's `error_message`. The reasons separate a project asking for more than the cluster can give from one that reached an account limit:
+
+* Not enough CPU, memory, or storage for the instance the project requested. Reduce the project's requests for that resource.
+* Requested project resources too high to place at all. Reduce the project's CPU or memory requests.
+* Instance limit reached. Scale down an unused project first.
+
+A failure the platform does not classify reports only that the instance could not start. Contact support for those.
+
 While a rollout is underway, the **Deployments** tab in the project navigation carries a count of the deployments still in progress — those reporting **Pending**, **Deploying**, **Loading**, or **Terminating**. The count clears once every deployment has settled.
 
 ### Issues
