@@ -29,9 +29,12 @@ The Spice Kubernetes Operator is distributed through the [AWS Marketplace](../de
 
 ```bash
 helm install spiceai-operator \
-  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan:1.0.0-operator-helm \
+  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan \
+  --version 1.0.0-operator-helm \
   --namespace spiceai-operator-system --create-namespace
 ```
+
+The chart is published to the same Marketplace repository as the operator image, so it is addressed by that repository name and selected by chart version: the chart version is the operator version with an `-operator-helm` suffix, and the image tag is the operator version with an `-operator` suffix. Pass the chart version with `--version`, not as a tag on the `oci://` reference.
 
 ### Docker
 
@@ -218,7 +221,8 @@ The pod-status response includes per-pod details (name, UID, phase, IP, port, st
 
 ```bash
 helm upgrade spiceai-operator \
-  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/charts/spiceai-operator \
+  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan \
+  --version 1.0.0-operator-helm \
   --values my-values.yaml
 ```
 
