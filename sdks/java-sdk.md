@@ -224,6 +224,18 @@ SpiceClient spice = SpiceClient.builder()
 
 Spice can also be reached over JDBC using the Apache Arrow Flight SQL JDBC driver, which allows pooling connections with HikariCP. See the [spice-java README](https://github.com/spiceai/spice-java#readme) for a worked example.
 
+{% hint style="warning" %}
+On JDK 24 and later, start the JVM with `--sun-misc-unsafe-memory-access=allow` when using the JDBC driver. Those releases no longer report `sun.misc.Unsafe` memory access as allowed by default ([JEP 498](https://openjdk.org/jeps/498)), and the allocator bundled in the driver switches off its own `sun.misc.Unsafe` path in response. The driver then fails at class initialization, before the first query:
+
+```text
+java.lang.ExceptionInInitializerError
+Caused by: java.lang.UnsupportedOperationException
+        at org.apache.arrow.driver.jdbc.shaded.io.netty.buffer.EmptyByteBuf.memoryAddress
+```
+
+The option was added in JDK 23 and earlier releases refuse to start with it, so apply it conditionally — a Maven profile activated on `<jdk>[23,)</jdk>`, or a Gradle check on `JavaVersion.current()`. `SpiceClient` itself needs no such flag.
+{% endhint %}
+
 ### Refreshing a dataset
 
 `refreshDataset(String dataset)` triggers a refresh of an accelerated dataset, optionally taking a `RefreshOptions`.
