@@ -7,6 +7,11 @@ icon: docker
 
 Enterprise container images are distributed exclusively through the [AWS Marketplace ECR](aws-marketplace.md) registry. Subscribe to the Spice.ai Enterprise listing on AWS Marketplace, then authenticate with `aws ecr get-login-password` before pulling.
 
+## Prerequisites
+
+- Docker
+- AWS CLI (`aws`) installed and configured with credentials for the account subscribed to the [AWS Marketplace](aws-marketplace.md) listing
+
 ## Images
 
 Replace `<repo>` below with either `spiceai-enterprise-byol` (Bring Your Own License) or `spiceai-enterprise-plan` (Marketplace subscription) — see [AWS Marketplace](aws-marketplace.md) for details. Replace `<version>` with the release to deploy, such as `2.2.1`.
