@@ -232,9 +232,13 @@ The pod-status response includes per-pod details (name, UID, phase, IP, port, st
 ```bash
 helm upgrade spiceai-operator \
   oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan \
-  --version 1.0.0-operator-helm \
+  --version <target-version>-operator-helm \
+  --namespace spiceai-operator-system \
   --values my-values.yaml
 ```
+
+`--namespace` must match the namespace the release was installed into — `helm upgrade`
+otherwise looks in `default` and reports that no deployed release exists.
 
 `v2` is served with automatic conversion of legacy `v1` / `v1alpha1` resources, so existing manifests continue to apply after the upgrade. See the [User Guide](user-guide.md) for rollout guidance and the per-CRD field changes in [SpicepodSet](spicepodset.md#migrating-from-spiceaiv1) and [SpicepodCluster](spicepodcluster.md).
 
