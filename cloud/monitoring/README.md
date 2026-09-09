@@ -8,7 +8,7 @@ icon: chart-mixed
 Spice Cloud exposes a [Prometheus-compatible metrics endpoint](../api/metrics.md) (`/v1/metrics`) on each project instance. Use it to scrape runtime metrics and build dashboards and alerts in your monitoring platform of choice.
 
 ```bash
-curl https://<project-cname>.spiceai.io/v1/metrics \
+curl "https://<project-cname>.spiceai.io/v1/metrics" \
   -H "X-API-Key: <API_KEY>"
 ```
 

@@ -37,7 +37,7 @@ Inline SQL user-defined functions (`from: sql`) are available in every distribut
 
 ## Default Distribution
 
-Includes all standard data connectors, embedded data accelerators (Spice Cayenne, DuckDB, SQLite), AI/ML model inference (LLMs, embeddings), search capabilities (vector and BM-25 full-text search), and the default memory allocator (snmalloc).
+Includes all standard data connectors, embedded data accelerators (Spice Cayenne, DuckDB, SQLite), AI/ML model inference (LLMs, embeddings), and search capabilities (vector and BM-25 full-text search). It links the system allocator; see [Allocator Variants](#allocator-variants) to run against a different one.
 
 ## Data-Only Distribution
 
@@ -65,43 +65,35 @@ CUDA GPU-accelerated model inference. Supported compute capabilities:
 | 89                 | RTX 40xx, L40, L4  |
 | 90                 | H100, H200         |
 
-Enterprise CUDA images are available from the AWS Marketplace ECR registry (see [AWS Marketplace](../deployment/aws-marketplace.md) for subscription and authentication):
-
-```bash
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-cuda
-```
+The AWS Marketplace ECR registry does not carry a CUDA image; it publishes the Default, models, and jemalloc variants (see [Docker](../deployment/docker.md)). [Contact us](https://spice.ai/contact) for a CUDA-enabled Enterprise deployment.
 
 ## Allocator Variants
 
-Different memory allocators can significantly impact performance depending on workload characteristics. Enterprise provides production-ready allocator variant images.
+Different memory allocators can significantly impact performance depending on workload characteristics.
 
-### snmalloc (Default)
+The allocator is selected when the runtime is built, and a build links exactly one. The Default distribution enables no allocator feature, so it links the system allocator.
 
-The default allocator, optimized for concurrent workloads. Reduces memory usage 10-20% compared to jemalloc/mimalloc.
+The AWS Marketplace ECR registry publishes the jemalloc variant. [Contact us](https://spice.ai/contact) about an snmalloc or mimalloc build.
+
+### snmalloc
+
+Optimized for concurrent workloads.
 
 ### jemalloc
 
-Alternative allocator that may perform better for certain memory allocation patterns.
+Alternative allocator that may perform better for certain memory allocation patterns. Marketplace images carry the `-jemalloc` suffix and are published from `2.2.1-enterprise` onwards:
 
 ```bash
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-jemalloc
+docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-jemalloc
 ```
 
 ### mimalloc
 
 Microsoft's mimalloc allocator, designed for performance and security.
 
-```bash
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-mimalloc
-```
-
 ### System Allocator
 
-Uses the system's default allocator (glibc malloc on Linux).
-
-```bash
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-sysalloc
-```
+Uses the system's default allocator (glibc malloc on Linux). This is what the Default distribution links, so the `<version>-enterprise` and `<version>-enterprise-models` images use it.
 
 ## Choosing a Distribution
 

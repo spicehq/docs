@@ -7,19 +7,24 @@ icon: docker
 
 Enterprise container images are distributed exclusively through the [AWS Marketplace ECR](aws-marketplace.md) registry. Subscribe to the Spice.ai Enterprise listing on AWS Marketplace, then authenticate with `aws ecr get-login-password` before pulling.
 
+## Prerequisites
+
+- Docker
+- AWS CLI (`aws`) installed and configured with credentials for the account subscribed to the [AWS Marketplace](aws-marketplace.md) listing
+
 ## Images
 
-Replace `<repo>` below with either `spiceai-enterprise-byol` (Bring Your Own License) or `spiceai-enterprise-plan` (Marketplace subscription) — see [AWS Marketplace](aws-marketplace.md) for details.
+Replace `<repo>` below with either `spiceai-enterprise-byol` (Bring Your Own License) or `spiceai-enterprise-plan` (Marketplace subscription) — see [AWS Marketplace](aws-marketplace.md) for details. Replace `<version>` with the release to deploy, such as `2.2.1`.
 
-| Image                                                                              | Description                                   |
-| ---------------------------------------------------------------------------------- | --------------------------------------------- |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:latest-models`       | Default distribution with AI/ML model support |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:latest`              | Data-only distribution                        |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:latest-cuda`         | CUDA GPU-accelerated distribution             |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:latest-nas`          | NAS distribution (SMB + NFS connectors)       |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:latest-jemalloc`     | jemalloc memory allocator variant             |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:latest-mimalloc`     | mimalloc memory allocator variant             |
-| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:latest-sysalloc`     | System (glibc) memory allocator variant       |
+| Image                                                                                        | Description                                                                                        |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise-models`   | Default distribution: data connectors, accelerators, search, and AI/ML model inference                                                      |
+| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise`          | Data-only distribution: excludes AI/ML model inference                                                                               |
+| `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/<repo>:<version>-enterprise-jemalloc` | jemalloc [allocator variant](../getting-started/distributions.md#allocator-variants), from `2.2.1`  |
+
+{% hint style="info" %}
+Marketplace tags are versioned and immutable: an existing tag is never repointed, and there is no `latest` tag. Every deployment names the release it runs.
+{% endhint %}
 
 ## Pull an Image
 
@@ -27,14 +32,14 @@ Replace `<repo>` below with either `spiceai-enterprise-byol` (Bring Your Own Lic
 aws ecr get-login-password --region us-east-1 \
   | docker login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
 
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-models
+docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-models
 ```
 
 ## Run
 
 ```bash
 docker run -p 8090:8090 -p 50051:50051 -p 9090:9090 \
-  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-models \
+  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-models \
   --http 0.0.0.0:8090 \
   --metrics 0.0.0.0:9090 \
   --flight 0.0.0.0:50051
@@ -47,7 +52,7 @@ Mount a Spicepod YAML file into the container:
 ```bash
 docker run -p 8090:8090 -p 50051:50051 -p 9090:9090 \
   -v $(pwd)/spicepod.yaml:/app/spicepod.yaml \
-  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:latest-models
+  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-models
 ```
 
 ## Exposed Ports

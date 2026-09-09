@@ -76,7 +76,7 @@ Bump the image tag (or, preferably, digest) on each `SpicepodSet` / `SpicepodClu
 
 ```yaml
 spec:
-  spiceai_image_tag: <NEW_VERSION>-models@sha256:abcd...
+  spiceai_image_tag: <NEW_VERSION>-enterprise-models@sha256:abcd...
   update_strategy:
     type: RollingParallel
     max_unavailable: 1
@@ -90,23 +90,23 @@ Watch the rollout status:
 
 ```bash
 kubectl get spicepodset -n spiceai
-kubectl get pods -n spiceai -l spice.ai/app=<NAME>
+kubectl get pods -n spiceai -l spice.ai/app="<NAME>"
 ```
 
 Confirm the new replicas are healthy:
 
 ```bash
-kubectl exec -it <pod> -- /spiced --version
-curl -sf http://<service>:8090/health
-curl -sf http://<service>:8090/v1/ready
+kubectl exec -it "<pod>" -- /spiced --version
+curl -sf "http://<service>:8090/health"
+curl -sf "http://<service>:8090/v1/ready"
 ```
 
-Re-run the smoke-test query suite. Verify the [Grafana dashboard](observability.md#grafana-dashboard) shows steady query latency and no spike in `spiced_query_total{result="error"}`.
+Re-run the smoke-test query suite. Verify the [Grafana dashboard](observability.md#grafana-dashboard) shows steady query latency and no spike in `query_failures`.
 
 For `SpicepodCluster`, additionally verify that all executors have re-registered:
 
 ```bash
-kubectl get spicepodcluster <NAME> -o jsonpath='{.status.executors.ready}'
+kubectl get spicepodcluster "<NAME>" -o jsonpath='{.status.executors.ready}'
 ```
 
 ### Step 5 \u2014 Promote
@@ -123,7 +123,7 @@ Re-apply the previous image tag (or digest):
 
 ```yaml
 spec:
-  spiceai_image_tag: <PREVIOUS_VERSION>-models@sha256:1f4a...
+  spiceai_image_tag: <PREVIOUS_VERSION>-enterprise-models@sha256:1f4a...
 ```
 
 The operator triggers a rolling rollback under the configured `update_strategy`.
@@ -131,13 +131,13 @@ The operator triggers a rolling rollback under the configured `update_strategy`.
 For Helm-only deployments (no operator):
 
 ```bash
-helm rollback spiceai <REVISION>
+helm rollback spiceai "<REVISION>"
 ```
 
 ### Roll back the operator
 
 ```bash
-helm rollback spiceai-operator <REVISION>
+helm rollback spiceai-operator "<REVISION>"
 ```
 
 CRD rollbacks are **not** automatic. If the new CRDs added required fields, downgrade the CRDs explicitly:

@@ -16,11 +16,21 @@ All manifests below use the current `spice.ai/v2` API version. Existing `spice.a
 - Kubernetes 1.33+
 - Helm 3.x
 - `kubectl` configured for your cluster
+- AWS CLI (`aws`) installed and configured with credentials for the account subscribed to the [AWS Marketplace](../deployment/aws-marketplace.md) listing
 - Access to a Spice runtime image (the enterprise image is pulled from the AWS Marketplace ECR registry; a [pull secret](#use-a-private-registry) is required)
 
 ## 1. Install the operator
 
-The operator is distributed as an OCI Helm chart. Subscribe to the [AWS Marketplace](../deployment/aws-marketplace.md) listing, authenticate to the Marketplace ECR registry, then install into its own namespace:
+The operator is distributed as an OCI Helm chart. Subscribe to the [AWS Marketplace](../deployment/aws-marketplace.md) listing, then authenticate Helm against the Marketplace ECR registry — the chart is pulled over OCI from that private registry:
+
+```bash
+aws ecr get-login-password --region us-east-1 \
+  | helm registry login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
+```
+
+The login is valid for 12 hours; re-run it when the token expires.
+
+Install the operator into its own namespace:
 
 ```bash
 helm install spiceai-operator \
