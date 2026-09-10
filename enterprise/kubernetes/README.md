@@ -16,6 +16,8 @@ The Spice.ai Kubernetes Operator automates the deployment, scaling, and lifecycl
 
 For a step-by-step walkthrough, see the [User Guide](user-guide.md). For exhaustive field references, see [SpicepodSet](spicepodset.md) and [SpicepodCluster](spicepodcluster.md).
 
+The operator can also connect a cluster in your own cloud account to Spice.ai Cloud for centralized deployment and observability — see [Bring-Your-Own-Cluster (BYOC)](byoc.md).
+
 ## Installation
 
 ### Prerequisites
@@ -76,6 +78,23 @@ Multi-architecture (`linux/amd64` and `linux/arm64`) operator images are also pu
 | `namespaces` / `denyNamespaces`                            | Scope the operator to / away from specific namespaces (mutually exclusive)      | (all namespaces)              |
 | `telemetry.otlp.*`                                         | Push operator metrics to an OTLP collector (see [Operator Metrics](metrics.md)) | disabled                      |
 | `telemetryProperties`                                      | Key/value pairs forwarded to the Spice runtime as telemetry properties          | `{}`                          |
+| `spice.managedMode.enabled`                                | Connect the operator to Spice.ai Cloud ([BYOC managed mode](byoc.md))           | `false`                       |
+| `spice.managedMode.enrollmentToken`                        | Single-use `spice-enroll-…` token from the Spice.ai Cloud portal (chart stores it in a Secret; persisted in Helm history — prefer `enrollmentTokenSecret` in production) | — |
+| `spice.managedMode.enrollmentTokenSecret`                  | Existing Secret holding the enrollment token under the `token` data key         | —                             |
+| `spice.managedMode.enrollUrl`                              | Enrollment API base URL (empty = Spice.ai Cloud, `https://api.spice.ai/v1/cloud-connect`) | —                   |
+| `spice.managedMode.endpoint`                               | Gateway address override — required only with a pre-provisioned identity        | —                             |
+| `spice.managedMode.identitySecret`                         | Secret the operator **creates** to persist its enrolled identity (do not pre-create) | `spice-byoc-operator-identity` |
+| `spice.managedMode.secretNamespace`                        | Namespace for managed-mode Secrets (empty = operator namespace)                 | —                             |
+| `spice.managedMode.instanceId`                             | Instance ID — required only with a pre-provisioned identity                     | —                             |
+| `spice.managedMode.mtlsSecret` / `.caSecret`               | Pre-provisioned client identity + CA bundle (set together; skips enrollment)    | —                             |
+| `spice.managedMode.serverCaSecret`                         | Extra serving-CA trust anchor for a private/self-hosted control plane           | —                             |
+| `spice.managedMode.heartbeatIntervalSeconds`               | Heartbeat cadence                                                               | `30`                          |
+| `spice.managedMode.telemetryIntervalSeconds`               | Telemetry roll-up cadence                                                       | `60`                          |
+| `spice.managedMode.metricsIntervalSeconds`                 | Managed-instance metrics collection cadence                                     | `30`                          |
+| `spice.managedMode.kubeletCaSecret`                        | Secret with the CA that signs kubelet serving certificates (mutually exclusive with `kubeletInsecureTls`) | —   |
+| `spice.managedMode.kubeletInsecureTls`                     | Skip kubelet certificate verification for container resource metrics (mutually exclusive with `kubeletCaSecret`) | `false` |
+
+See [Bring-Your-Own-Cluster (BYOC)](byoc.md) for the full managed-mode setup guide, security model, and troubleshooting.
 
 ## Managed Resources
 
@@ -195,6 +214,28 @@ spiceai-operator crd --output FILE
 | `--telemetry-properties KEY=VALUE`    | —                         | Key/value pairs forwarded to the Spice runtime               |
 | `--verbose`                           | `false`                   | Enable debug-level logging                                   |
 
+#### Managed mode (BYOC) flags
+
+These flags configure [Bring-Your-Own-Cluster (BYOC) managed mode](byoc.md). Each flag also reads a matching `SPICEAI_MANAGED_MODE_*` environment variable (for example, `--managed-mode-enabled` reads `SPICEAI_MANAGED_MODE_ENABLED`).
+
+| Flag                                           | Default                                 | Description                                                          |
+| ---------------------------------------------- | --------------------------------------- | --------------------------------------------------------------------- |
+| `--managed-mode-enabled`                       | `false`                                 | Enable managed mode (outbound mTLS stream to Spice.ai Cloud)           |
+| `--managed-mode-enroll-url`                    | `https://api.spice.ai/v1/cloud-connect` | Enrollment API base URL                                                |
+| `--managed-mode-enrollment-token-secret`       | —                                       | Secret holding the single-use enrollment token (data key `token`)      |
+| `--managed-mode-endpoint`                      | —                                       | Gateway address — required only with a pre-provisioned identity        |
+| `--managed-mode-identity-secret`               | `spice-byoc-operator-identity`          | Secret the operator creates to persist its enrolled identity           |
+| `--managed-mode-secret-namespace`              | (operator namespace)                    | Namespace for managed-mode Secrets                                     |
+| `--managed-mode-instance-id`                   | —                                       | Instance ID — required only with a pre-provisioned identity            |
+| `--managed-mode-mtls-secret`                   | —                                       | Pre-provisioned client identity Secret (`tls.crt`/`tls.key`)           |
+| `--managed-mode-ca-secret`                     | —                                       | Pre-provisioned CA bundle Secret (`ca.crt`; set with `mtls-secret`)    |
+| `--managed-mode-server-ca-path`                | —                                       | Path to an extra serving-CA PEM for a private control plane            |
+| `--managed-mode-heartbeat-interval-seconds`    | `30`                                    | Heartbeat cadence                                                      |
+| `--managed-mode-telemetry-interval-seconds`    | `60`                                    | Telemetry roll-up cadence                                              |
+| `--managed-mode-metrics-interval-seconds`      | `30`                                    | Managed-instance metrics collection cadence                            |
+| `--managed-mode-kubelet-certificate-authority` | —                                       | Path to the CA that signs kubelet serving certificates                 |
+| `--managed-mode-kubelet-insecure-tls`          | `false`                                 | Skip kubelet certificate verification (mutually exclusive with the CA) |
+
 ### `json-schema` — Output the OpenAPI v3 JSON schema for the `SpicepodSet` CRD
 
 ```bash
@@ -246,4 +287,5 @@ Capabilities in active development and planned for the operator include:
 - **Auto-scaling** via `HorizontalPodAutoscaler` and Spiced-specific metrics.
 - **Backup & restore** of stateful volumes via `VolumeSnapshot`.
 - **Secret rotation** with automatic rolling restarts.
-- **Spice Cloud Platform integration** for centralized fleet management and observability.
+
+Spice.ai Cloud integration for centralized fleet management and observability has shipped as [Bring-Your-Own-Cluster (BYOC) managed mode](byoc.md).

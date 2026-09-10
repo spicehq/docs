@@ -47,6 +47,10 @@ kubectl get crds | grep spice.ai
 
 See the [Overview](README.md#helm-values) for the full list of Helm values.
 
+{% hint style="info" %}
+To connect this cluster to Spice.ai Cloud so that Spice.ai Cloud can deploy and observe Spicepods in your account (Bring-Your-Own-Cluster), install with `spice.managedMode.enabled=true` and an enrollment token — see [Bring-Your-Own-Cluster (BYOC)](byoc.md).
+{% endhint %}
+
 ## 2. Deploy your first Spicepod
 
 A `SpicepodSet` is the simplest way to run a Spicepod. Create `spicepodset.yaml`:
@@ -397,5 +401,6 @@ helm upgrade spiceai-operator \
 
 - [SpicepodSet reference](spicepodset.md) — every `SpicepodSet` field.
 - [SpicepodCluster reference](spicepodcluster.md) — distributed clusters and mTLS.
+- [Bring-Your-Own-Cluster (BYOC)](byoc.md) — connect this cluster to Spice.ai Cloud.
 - [Operator Metrics](metrics.md) — Prometheus scraping and OTLP push.
 - [Overview](README.md) — installation, Helm values, CLI, and roadmap.
