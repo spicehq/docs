@@ -232,7 +232,7 @@ The pod-status response includes per-pod details (name, UID, phase, IP, port, st
 ```bash
 helm upgrade spiceai-operator \
   oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan \
-  --version <target-version>-operator-helm \
+  --version "<target-version>-operator-helm" \
   --namespace spiceai-operator-system \
   --values my-values.yaml
 ```
