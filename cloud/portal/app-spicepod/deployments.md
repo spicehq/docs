@@ -38,6 +38,10 @@ A deployment that reports **Failed** or **Failed to start** carries the reason i
 
 A failure the platform does not classify reports only that the instance could not start. Contact support for those.
 
+The reasons also differ in whether the platform keeps trying. A shortage of CPU, memory, or storage, and a project that has reached the instance limit, are conditions that can clear on their own. The platform keeps trying to place the instance, the deployment's recorded `status` stays `in_progress`, and it carries the reason in `error_message` while it waits. Once every replica is ready, the deployment records `succeeded` and the reason clears.
+
+Requested resources too high to place at all, and a failure the platform does not classify, cannot clear by waiting. The deployment records `failed` on the first check and the platform stops trying. A reason of that kind on any one instance fails the deployment even when another replica is already serving.
+
 The two statuses differ in how far the instance got. **Failed to start** reports an instance that never began serving, so the reason above names what it lacked. **Failed** reports a deployment the platform has recorded as failed.
 
 While a rollout is underway, the **Deployments** tab in the project navigation carries a count of the deployments still in progress — those reporting **Pending**, **Deploying**, **Loading**, or **Terminating**. The count clears once every deployment has settled.
