@@ -113,11 +113,26 @@ curl -H "Authorization: Bearer <access-token>" \
 
 ### 3. User Session Tokens (CLI)
 
-The Spice CLI obtains a user session token through the browser-based login flow. This token grants full access to resources in your personal organization.
+The Spice CLI stores a credential for the Management API with `spice login`. On a terminal it asks which one to use:
 
 ```bash
-spice login  # Opens a browser to authenticate
+spice login
+? How would you like to authenticate to Spice Cloud? ›
+❯ Login with a web browser
+  Paste an access token
 ```
+
+**Login with a web browser** signs in through the browser and stores the resulting user session token, which carries the user's identity. **Paste an access token** stores a personal access token instead.
+
+The prompt appears only when the CLI is attached to a terminal. Scripts and CI pipelines name the method as a subcommand, which also lets them supply the credential without being prompted for it:
+
+| Command                    | Credential stored          | Supplying it without a prompt                                                                                |
+| -------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `spice login subscription` | User session token         | `--device` prints the URL and a one-time code to enter on another device instead of opening a browser, for SSH and headless shells |
+| `spice login token`        | Personal access token      | `--token`, or the `SPICE_CLOUD_PAT` environment variable                                                       |
+| `spice login api`          | OAuth client credentials   | `--client-id` and `--client-secret`, or `SPICE_CLOUD_CLIENT_ID` and `SPICE_CLOUD_CLIENT_SECRET`                |
+
+Run with no terminal and no subcommand, `spice login` reports that the login type must be chosen explicitly rather than waiting on a prompt that cannot be answered.
 
 ## Organization context
 
