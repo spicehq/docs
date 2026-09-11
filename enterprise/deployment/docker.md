@@ -14,7 +14,7 @@ Enterprise container images are distributed exclusively through the [AWS Marketp
 
 ## Images
 
-Replace `<repo>` below with either `spiceai-enterprise-byol` (Bring Your Own License) or `spiceai-enterprise-plan` (Marketplace subscription) — see [AWS Marketplace](aws-marketplace.md) for details. Replace `<version>` with the release to deploy, such as `2.2.1`.
+Replace `<repo>` below with either `spiceai-enterprise-byol` (Bring Your Own License) or `spiceai-enterprise-plan` (Marketplace subscription) — see [AWS Marketplace](aws-marketplace.md) for details. Replace `<version>` with the release to deploy, such as `2.3.0`.
 
 | Image                                                                                        | Description                                                                                        |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -32,14 +32,14 @@ Marketplace tags are versioned and immutable: an existing tag is never repointed
 aws ecr get-login-password --region us-east-1 \
   | docker login --username AWS --password-stdin 709825985650.dkr.ecr.us-east-1.amazonaws.com
 
-docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-models
+docker pull 709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.3.0-enterprise-models
 ```
 
 ## Run
 
 ```bash
 docker run -p 8090:8090 -p 50051:50051 -p 9090:9090 \
-  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-models \
+  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.3.0-enterprise-models \
   --http 0.0.0.0:8090 \
   --metrics 0.0.0.0:9090 \
   --flight 0.0.0.0:50051
@@ -52,7 +52,7 @@ Mount a Spicepod YAML file into the container:
 ```bash
 docker run -p 8090:8090 -p 50051:50051 -p 9090:9090 \
   -v $(pwd)/spicepod.yaml:/app/spicepod.yaml \
-  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.2.1-enterprise-models
+  709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol:2.3.0-enterprise-models
 ```
 
 ## Exposed Ports
