@@ -21,7 +21,7 @@ The login is valid for 12 hours; re-run it when the token expires.
 ```bash
 helm install spiceai \
   oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol \
-  --version 2.2.1-enterprise-models-helm \
+  --version 2.3.0-enterprise-models-helm \
   --set spicepod.name=my-app
 ```
 
@@ -30,7 +30,7 @@ helm install spiceai \
 | Parameter                                | Description                                       | Default                              |
 | ---------------------------------------- | ------------------------------------------------- | ------------------------------------ |
 | `image.repository`                       | Container image repository                        | `709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-byol` |
-| `image.tag`                              | Container image tag                               | The chart variant's image tag, such as `2.2.1-enterprise-models` |
+| `image.tag`                              | Container image tag                               | The chart variant's image tag, such as `2.3.0-enterprise-models` |
 | `replicaCount`                           | Number of replicas                                | `1`                                  |
 | `strategy`                               | Update strategy for the `Deployment`              | — (Kubernetes default)               |
 | `updateStrategy`                         | Update strategy for the `StatefulSet`             | — (Kubernetes default)               |
