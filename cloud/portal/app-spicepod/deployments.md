@@ -44,6 +44,10 @@ Requested resources too high to place at all, and a failure the platform does no
 
 The two statuses differ in how far the instance got. **Failed to start** reports an instance that never began serving, so the reason above names what it lacked. **Failed** reports a deployment the platform has recorded as failed.
 
+A deployment left in progress settles on its own. The platform re-checks any deployment that has recorded `in_progress` for more than 15 minutes without a result. It reads the project's live instances and applies the rules above. Enough ready replicas records `succeeded` and clears the reason. An issue that cannot clear by waiting records `failed`. A shortage that can still clear leaves the deployment `in_progress` with its reason. Time alone never fails a deployment.
+
+Creating a deployment while an earlier one is still waiting replaces the earlier one. Once the platform accepts the new deployment, any earlier deployment on the same project that has not yet recorded `succeeded` or `failed` is recorded as `created`, and it stops counting toward the in-progress total. A deployment that already recorded `succeeded` or `failed` keeps its result.
+
 While a rollout is underway, the **Deployments** tab in the project navigation carries a count of the deployments still in progress — those reporting **Pending**, **Deploying**, **Loading**, or **Terminating**. The count clears once every deployment has settled.
 
 ### Issues
