@@ -29,7 +29,8 @@ Install the operator:
 
 ```bash
 helm install spiceai-operator \
-  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/charts/spiceai-operator
+  oci://709825985650.dkr.ecr.us-east-1.amazonaws.com/spice-ai/spiceai-enterprise-plan \
+  --version 1.0.0-operator-helm
 ```
 
 Verify the operator is running:
