@@ -15,7 +15,7 @@ Each deployment listed on the **Deployments** tab reports a status derived from 
 
 | Status                | Meaning                                                                                         |
 | --------------------- | ----------------------------------------------------------------------------------------------- |
-| **Pending**           | The deployment is queued or created; no instances have started yet.                              |
+| **Pending**           | The deployment is queued, or it is the newest deployment and no instances have started yet.      |
 | **Deploying**         | Instances are starting.                                                                         |
 | **Loading**           | Instances are running and loading their initial datasets.                                       |
 | **Ready**             | All replicas are ready and serving traffic.                                                     |
@@ -46,7 +46,7 @@ The two statuses differ in how far the instance got. **Failed to start** reports
 
 A deployment left in progress settles on its own. The platform re-checks any deployment that has recorded `in_progress` for more than 15 minutes without a result. It reads the project's live instances and applies the rules above. When enough replicas are ready, the deployment records `succeeded` and the reason clears. When the issue cannot clear by waiting, the deployment records `failed`. When the shortage can still clear, the deployment stays `in_progress` and keeps its reason. Time alone never fails a deployment.
 
-Creating a deployment while an earlier one is still underway replaces the earlier one — unless the earlier deployment is still queued, in which case the platform refuses the new one and the [Management API](../../api/README.md) answers `POST /v1/projects/{projectId}/deployments` with `409` and `A deployment is already in progress for this project`. Once a new deployment is accepted and starts, every earlier deployment on the same project still queued or in progress is recorded as `created`, and it stops counting toward the in-progress total. A deployment that already recorded `succeeded` or `failed` keeps its result.
+Creating a deployment while an earlier one is still underway replaces the earlier one — unless the earlier deployment is still queued, in which case the platform refuses the new one and the [Management API](../../api/README.md) answers `POST /v1/projects/{projectId}/deployments` with `409` and `A deployment is already in progress for this project`. Once a new deployment is accepted and starts, every earlier deployment on the same project still queued or in progress is recorded as `created`. Having been replaced, it has no live state of its own, so the tab shows it as **Created** rather than **Pending** and it stops counting toward the in-progress total. A deployment that already recorded `succeeded` or `failed` keeps its result.
 
 While a rollout is underway, the **Deployments** tab in the project navigation carries a count of the deployments still in progress — those reporting **Pending**, **Deploying**, **Loading**, or **Terminating**. The count clears once every deployment has settled.
 
