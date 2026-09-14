@@ -45,11 +45,13 @@ spec:
 | Field        | Default                                     | Description                                                             |
 | ------------ | ------------------------------------------- | ----------------------------------------------------------------------- |
 | `repository` | `…/spice-ai/spiceai-enterprise-plan`        | Full image path (registry + name).                                      |
-| `tag`        | `2.0.0-enterprise-models`                   | Image tag.                                                              |
+| `tag`        | The Spice runtime version pinned by the operator release | Image tag.                                                 |
 | `pullPolicy` | `Always` for `:latest`, else `IfNotPresent` | Image pull policy (`Always` \| `Never` \| `IfNotPresent`).              |
 | `pullSecret` | —                                           | Name of a Kubernetes Secret holding credentials for a private registry. |
 
 `repository` is the full registry + name path. The enterprise default is pulled from the AWS Marketplace ECR registry — provide credentials via `pullSecret`. To use a public build instead, set e.g. `repository: spiceai/spiceai` (Docker Hub) or `repository: ghcr.io/spiceai/spiceai`.
+
+Omitting `tag` runs the Spice runtime version pinned by the installed operator release, so the version moves when the operator is upgraded. Set `tag` explicitly, as the example above does, to pin a version of your own.
 
 ## Ports
 
