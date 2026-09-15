@@ -42,15 +42,15 @@ A trace in Spice represents a completed task. Each trace is a unique span record
 Example trace data:
 
 ```
-trace_id                          | task                | execution_duration_ms | error_message
-----------------------------------|---------------------|-----------------------|------------------------------------------
-687e0970f8c49d19c5a08764ea2d4dc1  | text_embed          | 16132.4               |
-1e881188e5fd252b26adb8a8d838efb8  | sql_query           | 6.1                   |
-701874d7282dd47791e7519b343a9694  | accelerated_refresh | 0.4                   |
-3c75d16b6b4b8da98c551d115e1c049c  | sql_query           | 0.1                   | SQL error: ParserError("Expected:...")
+trace_id                          | task                 | execution_duration_ms | error_message
+----------------------------------|----------------------|-----------------------|------------------------------------------
+687e0970f8c49d19c5a08764ea2d4dc1  | text_embed           | 16132.4               |
+1e881188e5fd252b26adb8a8d838efb8  | sql_query            | 6.1                   |
+701874d7282dd47791e7519b343a9694  | acceleration_refresh | 0.4                   |
+3c75d16b6b4b8da98c551d115e1c049c  | sql_query            | 0.1                   | SQL error: ParserError("Expected:...")
 ```
 
-For more details, see [Task History](/broken/pages/s1kRO5emo7UGC2ZHAoXB).
+For more details, see [Task History](../../features/observability/task-history.md).
 
 See also:
 
