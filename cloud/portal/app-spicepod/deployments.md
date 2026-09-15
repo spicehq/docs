@@ -30,17 +30,23 @@ Each deployment listed on the **Deployments** tab reports a status derived from 
 
 **Ready with errors** distinguishes a deployment that started successfully from one that works. The instances pass their health checks, but the runtime inside them is reporting problems — a dataset that cannot connect, or a model that fails to load. A failing health check is the stronger signal, so a deployment that is both unhealthy and reporting errors shows **Unhealthy**.
 
-A deployment that reports **Failed** or **Failed to start** carries the reason it failed. The portal shows it with the deployment, and the [Management API](../../api/README.md) returns it as the deployment's `error_message`. The reasons separate a project asking for more than the cluster can give from one that reached an account limit:
+A deployment that reports **Failed** or **Failed to start** carries the reason it failed, and so does one the platform is still retrying. The portal shows it with the deployment, and the [Management API](../../api/README.md) returns it on the deployment as `error_message` and `error_code`. Use `error_code` to classify a failure; `error_message` is prose meant for display. The codes cover a project asking for more than the cluster can give, a project that reached an account limit, and a failure of the instance or of the platform itself:
 
-* Not enough CPU, memory, or storage for the instance the project requested. Reduce the project's requests for that resource.
-* Requested project resources too high to place at all. Reduce the project's CPU or memory requests.
-* Instance limit reached. Scale down an unused project first.
+| `error_code`                | Reason                                                                                                                      |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `insufficient_cpu`          | Not enough CPU for the instance the project requested. Reduce the project's CPU requests.                                   |
+| `insufficient_memory`       | Not enough memory for the instance the project requested. Reduce the project's memory requests.                             |
+| `insufficient_storage`      | Not enough storage for the instance the project requested. Reduce the project's storage requests.                           |
+| `insufficient_instances`    | Instance limit reached. Scale down an unused project first.                                                                 |
+| `pod_exceeds_node_capacity` | Requested project resources too high to place at all. Reduce the project's CPU or memory requests.                          |
+| `unable_to_start`           | The instance could not start, and the platform did not classify why. Contact support.                                       |
+| `internal_error`            | The platform could not dispatch or apply the deployment, or the instance reported a failure it does not recognize. Contact support. |
 
-A failure the platform does not classify reports only that the instance could not start. Contact support for those.
+The two fields are set together and cleared together. A deployment that records `succeeded`, and one that is still starting normally, reports `null` for both. A deployment that failed before the platform recorded codes can carry a message with no code.
 
-The reasons also differ in whether the platform keeps trying. A shortage of CPU, memory, or storage, and a project that has reached the instance limit, are conditions that can clear on their own. The platform keeps trying to place the instance, the deployment's recorded `status` stays `in_progress`, and it carries the reason in `error_message` while it waits. Once every replica is ready, the deployment records `succeeded` and the reason clears.
+The reasons also differ in whether the platform keeps trying. A shortage of CPU, memory, or storage, and a project that has reached the instance limit — the four `insufficient_` codes — are conditions that can clear on their own. The platform keeps trying to place the instance, the deployment's recorded `status` stays `in_progress`, and it carries the reason in `error_message` and `error_code` while it waits. Once every replica is ready, the deployment records `succeeded` and the reason clears.
 
-Requested resources too high to place at all, and a failure the platform does not classify, cannot clear by waiting. The deployment records `failed` on the first check and the platform stops trying. A reason of that kind on any one instance fails the deployment even when another replica is already serving.
+Requested resources too high to place at all (`pod_exceeds_node_capacity`), an instance that could not start (`unable_to_start`), and a failure of the platform itself (`internal_error`) cannot clear by waiting. The deployment records `failed` on the first check and the platform stops trying. A reason of that kind on any one instance fails the deployment even when another replica is already serving.
 
 The two statuses differ in how far the instance got. **Failed to start** reports an instance that never began serving, so the reason above names what it lacked. **Failed** reports a deployment the platform has recorded as failed.
 
