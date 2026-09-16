@@ -380,6 +380,73 @@ curl -X POST https://api.spice.ai/v1/projects/123/deployments \
   }'
 ```
 
+### Deployment responses
+
+The deployment endpoints return these fields. The response does not include `started_at`.
+
+```json
+{
+  "id": 67890,
+  "status": "in_progress",
+  "created_at": "2024-01-15T12:00:00Z",
+  "updated_at": "2024-01-15T12:01:00Z",
+  "image_tag": "1.5.0-models",
+  "replicas": 2,
+  "branch": "main",
+  "commit_sha": "abc123def456",
+  "commit_message": "Update dataset configuration",
+  "error_code": "insufficient_cpu",
+  "error_message": "The deployment requires more CPU than is currently available.",
+  "creation_source": "api",
+  "created_by": 123
+}
+```
+
+The `image_tag`, `branch`, `commit_sha`, `commit_message`, `error_code`, `error_message`, `creation_source`, and `created_by` fields can be `null` when the deployment has no value for them.
+
+Use `GET /v1/projects/{projectId}/deployments` to list deployments, or use `GET /v1/projects/{projectId}/deployments/{deploymentId}` to retrieve one deployment.
+
+#### Deployment statuses
+
+The API returns one of these deployment statuses:
+
+| Status        | Meaning |
+| ------------- | ------- |
+| `queued`      | The deployment is awaiting platform processing. |
+| `in_progress` | The deployment is active. It can carry a retryable scheduling error in `error_code` and `error_message`. If both error fields are `null`, the runtime is starting. |
+| `succeeded`   | The deployment is terminal. For Spice-managed compute, the runtime is ready. For a standalone Cloud Connect target, Cloud accepted the deployment for dispatch. This status does not confirm that the remote runtime is ready. |
+| `failed`      | The deployment is terminal and current writes include the catalog `error_code` and `error_message`. |
+| `created`     | The deployment is a superseded historical record. When a newer deployment is accepted, the platform changes an older `queued` or `in_progress` deployment to `created`. |
+
+Clients must not wait for a `created` deployment to become `succeeded` or `failed`. Inspect the latest deployment instead.
+
+#### Deployment errors
+
+The platform uses these catalog codes:
+
+| `error_code` | Status | `error_message` | Client action |
+| ------------ | ------ | --------------- | ------------- |
+| `insufficient_cpu` | `in_progress` | `Failed to start the project instance: not enough CPU. Reduce project CPU requests or contact support.` | Continue polling. The platform retries scheduling. |
+| `insufficient_memory` | `in_progress` | `Failed to start the project instance: not enough memory. Reduce project memory requests or contact support.` | Continue polling. The platform retries scheduling. |
+| `insufficient_storage` | `in_progress` | `Failed to start the project instance: not enough storage. Reduce project storage requests or contact support.` | Continue polling. The platform retries scheduling. |
+| `insufficient_instances` | `in_progress` | `Failed to start the project instance: instance limit reached. Scale down an unused project or contact support.` | Continue polling. The platform retries scheduling. |
+| `pod_exceeds_node_capacity` | `failed` | `Failed to start the project instance: requested project resources are too high. Reduce project CPU/memory requests or contact support.` | Stop polling. Reduce the requested resources before creating another deployment. |
+| `unable_to_start` | `failed` | `Failed to start the project instance. Contact support.` | Stop polling. Investigate the deployment or contact support before retrying. |
+| `internal_error` | `failed` | `An internal error occurred. Contact support.` | Stop polling and contact support before retrying. |
+
+`error_message` contains human-readable catalog text. Branch on `error_code`, not on the message text. During the legacy transition, an older failed deployment can contain `error_message` with a `null` `error_code`; clients can display that message, but cannot classify it by code.
+
+#### Poll a deployment
+
+Create a deployment, then poll the latest deployment until it reaches a terminal status:
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  https://api.spice.ai/v1/projects/123/deployments?limit=1
+```
+
+Treat `succeeded` and `failed` as terminal. Treat `created` as superseded and inspect the newest deployment. Keep polling `queued` and `in_progress`; an `in_progress` deployment with a retryable error remains active while the platform retries scheduling.
+
 ### Add a secret
 
 ```bash
