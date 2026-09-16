@@ -382,11 +382,9 @@ curl -X POST https://api.spice.ai/v1/projects/123/deployments \
 
 ### Deployment status and errors
 
-Use `GET /v1/projects/{projectId}/deployments` to list deployments, or use `GET /v1/projects/{projectId}/deployments/{deploymentId}` to retrieve one deployment.
-
 #### Deployment statuses
 
-The API returns one of these deployment statuses:
+Deployments use these statuses:
 
 | Status        | Meaning |
 | ------------- | ------- |
@@ -396,34 +394,21 @@ The API returns one of these deployment statuses:
 | `failed`      | The deployment is terminal and current writes include the catalog `error_code` and `error_message`. |
 | `created`     | The deployment is a superseded historical record. When a newer deployment is accepted, the platform changes an older `queued` or `in_progress` deployment to `created`. |
 
-Clients must not wait for a `created` deployment to become `succeeded` or `failed`. Inspect the latest deployment instead.
-
 #### Deployment errors
 
-The platform uses these catalog codes:
+The error catalog has these retryability rules:
 
-| `error_code` | Status | `error_message` | Client action |
-| ------------ | ------ | --------------- | ------------- |
-| `insufficient_cpu` | `in_progress` | `Failed to start the project instance: not enough CPU. Reduce project CPU requests or contact support.` | Continue polling. The platform retries scheduling. |
-| `insufficient_memory` | `in_progress` | `Failed to start the project instance: not enough memory. Reduce project memory requests or contact support.` | Continue polling. The platform retries scheduling. |
-| `insufficient_storage` | `in_progress` | `Failed to start the project instance: not enough storage. Reduce project storage requests or contact support.` | Continue polling. The platform retries scheduling. |
-| `insufficient_instances` | `in_progress` | `Failed to start the project instance: instance limit reached. Scale down an unused project or contact support.` | Continue polling. The platform retries scheduling. |
-| `pod_exceeds_node_capacity` | `failed` | `Failed to start the project instance: requested project resources are too high. Reduce project CPU/memory requests or contact support.` | Stop polling. Reduce the requested resources before creating another deployment. |
-| `unable_to_start` | `failed` | `Failed to start the project instance. Contact support.` | Stop polling. Investigate the deployment or contact support before retrying. |
-| `internal_error` | `failed` | `An internal error occurred. Contact support.` | Stop polling and contact support before retrying. |
+| `error_code` | Status | Retryability |
+| ------------ | ------ | ------------ |
+| `insufficient_cpu` | `in_progress` | Retryable. Cloud continues scheduling. |
+| `insufficient_memory` | `in_progress` | Retryable. Cloud continues scheduling. |
+| `insufficient_storage` | `in_progress` | Retryable. Cloud continues scheduling. |
+| `insufficient_instances` | `in_progress` | Retryable. Cloud continues scheduling. |
+| `pod_exceeds_node_capacity` | `failed` | Terminal. Cloud stops scheduling. |
+| `unable_to_start` | `failed` | Terminal. Cloud stops scheduling. |
+| `internal_error` | `failed` | Terminal. Cloud stops scheduling. |
 
 `error_message` contains human-readable catalog text. Branch on `error_code`, not on the message text. During the legacy transition, an older failed deployment can contain `error_message` with a `null` `error_code`; clients can display that message, but cannot classify it by code.
-
-#### Poll a deployment
-
-Create a deployment, then poll the latest deployment until it reaches a terminal status:
-
-```bash
-curl -H "Authorization: Bearer <token>" \
-  https://api.spice.ai/v1/projects/123/deployments?limit=1
-```
-
-Treat `succeeded` and `failed` as terminal. Treat `created` as superseded and inspect the newest deployment. Keep polling `queued` and `in_progress`; an `in_progress` deployment with a retryable error remains active while the platform retries scheduling.
 
 ### Add a secret
 
