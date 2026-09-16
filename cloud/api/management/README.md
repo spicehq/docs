@@ -380,29 +380,7 @@ curl -X POST https://api.spice.ai/v1/projects/123/deployments \
   }'
 ```
 
-### Deployment responses
-
-The deployment endpoints return these fields. The response does not include `started_at`.
-
-```json
-{
-  "id": 67890,
-  "status": "in_progress",
-  "created_at": "2024-01-15T12:00:00Z",
-  "updated_at": "2024-01-15T12:01:00Z",
-  "image_tag": "1.5.0-models",
-  "replicas": 2,
-  "branch": "main",
-  "commit_sha": "abc123def456",
-  "commit_message": "Update dataset configuration",
-  "error_code": "insufficient_cpu",
-  "error_message": "The deployment requires more CPU than is currently available.",
-  "creation_source": "api",
-  "created_by": 123
-}
-```
-
-The `image_tag`, `branch`, `commit_sha`, `commit_message`, `error_code`, `error_message`, `creation_source`, and `created_by` fields can be `null` when the deployment has no value for them.
+### Deployment status and errors
 
 Use `GET /v1/projects/{projectId}/deployments` to list deployments, or use `GET /v1/projects/{projectId}/deployments/{deploymentId}` to retrieve one deployment.
 
