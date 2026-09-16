@@ -389,10 +389,10 @@ Deployments use these statuses:
 | Status        | Meaning |
 | ------------- | ------- |
 | `queued`      | The deployment is awaiting platform processing. |
-| `in_progress` | The deployment is active. Its nullable `error_code` can identify a retryable scheduling error. Both error fields can be `null` while the runtime starts. |
+| `in_progress` | The deployment is active. Optional `error_code` can identify a retryable scheduling error. |
 | `succeeded`   | The deployment is terminal. For Spice-managed compute, the runtime is ready. For a standalone Cloud Connect target, Cloud accepted the deployment for dispatch. This status does not confirm that the remote runtime is ready. |
 | `failed`      | The deployment is terminal and current writes include the catalog `error_code` and `error_message`. |
-| `created`     | The deployment is a superseded historical record. When a newer deployment is accepted, the platform changes an older `queued` or `in_progress` deployment to `created`. |
+| `created`     | The deployment is a superseded historical record. |
 
 #### Deployment errors
 
@@ -408,7 +408,7 @@ The error catalog classifies codes as retriable or terminal:
 | `unable_to_start` | Terminal |
 | `internal_error` | Terminal |
 
-`error_code` is nullable. When it is present, it is a catalog code. `error_message` contains human-readable catalog text. Branch on `error_code` when it is present, not on the message text.
+`error_code` is optional. When it is present, it is a catalog code. `error_message` contains human-readable catalog text. Branch on `error_code` when it is present, not on the message text.
 
 ### Add a secret
 
