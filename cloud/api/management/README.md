@@ -396,19 +396,19 @@ Deployments use these statuses:
 
 #### Deployment errors
 
-The error catalog has these retryability rules:
+The error catalog classifies codes as retriable or terminal:
 
-| `error_code` | Status | Retryability |
-| ------------ | ------ | ------------ |
-| `insufficient_cpu` | `in_progress` | Retryable. Cloud continues scheduling. |
-| `insufficient_memory` | `in_progress` | Retryable. Cloud continues scheduling. |
-| `insufficient_storage` | `in_progress` | Retryable. Cloud continues scheduling. |
-| `insufficient_instances` | `in_progress` | Retryable. Cloud continues scheduling. |
-| `pod_exceeds_node_capacity` | `failed` | Terminal. Cloud stops scheduling. |
-| `unable_to_start` | `failed` | Terminal. Cloud stops scheduling. |
-| `internal_error` | `failed` | Terminal. Cloud stops scheduling. |
+| `error_code` | Classification |
+| ------------ | -------------- |
+| `insufficient_cpu` | Retriable |
+| `insufficient_memory` | Retriable |
+| `insufficient_storage` | Retriable |
+| `insufficient_instances` | Retriable |
+| `pod_exceeds_node_capacity` | Terminal |
+| `unable_to_start` | Terminal |
+| `internal_error` | Terminal |
 
-`error_message` contains human-readable catalog text. Branch on `error_code`, not on the message text. During the legacy transition, an older failed deployment can contain `error_message` with a `null` `error_code`; clients can display that message, but cannot classify it by code.
+`error_message` contains human-readable catalog text. Branch on `error_code`, not on the message text.
 
 ### Add a secret
 
