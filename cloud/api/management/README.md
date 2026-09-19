@@ -251,19 +251,24 @@ These limits apply to SQL queries executed against your Spice runtime, not to ma
 
 The API uses standard HTTP status codes:
 
-| Status Code                 | Description                             |
-| --------------------------- | --------------------------------------- |
-| `200 OK`                    | Request succeeded                       |
-| `201 Created`               | Resource created successfully           |
-| `202 Accepted`              | Request accepted (async operation)      |
-| `204 No Content`            | Request succeeded with no response body |
-| `400 Bad Request`           | Invalid request body or parameters      |
-| `401 Unauthorized`          | Missing or invalid authentication       |
-| `403 Forbidden`             | Insufficient scope or permissions       |
-| `404 Not Found`             | Resource not found                      |
-| `409 Conflict`              | Resource already exists or conflict     |
-| `429 Too Many Requests`     | Rate limit exceeded                     |
-| `500 Internal Server Error` | Server error                            |
+| Status Code                 | Description                                    |
+| --------------------------- | ---------------------------------------------- |
+| `200 OK`                    | Request succeeded                              |
+| `201 Created`               | Resource created successfully                  |
+| `202 Accepted`              | Request accepted (async operation)             |
+| `204 No Content`            | Request succeeded with no response body        |
+| `400 Bad Request`           | Invalid request body or parameters             |
+| `401 Unauthorized`          | Missing or invalid authentication              |
+| `403 Forbidden`             | Insufficient scope or permissions              |
+| `404 Not Found`             | Resource not found                             |
+| `409 Conflict`              | Resource already exists or conflict            |
+| `410 Gone`                  | The token or resource has expired              |
+| `413 Payload Too Large`     | Request body exceeds the 1 MiB limit           |
+| `422 Unprocessable Entity`  | Valid request that cannot be completed as sent |
+| `429 Too Many Requests`     | Rate limit exceeded                            |
+| `500 Internal Server Error` | Server error                                   |
+| `502 Bad Gateway`           | An upstream service failed                     |
+| `503 Service Unavailable`   | A required service is temporarily unavailable  |
 
 **Error Response Format:**
 
