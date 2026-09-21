@@ -30,6 +30,7 @@
   * [Transfer](portal/apps/transfer.md)
   * [Delete](portal/apps/delete.md)
   * [Runtime](portal/apps/runtime.md)
+* [Dedicated Clusters](portal/dedicated-clusters/README.md)
 * [Public Projects](portal/public-apps.md)
 * [SpiceRack Registry](portal/spicerack.md)
 * [Project Spicepod](portal/app-spicepod/README.md)
