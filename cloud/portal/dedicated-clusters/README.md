@@ -57,5 +57,5 @@ If a node stops reporting telemetry, the monitor records a warning without an ob
 
 ## Related documentation
 
-- [Dedicated Clusters Management API reference](../../api/management/dedicated-clusters.md)
+- [Dedicated Clusters Management API reference](/api/management-api/dedicated-clusters)
 - [Project monitoring in the Portal](../../monitoring/portal.md)
