@@ -8,7 +8,7 @@ icon: server
 A **dedicated cluster** provides Spice-managed, single-tenant infrastructure for your organization. Your Projects run on isolated infrastructure.
 
 {% hint style="info" %}
-Dedicated clusters is a **Spice.ai Enterprise** feature. To request a dedicated cluster.
+Dedicated clusters are a **Spice.ai Enterprise** feature. To request a dedicated cluster, [contact support](https://spice.ai/support).
 {% endhint %}
 
 ## View a dedicated cluster
