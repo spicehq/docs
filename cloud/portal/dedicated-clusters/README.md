@@ -8,7 +8,7 @@ icon: server
 A **dedicated cluster** provides Spice-managed, single-tenant infrastructure for your organization. Your Projects run on isolated infrastructure.
 
 {% hint style="info" %}
-Dedicated clusters are a **Spice.ai Enterprise** feature. To request a dedicated cluster, [contact support](https://spice.ai/support).
+Dedicated clusters are a **Spice.ai Enterprise** feature.
 {% endhint %}
 
 ## View a dedicated cluster
@@ -57,5 +57,5 @@ If a node stops reporting telemetry, the monitor records a warning without an ob
 
 ## Related documentation
 
-- [Dedicated Clusters Management API reference](/api/management-api/dedicated-clusters)
+- [Dedicated Clusters Management API reference](../../api/management/dedicated-clusters.md)
 - [Project monitoring in the Portal](../../monitoring/portal.md)
