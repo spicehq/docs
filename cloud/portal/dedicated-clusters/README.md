@@ -40,11 +40,11 @@ Dedicated cluster monitors alert you when CPU or memory usage on an individual n
 - **Node CPU usage** fires when node CPU usage exceeds the configured percentage of node capacity.
 - **Node memory usage** fires when node memory usage exceeds the configured percentage of node capacity.
 
-CPU and memory use separate monitors. Each monitor measures a percentage against the CPU or memory capacity of each node, not total cluster utilization. If a node crosses the threshold, the monitor fires an alert and sends a notification for that node.
+CPU and memory use separate monitors. Each monitor measures a percentage against the CPU or memory capacity of each node, not total cluster utilization. If a node's usage crosses the threshold and remains above it for 5 minutes, the monitor fires an alert and sends a notification for that node.
 
 ### Configure a monitor
 
-Each monitor has one percentage threshold. By default, the monitor uses critical severity and fires when usage exceeds 85%. Usage must remain above the threshold for 5 minutes before the monitor fires.
+Each monitor has one percentage threshold. By default, the monitor uses critical severity and fires when usage exceeds 85%.
 
 Choose a notification destination:
 
