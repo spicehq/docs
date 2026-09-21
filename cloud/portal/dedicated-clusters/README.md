@@ -8,7 +8,7 @@ icon: server
 A **dedicated cluster** provides Spice-managed, single-tenant infrastructure for your organization. Your Projects run on isolated infrastructure.
 
 {% hint style="info" %}
-Dedicated clusters are available to Enterprise plan customers. To request a dedicated cluster, [Talk to Sales](https://meetings.hubspot.com/lukekim/talk-to-sales?uuid=836fd7be-a95e-4cee-b0cb-044fd8ea52a4).
+Dedicated clusters is a **Spice.ai Enterprise** feature. To request a dedicated cluster.
 {% endhint %}
 
 ## View a dedicated cluster
@@ -32,7 +32,7 @@ Dedicated cluster monitors alert you when CPU or memory usage on an individual n
 1. Select **Clusters** in your organization.
 2. Select a dedicated cluster.
 3. Select **Monitors**.
-4. Create a **Node CPU usage** or **Node memory usage** monitor template.
+4. Create a **Node CPU usage** or **Node memory usage** monitor.
 5. Set the threshold and notification target.
 
 ### Available monitor templates
