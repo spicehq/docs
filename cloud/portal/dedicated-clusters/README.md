@@ -19,9 +19,9 @@ Dedicated clusters are a **Spice.ai Enterprise** feature.
 
 The monitoring rail includes:
 
-- **Overview** shows total, requested, and used CPU, memory, and storage. Filter by node and time range.
-- **Usage** shows requested and actual resource usage by Project. Filter by Project and time range.
-- **Monitors** shows cluster resource monitors and their history.
+* **Overview** shows total, requested, and used CPU, memory, and storage. Filter by node and time range.
+* **Usage** shows requested and actual resource usage by Project. Filter by Project and time range.
+* **Monitors** shows cluster resource monitors and their history.
 
 ## Monitor a dedicated cluster
 
@@ -37,8 +37,8 @@ Dedicated cluster monitors alert you when CPU or memory usage on an individual n
 
 ### Available monitor templates
 
-- **Node CPU usage** fires when node CPU usage exceeds the configured percentage of node capacity.
-- **Node memory usage** fires when node memory usage exceeds the configured percentage of node capacity.
+* **Node CPU usage** fires when node CPU usage exceeds the configured percentage of node capacity.
+* **Node memory usage** fires when node memory usage exceeds the configured percentage of node capacity.
 
 CPU and memory use separate monitors. Each monitor measures a percentage against the CPU or memory capacity of each node, not total cluster utilization. If a node's usage crosses the threshold and remains above it for 5 minutes, the monitor fires an alert and sends a notification for that node.
 
@@ -48,8 +48,8 @@ Each monitor has one percentage threshold. By default, the monitor uses critical
 
 Choose a notification destination:
 
-- **Email** sends notifications to selected organization members or email addresses.
-- **HTTP** sends a JSON notification with an HTTP `POST` request to an HTTPS URL.
+* **Email** sends notifications to selected organization members or email addresses.
+* **HTTP** sends a JSON notification with an HTTP `POST` request to an HTTPS URL.
 
 Notifications and monitor history identify the cluster, node, threshold, duration, state, severity, observed percentage when available, and a Portal link.
 
@@ -57,5 +57,5 @@ If a node stops reporting telemetry, the monitor records a warning without an ob
 
 ## Related documentation
 
-- [Dedicated Clusters Management API reference](/api/management-api/dedicated-clusters/dedicated-clusters.md)
-- [Project monitoring in the Portal](../../monitoring/portal.md)
+* [Dedicated Clusters Management API reference](https://app.gitbook.com/s/xEBUMDTvXMmjEXg5Po1u/management-api/dedicated-clusters)
+* [Project monitoring in the Portal](../../monitoring/portal.md)
