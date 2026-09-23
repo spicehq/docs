@@ -413,7 +413,7 @@ The error catalog classifies codes as retriable or terminal:
 | `unable_to_start` | Terminal |
 | `internal_error` | Terminal |
 
-`error_code` is optional. When it is present, it is a catalog code. `error_message` contains human-readable catalog text. The two fields are set together and cleared together. Branch on `error_code` when it is present, not on the message text.
+`error_code` is optional. When it is present, it is a catalog code. `error_message` contains human-readable catalog text. On current writes, the two fields are set together and cleared together. Older failed deployments can carry an `error_message` without an `error_code`. Branch on `error_code` when it is present, not on the message text.
 
 A project instance that cannot start because the cluster lacks CPU, memory, storage, or instance capacity is a retriable scheduling block. `GET /v1/projects/{projectId}/deployments` and `GET /v1/projects/{projectId}/deployments/{deploymentId}` keep `status` as `in_progress` and return both `error_code` (`insufficient_cpu`, `insufficient_memory`, `insufficient_storage`, or `insufficient_instances`) and `error_message` while Cloud retries placement. That is not a terminal `failed` deployment. Terminal codes (`pod_exceeds_node_capacity`, `unable_to_start`, `internal_error`) record `failed`.
 
