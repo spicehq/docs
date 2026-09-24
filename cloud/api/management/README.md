@@ -372,6 +372,30 @@ Organizations with a [dedicated cluster](dedicated-clusters.md) can pass `cluste
 Names are unique within an organization and are compared case-insensitively, so a name that differs from an existing project only by case is rejected with `409`.
 {% endhint %}
 
+### Update a project
+
+```bash
+curl -X PUT https://api.spice.ai/v1/projects/123 \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "replicas": 2
+  }'
+```
+
+{% hint style="warning" %}
+**An update that races a pause, resume, or restore is not saved.** If the project's lifecycle state changes while the update is in flight, the request returns `409` with `code: project_state_changed`:
+
+```json
+{
+  "error": "The project changed state while this update was in flight, so the configuration was not saved. Re-read the project before retrying.",
+  "code": "project_state_changed"
+}
+```
+
+Re-read the project with `GET /v1/projects/{projectId}` before retrying. A configuration update clears `paused_at`, so repeating the request against a project that has since been paused also resumes it.
+{% endhint %}
+
 ### Create a deployment
 
 ```bash
