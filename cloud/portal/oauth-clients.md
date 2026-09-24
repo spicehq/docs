@@ -29,12 +29,22 @@ Organization administrators can view and delete OAuth clients from the **OAuth C
 - **View clients**: See all registered clients, their scopes, and creation dates.
 - **Delete a client**: Revokes access for all tokens issued to that client. This action cannot be undone.
 
+## Regenerating a Client Secret
+
+Organization administrators can replace a client's secret without deleting the client, which keeps its Client ID and scopes:
+
+1. On the **OAuth Clients** settings page, open the client's actions menu and select **Regenerate Secret…**.
+2. Type the client's ID to confirm, then click **Regenerate**.
+3. Copy the new client secret from the dialog. Like the original secret, it is shown only once.
+
+The current secret is invalidated immediately, so new token requests that use it fail. Access tokens already issued with the old secret remain valid until they expire. Update every application that uses the client with the new secret.
+
 ## Available Scopes
 
 Scopes control what actions an OAuth client can perform. When creating a client, select only the scopes required for its intended use.
 
 ## Security Best Practices
 
-- Rotate client secrets periodically.
+- Rotate client secrets periodically by [regenerating them](#regenerating-a-client-secret).
 - Audit active clients regularly and remove any that are no longer needed.
 - Use descriptive names so clients are easy to identify and manage.
