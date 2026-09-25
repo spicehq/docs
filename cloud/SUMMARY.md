@@ -58,6 +58,7 @@
 
 * [Grafana](integrations/grafana.md)
 * [Databricks](integrations/databricks.md)
+* [Slack](integrations/slack.md)
 
 ## Reference
 
