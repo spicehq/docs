@@ -51,6 +51,10 @@ Choose a notification destination:
 * **Email** sends notifications to selected organization members or email addresses.
 * **HTTP** sends a JSON notification with an HTTP `POST` request to an HTTPS URL.
 
+{% hint style="info" %}
+Slack webhook alerting is not supported for dedicated-cluster monitors. Use **Email** until Slack alerting is available.
+{% endhint %}
+
 Notifications and monitor history identify the cluster, node, threshold, duration, state, severity, observed percentage when available, and a Portal link.
 
 If a node stops reporting telemetry, the monitor records a warning without an observed percentage.
@@ -58,4 +62,5 @@ If a node stops reporting telemetry, the monitor records a warning without an ob
 ## Related documentation
 
 * [Dedicated Clusters Management API reference](https://app.gitbook.com/s/xEBUMDTvXMmjEXg5Po1u/management-api/dedicated-clusters)
+* [Deployments](../app-spicepod/deployments.md) — status, including `in_progress` with `error_code` when a project cannot start for lack of cluster resources
 * [Project monitoring in the Portal](../../monitoring/portal.md)

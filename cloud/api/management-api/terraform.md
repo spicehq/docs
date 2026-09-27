@@ -211,7 +211,7 @@ resource "spiceai_deployment" "production" {
 | `created_at`    | Timestamp when the deployment was created                         |
 | `started_at`    | Timestamp when the deployment started running                     |
 | `finished_at`   | Timestamp when the deployment finished                            |
-| `error_message` | Error message if deployment failed                                |
+| `error_message` | Catalog text when the deployment failed, or when `status` is `in_progress` and Cloud is retrying a scheduling block |
 
 Use `triggers` to automatically redeploy when project configuration changes:
 
