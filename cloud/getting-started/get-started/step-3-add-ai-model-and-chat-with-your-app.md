@@ -22,8 +22,8 @@ Complete [Add a Dataset and query data](step-2-add-dataset-and-query-data.md) fi
 1. Navigate to **Build** > **Code**.
 2. In **Components** sidebar, click **Model Providers** tab, and select the provider that matches your key: **OpenAI**, **Anthropic**, or **xAI**.
 3. Enter the **Model name.**
-4. Enter the **Model ID** for the provider, (e.g. `gpt-4o`, `claude-sonnet-4-6`, or `grok-4.6`).
-5. Set the provider **API Key** secret
+4. Enter the **Model ID** for the provider (e.g. `gpt-4o`, `claude-sonnet-4-6`, or `grok-4.6`).
+5. Set the provider **API Key** secret.
    1. API keys and other secrets are securely stored and encrypted. See [Secrets](../../portal/apps/secrets.md).
 6. Insert `tools: auto` in the `params` section of the Model to automatically connect datasets to the model.\
    \
