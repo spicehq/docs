@@ -124,6 +124,17 @@ service:
 
 Point the operator at the collector's OTLP gRPC port (`4317`) and choose `temporality: cumulative` for the Prometheus-remote-write path above, or `delta` when exporting to Datadog / CloudWatch / New Relic.
 
+## Managed mode (BYOC) metrics
+
+When [Bring-Your-Own-Cluster (BYOC) managed mode](byoc.md) is enabled, the operator scrapes metrics from each managed pod (the Spice runtime's Prometheus endpoint and the node kubelet's resource endpoint) and forwards them to Spice.ai Cloud. Two counters on the operator's own metrics endpoint report the health of that pipeline:
+
+| Metric                                                          | Labels                | Description                                                          |
+| ---------------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------- |
+| `spiceai_operator_managed_metrics_scrape_total`                  | `source`, `result`    | Scrape attempts per source: `spiced`, `kubelet`, or `discovery`.        |
+| `spiceai_operator_managed_metrics_export_total`                  | `result`              | Export batches sent to Spice.ai Cloud.                                  |
+
+`result` values on the scrape counter include `success`, `tls_error`, `request_error`, `forbidden`, `unauthorized`, `http_error`, `no_client`, `no_scraper_token`, and `missing_identity`. A rising `tls_error` count on `source="kubelet"` is the signature of unverifiable kubelet serving certificates — see [Kubelet TLS verification](byoc.md#kubelet-tls-verification) for the fix. Export counter values include `enqueued`, `queue_full` (backpressure while disconnected), `empty`, and `resource_too_large`.
+
 ## Resilient initialization
 
 Telemetry setup is defensive: if the OTLP endpoint is unreachable or misconfigured at startup, the operator logs the error and continues running with the Prometheus reader rather than crashing. Export failures are retried and never block reconciliation, so a metrics outage cannot take down your workloads.
