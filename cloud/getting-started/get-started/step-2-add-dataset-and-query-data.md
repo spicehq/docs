@@ -35,9 +35,11 @@ curl --request POST \
 {% endtab %}
 {% endtabs %}
 
-🎉 Congratulations, you've now added a dataset and queried it.
+🎉 Congratulations, you've now added a dataset and queried it. That completes the getting started guide. No AI model or model provider API key is required.
 
-Continue to [Step 4 to add an AI Model and chat with the dataset](step-3-add-ai-model-and-chat-with-your-app.md).
+Continue to [Next Steps](next-steps.md) to explore use-cases to do more with the Spice.ai Cloud Platform.
+
+If you have an OpenAI, Anthropic (Claude), or xAI (Grok) API key, optionally [add an AI Model and chat with the dataset](step-3-add-ai-model-and-chat-with-your-app.md).
 
 {% hint style="info" %}
 Need help? Ask a question, raise issues, and provide feedback to the Spice AI team on [Slack](https://spiceai.org/slack).

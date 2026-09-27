@@ -5,9 +5,9 @@
 * [Welcome to Spice.ai](README.md)
 * [Getting Started](cloud/getting-started/get-started/README.md)
   * [Sign in with GitHub](cloud/getting-started/get-started/portal-login.md)
-  * [Create a Spice app](cloud/getting-started/getting-started/portal-login-1.md)
+  * [Create a Spice project](cloud/getting-started/getting-started/portal-login-1.md)
   * [Add a Dataset and query data](cloud/getting-started/get-started/step-2-add-dataset-and-query-data.md)
-  * [Add AI Model and chat with your data](cloud/getting-started/get-started/step-3-add-ai-model-and-chat-with-your-app.md)
+  * [Add an AI Model and chat with your data (Optional)](cloud/getting-started/get-started/step-3-add-ai-model-and-chat-with-your-app.md)
   * [Next Steps](cloud/getting-started/get-started/next-steps.md)
 * [FAQ](faq.md)
 
