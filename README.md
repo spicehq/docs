@@ -60,7 +60,8 @@ Get up and running in minutes:
 1. [Sign in with GitHub](cloud/getting-started/get-started/portal-login.md)
 2. [Create a Spice project](cloud/getting-started/getting-started/portal-login-1.md)
 3. [Add a dataset and query data](cloud/getting-started/get-started/step-2-add-dataset-and-query-data.md)
-4. [Add an AI model and chat](cloud/getting-started/get-started/step-3-add-ai-model-and-chat-with-your-app.md)
+
+Optional, with an OpenAI, Anthropic, or xAI API key: [Add an AI model and chat with your data](cloud/getting-started/get-started/step-3-add-ai-model-and-chat-with-your-app.md)
 
 <a href="cloud/getting-started/get-started/" class="button primary" data-icon="rocket-launch">Get started</a> <a href="cloud/api/sql-query/" class="button secondary" data-icon="terminal">API reference</a>
 {% endcolumn %}

@@ -7,7 +7,7 @@
   * [Sign in with GitHub](getting-started/get-started/portal-login.md)
   * [Create a Spice project](getting-started/getting-started/portal-login-1.md)
   * [Add a Dataset and query data](getting-started/get-started/step-2-add-dataset-and-query-data.md)
-  * [Add AI Model and chat with your data](getting-started/get-started/step-3-add-ai-model-and-chat-with-your-app.md)
+  * [Add an AI Model and chat with your data (Optional)](getting-started/get-started/step-3-add-ai-model-and-chat-with-your-app.md)
   * [Next Steps](getting-started/get-started/next-steps.md)
 
 ## Portal
