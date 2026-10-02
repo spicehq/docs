@@ -6,6 +6,90 @@ icon: clock-rotate-left
 # Changelog
 
 {% updates format="full" %}
+{% update date="2026-09-30" %}
+## September 2026
+
+### Highlights
+
+* **Project Monitors** – Project monitors are now available on every project that Spice.ai hosts. You can monitor SQL query failures, SQL p99 latency, HTTP 5xx errors, errors from Arrow Flight SQL, instance memory, and instance CPU. The memory and CPU monitors measure each instance against its configured limit.
+* **Slack Integration** – You can connect a Slack workspace to an organization in **Settings → Integrations**. Project monitors and cluster monitors can then send alerts to a Slack channel. When the alert condition clears, Spice.ai marks the original message as resolved and adds a reply in its thread.
+* **Alert Destinations** – One alert can now notify email, Slack, and an HTTPS webhook together. Organization admins can save a list of email recipients that members can add to an alert. You can send a test alert from the page of a monitor.
+* **SQL Query Time Limits** – Spice.ai now applies the [query time limit of your plan](../cloud/api/management/README.md) to SQL queries after the next deployment of a project. An Enterprise query can run for up to 30 minutes. The playground and Task History show when a query times out, and you can filter Task History for these queries.
+* **Fork a Project** – You can now fork a project into a new project, in the same location or in a different region or dedicated cluster. A fork copies the spicepod, connections, secrets, update channel, and tags, and it links back to the source project. The Management API adds `POST /v1/projects/{projectId}/forks`.
+* **MySQL Real-Time Replicas** – Real-time onboarding and the Real-time Replica template now accept MySQL as a source, with binlog replication. The portal warns you when GTID is not on. Without GTID, replication can fail to resume after a failover of the source.
+* **[Deployment Failure Reasons](../cloud/portal/app-spicepod/deployments.md)** – A deployment that cannot start now shows **Failed to start** with the reason, for example not enough CPU, memory, or storage. The Management API returns the reason in `error_code`. The new `GET /v1/projects/{projectId}/deployments/{deploymentId}` endpoint returns one deployment.
+* **Cluster Monitors** – Dedicated clusters now have monitors for cluster CPU, cluster memory, and cluster availability. Each monitor compares the total use with the total capacity of the cluster. Organization members and viewers can now see the resources and the monitoring of a cluster.
+* **Model Catalog Refresh** – The catalog adds `claude-opus-5-5`, `claude-fable-5-1`, `gpt-6-sol`, `gpt-6-luna`, and `gpt-6-astra`. `grok-4.7` is the new default for xAI. Spice.ai marks the retired models from OpenAI, xAI, and Groq, and you can now save a Moonshot connection.
+* **Connections** – Real-time onboarding now saves the source database as an organization connection that other projects can use. A connection also has a display name that can contain any characters. The portal generates the identifier for spicepod references.
+* **Organization Administration** – Organization admins can now [regenerate the secret of an OAuth client](../cloud/portal/oauth-clients.md). The audit log has a Resource column that names the object of each event. The Usage page shows persistent storage in GB-hours.
+* **Management API Changes** – The Management API adds `PATCH /v1/projects/{projectId}/monitors/{alertId}` and the `/v1/clusters/{clusterId}/monitors` endpoints. For a project connected to GitHub, `PUT /v1/projects/{projectId}` returns `409` with code `github_connected` if the request changes the spicepod. Change `spicepod.yaml` in the repository instead.
+* **Playground Polish** – Search results show which column matched, and you can select the column to show. In Text-to-SQL, the Sample data switch moves to Advanced options, with a description of the rows that it sends to the model.
+
+### Runtime
+
+**Stable channel**
+
+Spice runtime [v2.3.2](https://spiceai.org/releases/v2.3.2) (Sep 22, 2026):
+
+* Cayenne now builds the `indexes` that a dataset declares, in `mode: file` and in `mode: memory`. A lookup on all columns of an index reads only the matching rows.
+* The runtime checks the SQL results cache before it plans a query. In the release benchmarks, the time for a small cache hit decreased by 44% to 52%.
+* A full refresh now writes each file with a distinct range of the data, so a filtered query reads fewer files.
+* `cayenne_cluster_by` replaces `cayenne_datalake_clustering_columns` and groups related rows in all storage tiers. Rename the parameter before you upgrade.
+* Cayenne datasets with different `cayenne_file_path` values must now share one `cayenne_metadata_dir`. Set it on each dataset before you upgrade.
+
+Spice runtime [v2.3.1](https://spiceai.org/releases/v2.3.1) (Sep 15, 2026):
+
+* In the release benchmarks, Vortex scans with a selective filter read 45% to 58% fewer bytes. Vortex also evaluates a large constant `IN` list in one pass.
+* Parameterized queries now use one cached logical plan for all parameter values. The SQL results cache keeps a separate result for each set of values.
+* `DELETE`, `UPDATE`, and `INSERT` now change the rows of a Cayenne acceleration in the default `mode: memory`.
+* Cayenne applies `sort_columns` when a full refresh replaces a table.
+* Projects that move to v2.3.1 from v2.1.x also get the changes in v2.2.0, v2.2.1, and v2.3.0. Read the [v2.3.0 breaking changes](https://spiceai.org/releases/v2.3.0#breaking-changes) before you deploy.
+
+**Preview channel**
+
+Spice runtime [v2.3.0](https://spiceai.org/releases/v2.3.0) (Sep 10, 2026) — a minor release:
+
+* **BigQuery Federation** – BigQuery runs more query shapes as one remote job, for example recursive CTEs, correlated subqueries, and aggregate window functions. When a client cancels a query, the BigQuery job stops.
+* **Caching Accelerator Limits** – The new `caching_max_size` and `caching_max_items` settings limit the size and the row count of a `refresh_mode: caching` acceleration.
+* **SQL Results Cache** – When you set `stale_while_revalidate_ttl`, the runtime serves the previous result during a refresh and revalidates it in the background.
+* **GitHub Data Connector** – The connector adds eight tables, for example `reviews`, `review_threads`, and `releases`, and 17 columns on `pulls`.
+* **Google Models on Vertex AI** – A `from: google` model now authenticates with a GCP service account on Vertex AI. The runtime no longer accepts `google_api_key`.
+* v2.3.0 has breaking changes. Read the [release notes](https://spiceai.org/releases/v2.3.0) before you upgrade.
+
+Spice runtime [v2.2.1](https://spiceai.org/releases/v2.2.1) (Sep 2, 2026):
+
+* Cayenne now reclaims the storage that upserts and compaction leave behind. Disk and metastore use stay bounded on tables with frequent refreshes or CDC upserts.
+* Cayenne applies `retention_sql` on datasets with `refresh_mode: full` or `refresh_mode: changes`. A `retention_sql` predicate can now call `now()`.
+* The bundled DuckDB moves from v1.5.5 to v1.4.4, so the memory of DuckDB upsert refreshes stays steady. SQL syntax that DuckDB added in v1.5 is not available.
+* The HTTP data connector keeps at most 64 MiB of responses in its cache for each dataset by default. Set `response_cache_max_size_bytes` to change the limit.
+* Vector search with HuggingFace sentence-transformer models returns more relevant results. On MTEB SciFact with `all-MiniLM-L6-v2`, nDCG@10 increases from 0.018 to 0.640.
+
+<details>
+
+<summary>Bug Fixes</summary>
+
+* A dataset in the Refreshing state now counts as ready. Instance details show it as **Ready · Refreshing**.
+* Monitoring charts now show the most recent data.
+* Cluster monitoring charts and the charts for the Arrow Flight API show data at the correct resolution. The Flight charts add views for the gRPC status, the error rate, and the latency.
+* A deployment that the platform refuses now shows as failed. Deployment history marks a deployment Ready only when an instance served it.
+* A deployment no longer stays in progress after its instances become ready or fail. A newer deployment replaces the older deployments that still wait.
+* A resume that fails now leaves the project paused, so you can try the resume again.
+* When you pause a project, Spice.ai now disables its monitors. When you delete a project or an account, Spice.ai removes its monitors.
+* Instance CPU and memory monitors no longer send a false no-data warning after a deployment replaces the instances.
+* A dataset refresh request now returns an error if a project instance does not accept the refresh.
+* The portal and the Management API now reject a spicepod that adds a retired component source when you save it, not when you deploy it.
+* `PUT /v1/projects/{projectId}` returns `404` or `409`, not `500`, if someone deletes the project or changes its state during the update. `POST /v1/projects` returns `409` if someone deletes the project while Spice.ai configures it.
+* A deployment request with an `image_tag` that the update channel does not publish now returns `400`. `PUT /v1/projects/{projectId}` accepts `image_tag: null` together with `update_channel`.
+* The OpenAPI spec for deployments now matches the response of the API.
+* Create-project pages show **Create Spice Project**. **Test connection** shows only for connectors that can test a connection.
+* Password managers no longer prompt you to fill or save connector credentials or alert names.
+* The spicepod editor keeps the upgrade hint for a saved model after the model retires.
+* Monitor pages keep your unsaved edits, show the full alert name and the current threshold, and keep chart labels readable.
+
+</details>
+
+{% endupdate %}
+
 {% update date="2026-08-31" %}
 ## August 2026
 
