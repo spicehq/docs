@@ -25,39 +25,39 @@ The monitoring rail includes:
 
 ## Monitor a dedicated cluster
 
-Dedicated cluster monitors alert you when CPU or memory usage on an individual node reaches a threshold.
+Dedicated cluster monitors alert you when the cluster runs short of CPU, memory, or free capacity. Each monitor compares the sum of the resources in use with the sum of the cluster capacity. One busy node does not fire a monitor while the cluster still has room.
 
 ### Create a monitor
 
 1. Select **Clusters** in your organization.
 2. Select a dedicated cluster.
 3. Select **Monitors**.
-4. Create a **Node CPU usage** or **Node memory usage** monitor.
-5. Set the threshold and notification target.
+4. Create a **Cluster CPU**, **Cluster memory**, or **Cluster availability** monitor.
+5. Set the threshold and one or more notification destinations.
 
 ### Available monitor templates
 
-* **Node CPU usage** fires when node CPU usage exceeds the configured percentage of node capacity.
-* **Node memory usage** fires when node memory usage exceeds the configured percentage of node capacity.
+* **Cluster CPU** fires when the sum of CPU in use exceeds the configured percentage of the sum of cluster CPU capacity.
+* **Cluster memory** fires when the sum of memory in use exceeds the configured percentage of the sum of cluster memory capacity.
+* **Cluster availability** fires when the cluster has little free capacity for projects. The monitor divides the unused CPU and the unused memory by the cluster capacity, and it uses the smaller of the two percentages.
 
-CPU and memory use separate monitors. Each monitor measures a percentage against the CPU or memory capacity of each node, not total cluster utilization. If a node's usage crosses the threshold and remains above it for 5 minutes, the monitor fires an alert and sends a notification for that node.
+If the condition stays true for 5 minutes, the monitor fires an alert and sends a notification for the cluster.
+
+A monitor from the earlier **Node CPU usage** or **Node memory usage** template keeps its per-node evaluation until you save it. When you save it, it becomes a **Cluster CPU** or **Cluster memory** monitor.
 
 ### Configure a monitor
 
-Each monitor has one percentage threshold. By default, the monitor uses critical severity and fires when usage exceeds 85%.
+Each monitor has one percentage threshold and uses critical severity by default. **Cluster CPU** and **Cluster memory** fire above 85%. **Cluster availability** fires below 15%.
 
-Choose a notification destination:
+Choose one or more notification destinations. A monitor can use each type of destination one time:
 
 * **Email** sends notifications to selected organization members or email addresses.
 * **HTTP** sends a JSON notification with an HTTP `POST` request to an HTTPS URL.
+* **Slack** posts notifications to a channel in the Slack workspace that you connect to the organization. See [Slack integration](../../integrations/slack.md).
 
-{% hint style="info" %}
-Slack webhook alerting is not supported for dedicated-cluster monitors. Use **Email** until Slack alerting is available.
-{% endhint %}
+Notifications and monitor history identify the cluster, the threshold, the duration, the state, the severity, the observed percentage when available, and a Portal link.
 
-Notifications and monitor history identify the cluster, node, threshold, duration, state, severity, observed percentage when available, and a Portal link.
-
-If a node stops reporting telemetry, the monitor records a warning without an observed percentage.
+If the cluster stops reporting telemetry, the monitor records a warning without an observed percentage.
 
 ## Related documentation
 
