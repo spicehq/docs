@@ -108,7 +108,7 @@ allowVolumeExpansion: true
 {% endtab %}
 {% endtabs %}
 
-### 3. Cayenne shared object storage (Cayenne only)
+### 3. Cayenne shared object storage (Cayenne only) <a href="#cayenne-shared-object-storage" id="cayenne-shared-object-storage"></a>
 
 For [Cayenne](https://spiceai.org/docs/components/data-accelerators/cayenne) acceleration that must be shared across replicas or persisted independently of pod lifecycle, point Cayenne at object storage:
 
@@ -117,6 +117,18 @@ For [Cayenne](https://spiceai.org/docs/components/data-accelerators/cayenne) acc
 - **GCP**: Cloud Storage with the `Standard` storage class.
 
 Object-store-backed Cayenne is the recommended pattern for `SpicepodCluster` deployments where multiple executors must share the same accelerated dataset.
+
+These Cayenne data paths are separate from [acceleration snapshots](../features/acceleration-snapshots.md#snapshot-location):
+
+| Store | Parameters | Role |
+| ----- | ---------- | ---- |
+| Cayenne warm data tier | `cayenne_file_path`, `cayenne_s3_*` | On AWS this is S3 Express One Zone. It holds Cayenne data files for low-latency reads in one zone. |
+| Cayenne cold / datalake tier | `cayenne_datalake_location` | Standard `s3://` object storage. Promotion writes incrementally: unchanged cold files are carried forward. See [Cold object-store tier](https://spiceai.org/docs/components/data-accelerators/cayenne#cold-object-store-tier). |
+| Acceleration snapshots | `snapshots.location` | Standard S3, GCS, or ADLS. Each snapshot object is a full copy of the accelerated dataset so replicas can bootstrap. Express One Zone is not this bucket. |
+
+{% hint style="warning" %}
+Keep `snapshots.location` on a general-purpose bucket so bucket replication and multi-region readers work. An S3 Express One Zone directory bucket is the Cayenne warm data tier only.
+{% endhint %}
 
 ### Not recommended for accelerations
 
@@ -166,4 +178,4 @@ Recovery procedure:
 2. Reapply the operator chart and the Spicepod manifests via the GitOps controller.
 3. Wait for executors to attach to the existing object-store state, or for `SpicepodSet` accelerations to refresh from upstream.
 
-For RPO-sensitive deployments, run a warm-standby cluster in a second region with the same Spicepod manifests and a cross-region replicated object store.
+For RPO-sensitive deployments, run a warm-standby cluster in a second region with the same Spicepod manifests and a cross-region replicated object store. Snapshot buckets that another region bootstraps from are part of that replicated standard object store. S3 Express One Zone directory buckets stay on the Cayenne warm data tier in a single zone.

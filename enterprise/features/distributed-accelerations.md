@@ -136,7 +136,7 @@ In cluster mode, the scheduler computes the owning executor for each row from `p
 
 ## Acceleration snapshots
 
-Cayenne integrates with [Acceleration Snapshots](acceleration-snapshots.md) so that a newly added executor can hydrate its assigned partitions from object storage instead of re-scanning the federated source:
+Cayenne integrates with [Acceleration Snapshots](acceleration-snapshots.md) so that a newly added executor can hydrate its assigned partitions from object storage instead of re-scanning the federated source. Each written snapshot is a full copy on standard object storage, separate from the Cayenne S3 Express One Zone data tier. See [Snapshot contents](acceleration-snapshots.md#snapshot-contents).
 
 ```yaml
 acceleration:
