@@ -158,6 +158,8 @@ spec:
       value: INFO
 ```
 
+An out-of-memory refusal is logged at `WARN`. Every other per-query failure is logged at `DEBUG` on `runtime::datafusion::query`, so a rise in `query_failures` does not, by itself, print the SQL error. While investigating, set `SPICED_LOG` to `runtime::datafusion::query=debug,info`. The HTTP, Flight, and JDBC clients also receive the message; see [Diagnosing query failures](../../features/observability/task-history.md#diagnosing-query-failures).
+
 ### Log routing
 
 | Destination                  | Recommended forwarder                                                       |

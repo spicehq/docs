@@ -307,6 +307,19 @@ datasets:
       metadata_path: s3a://my-bucket/hadoop_warehouse/test/my_table_2/metadata/v1.metadata.json
 ```
 
+## Append refresh and file layout <a href="#append-refresh-and-file-layout" id="append-refresh-and-file-layout"></a>
+
+An Iceberg dataset accelerated with `refresh_mode: append` and a `time_column` polls for rows newer than the latest `time_column` already stored. `refresh_append_overlap` widens that window. See [Incremental ingestion](../../features/data-acceleration/README.md#incremental-ingestion).
+
+The scan pushes the time predicate into the Iceberg reader. Row-group filtering is on, so a Parquet row group whose statistics cannot match the predicate is skipped. How much of each file that skips depends on how the data is ordered:
+
+* Partition the table by a time transform of `time_column`, such as `days(event_time)` or `hours(event_time)`, or compact with a sort order on `time_column`. New rows then sit in files and row groups whose statistics are above the watermark, and a poll reads mostly new data.
+* Compaction that mixes old and new rows into the same files, such as bin-pack compaction of an unpartitioned table, puts both sides of the watermark in one row group. The statistics overlap the refresh window, so each poll reads those files to find a few new rows.
+
+Compare both layouts on a sample of the table before choosing one.
+
+Equality-delete files that apply to a data file are read and combined with the scan predicate. Row-group statistics are tested against that combined predicate. A file whose `time_column` statistics still overlap the refresh window is opened, and its equality-delete files are read with it.
+
 ## Limitations
 
 {% hint style="warning" %}

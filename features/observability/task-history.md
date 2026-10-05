@@ -356,3 +356,67 @@ Example output:
 +-----------+----------------------------+-----------------------+------------------------------------------------------------------------------------------------------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
 
+### Diagnosing query failures <a href="#diagnosing-query-failures" id="diagnosing-query-failures"></a>
+
+The `query_failures` metric counts failed queries. Its `err_code` label separates the causes:
+
+| `err_code`            | What it indicates                                                                                                                                          |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SyntaxError`         | SQL that does not parse.                                                                                                                                   |
+| `QueryPlanningError`  | SQL that parses and then fails planning, such as an unknown table or function.                                                                            |
+| `QueryExecutionError` | The query exceeded `runtime.query.timeout`, or failed while results were streaming.                                                                        |
+| `ResourcesExhausted`  | A query memory pool refused the query.                                                                                                                     |
+| `InternalError`       | Another failure reported before streaming starts. An Arrow error such as division by zero is counted here when it is raised before the response streams. |
+
+Have each client log the error it receives. That text is the record available at the default log level for every failure other than an out-of-memory refusal.
+
+HTTP clients of `/v1/sql` get the message in the response body:
+
+* An execution error such as division by zero is HTTP 400.
+* A query that exceeds `runtime.query.timeout` is HTTP 504. The body names the configured timeout and tells the caller to raise `runtime.query.timeout` or optimize the query. Unset means no timeout. The limit covers planning, admission, execution, and streaming, and it does not apply to internal work such as acceleration refresh.
+* A memory-pool refusal is HTTP 503.
+
+When the timeout fires before the response starts, Flight SQL reports `DEADLINE_EXCEEDED` with the same message. After results have started streaming, the status is already sent and the stream ends with the timeout error. The Arrow Flight SQL JDBC driver exposes the Flight status description from `SQLException.getMessage()`.
+
+The runtime writes one log line per failed query on the `runtime::datafusion::query` target, including the trace ID. An out-of-memory refusal is logged at `WARN`:
+
+```text
+Query refused, out of memory (ResourcesExhausted): ...
+```
+
+Every other failure is logged at `DEBUG`:
+
+```text
+Query failed (QueryExecutionError): ...
+```
+
+The default level leaves the `DEBUG` line off. Enable it for that module, and keep the rest of the runtime at `info`:
+
+```shell
+SPICED_LOG='runtime::datafusion::query=debug,info'
+```
+
+The `-v` and `-vv` flags override `SPICED_LOG`.
+
+Task history stores the same failure in `error_message` and in `labels['error_code']`. Those rows stay in memory until `retention_period` (default `8h`). `query_failures` and the log line are still recorded when task history is disabled.
+
+```sql
+SELECT trace_id, error_message, labels['error_code'] AS error_code, input
+FROM spice.runtime.task_history
+WHERE task = 'sql_query' AND error_message IS NOT NULL
+ORDER BY start_time DESC
+LIMIT 20;
+```
+
+### Client trace IDs <a href="#client-trace-ids" id="client-trace-ids"></a>
+
+Send `spice-trace-id` on an HTTP request, or as Flight metadata of the same name, to pin the trace ID for that request. The runtime records the ID on the query's log lines and in the `trace_id` column.
+
+The value is an OpenTelemetry trace ID: 32 hexadecimal characters. Uppercase hexadecimal is accepted and stored in lowercase. The all-zero value is rejected. A value in another format, such as a request ID with a letter prefix, is rejected with a warning and is left unused. The request still runs, under a trace ID the runtime generates:
+
+```text
+Received invalid HTTP header: In spice-trace-id header, invalid trace id '<value>'. Expected 32 hexadecimal characters, not all zero.
+```
+
+Send the bare 32-character hexadecimal ID. When a request also includes a W3C `traceparent` header, the `spice-trace-id` value is the one recorded.
+

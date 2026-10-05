@@ -122,7 +122,7 @@ All metrics include relevant labels (dimensions) for filtering and aggregation.
 | `query_duration_ms`           | histogram | The total amount of time spent planning and executing queries in milliseconds.                                                                  |
 | `query_execution_duration_ms` | histogram | The total amount of time spent only executing queries (0 for cached queries).                                                                   |
 | `query_executions`            | count     | Number of query executions.                                                                                                                     |
-| `query_failures`              | count     | Number of query failures.                                                                                                                       |
+| `query_failures`              | count     | Number of query failures, labeled by `err_code` (`SyntaxError`, `QueryPlanningError`, `QueryExecutionError`, `ResourcesExhausted`, `InternalError`). |
 | `query_processed_bytes`       | count     | Number of bytes processed by the runtime.                                                                                                       |
 | `query_produced_spills`       | count     | Number of spills produced by the query.                                                                                                         |
 | `query_returned_bytes`        | count     | Number of bytes returned to query clients.                                                                                                      |
