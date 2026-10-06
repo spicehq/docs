@@ -65,3 +65,15 @@ The request logs provide a detailed record of individual API requests to your pr
 4. Browse the log entries to inspect individual request details including endpoint, status code, and duration.
 
 Use request logs to debug failing queries, identify slow requests, and audit API usage.
+
+## Project monitors
+
+Project monitors notify you when a selected project signal meets a condition. Unlike charts, they watch for a condition and send a notification. Request Logs show individual API requests for investigation.
+
+1. Open your project and select **Monitoring**.
+2. Start creating a monitor and choose from the templates shown for the project.
+3. Set the condition offered for that template.
+4. Choose a notification destination and configure its recipient or endpoint.
+5. Save the monitor.
+
+**Slack** is available when an organization administrator connects Slack under **Settings** → **Integrations**. Choose a channel for each monitor; the organization default channel only preselects a channel for new monitors. See [Connect Slack](../integrations/slack.md).
