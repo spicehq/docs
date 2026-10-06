@@ -68,12 +68,36 @@ Use request logs to debug failing queries, identify slow requests, and audit API
 
 ## Project monitors
 
-Project monitors notify you when a selected project signal meets a condition. Unlike charts, they watch for a condition and send a notification. Request Logs show individual API requests for investigation.
+Project monitors notify you when a project signal meets a condition. Unlike charts, they watch for a condition and send a notification. Request Logs show individual API requests for investigation.
 
 1. Open your project and select **Monitoring**.
-2. Start creating a monitor and choose from the templates shown for the project.
-3. Set the condition offered for that template.
-4. Choose a notification destination and configure its recipient or endpoint.
-5. Save the monitor.
+2. Select **Create monitor**, then choose a monitor type shown for the project.
+3. Set its condition in **When**. Available controls depend on the monitor type.
+4. Choose one or more destinations in **Then**.
+5. Name the monitor and select **Create monitor**.
 
-**Slack** is available when an organization administrator connects Slack under **Settings** → **Integrations**. Choose a channel for each monitor; the organization default channel only preselects a channel for new monitors. See [Connect Slack](../integrations/slack.md).
+### Monitor types
+
+The picker shows templates supported by the project. Most let you choose a comparison and threshold. Dataset status lets you choose a dataset and status; instance health has a fixed condition. The evaluation window, sustain period, and severity are set by the template, not edited in the form. A window is the period measured; sustain is how long the condition must hold.
+
+| Monitor | What it watches | Condition and configuration |
+| --- | --- | --- |
+| **Instance health** | A project instance reporting a failed state, runtime error, or eviction. | Fixed condition; no threshold to configure. Evictions use a fixed 5-minute observation window; critical severity, with no additional sustain delay. |
+| **Instance memory** | Memory use as a percentage of the instance's configured memory limit. | Set the comparison and percentage threshold. Default: above 80% over a 5-minute window, sustained for 5 minutes; warning. |
+| **Instance CPU** | CPU use as a percentage of the instance's configured CPU limit. | Set the comparison and percentage threshold. Default: above 85% over a 5-minute window, sustained for 5 minutes; critical. Requires a CPU limit. |
+| **Dataset status** | A selected dataset reporting a status such as Error. | Choose the dataset and a status: Initializing, Ready, Disabled, Error, Refreshing, or Shutting down. Default: Error over a 5-minute window, sustained for 5 minutes; critical. |
+| **Acceleration refresh errors** | Errors recorded during dataset acceleration refreshes. | For projects with acceleration. Set the comparison and error-count threshold. Default: more than 0 errors in a 5-minute window; critical, with no additional sustain delay. |
+| **HTTP 5xx responses** | Estimated server-error responses from the project's HTTP API. | Set the comparison and response-count threshold. Default: more than 0 estimated responses in a 5-minute window; critical, with no additional sustain delay. Existing rate-based conditions keep their saved units and values. |
+| **SQL p99 latency** | The 99th-percentile duration of SQL queries. | For projects with SQL queries. Set the comparison and threshold in milliseconds. Default: above 1000 ms over a 5-minute window, sustained for 5 minutes; warning. |
+
+These failure monitors may remain visible when already saved. New monitors and condition edits are currently unavailable. For existing monitors, notification settings can still be changed and the monitor can be disabled; saved rate conditions keep their units and values.
+
+| Existing monitor | What it watches | Available changes |
+| --- | --- | --- |
+| **SQL query failures** | Failed SQL queries. | Notification settings; enable or disable. The condition cannot currently be edited or newly created. |
+| **Flight SQL DoGet failures** | Failed Flight SQL query requests. | Notification settings; enable or disable. The condition cannot currently be edited or newly created. |
+| **LLM failures** | Failed model requests. | Notification settings; enable or disable. The condition cannot currently be edited or newly created. |
+
+In **Then**, choose one or more destinations: **Email**, **HTTP**, or **Slack**. For Email, select project members or enter email addresses. For HTTP, provide an HTTPS URL and optional authorization token. For Slack, an organization administrator must connect the workspace under **Settings** → **Integrations**. Choose a channel for each monitor; the organization default only preselects a channel for new monitors. See [Connect Slack](../integrations/slack.md).
+
+After saving, select **Send test notification** to check delivery to the configured destinations. The test does not evaluate the monitor condition or add an event to its history.
