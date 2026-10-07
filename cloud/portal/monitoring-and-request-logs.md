@@ -89,14 +89,9 @@ The picker shows templates supported by the project. Most let you choose a compa
 | **Acceleration refresh errors** | Errors recorded during dataset acceleration refreshes. | For projects with acceleration. Set the comparison and error-count threshold. Default: more than 0 errors in a 5-minute window; critical, with no additional sustain delay. |
 | **HTTP 5xx responses** | Estimated server-error responses from the project's HTTP API. | Set the comparison and response-count threshold. Default: more than 0 estimated responses in a 5-minute window; critical, with no additional sustain delay. Existing rate-based conditions keep their saved units and values. |
 | **SQL p99 latency** | The 99th-percentile duration of SQL queries. | For projects with SQL queries. Set the comparison and threshold in milliseconds. Default: above 1000 ms over a 5-minute window, sustained for 5 minutes; warning. |
-
-These failure monitors may remain visible when already saved. New monitors and condition edits are currently unavailable. For existing monitors, notification settings can still be changed and the monitor can be disabled; saved rate conditions keep their units and values.
-
-| Existing monitor | What it watches | Available changes |
-| --- | --- | --- |
-| **SQL query failures** | Failed SQL queries. | Notification settings; enable or disable. The condition cannot currently be edited or newly created. |
-| **Flight SQL DoGet failures** | Failed Flight SQL query requests. | Notification settings; enable or disable. The condition cannot currently be edited or newly created. |
-| **LLM failures** | Failed model requests. | Notification settings; enable or disable. The condition cannot currently be edited or newly created. |
+| **SQL query failures** | Server-caused SQL query failures. | Requires SQL query telemetry. Set the comparison and failure-count threshold. Default: more than 0 estimated failures in a 5-minute window; critical, with no additional sustain delay. |
+| **Flight SQL DoGet failures** | Failed Flight SQL requests. | Requires Flight SQL telemetry. Set the comparison and failure-count threshold. Default: more than 0 estimated failures in a 5-minute window; critical, with no additional sustain delay. |
+| **LLM failures** | Server-caused model request failures. | Requires a configured model. Set the comparison and failure-count threshold. Default: more than 0 estimated failures in a 5-minute window; critical, with no additional sustain delay. |
 
 In **Then**, choose one or more destinations: **Email**, **HTTP**, or **Slack**. For Email, select project members or enter email addresses. For HTTP, provide an HTTPS URL and optional authorization token. For Slack, an organization administrator must connect the workspace under **Settings** → **Integrations**. Choose a channel for each monitor; the organization default only preselects a channel for new monitors. See [Connect Slack](../integrations/slack.md).
 
