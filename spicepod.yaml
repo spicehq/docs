@@ -252,7 +252,7 @@ datasets:
       refresh_jitter_max: 5m
 
   # Reviews carry PullRequestReview.state. pulls.review_comments does not.
-  # on_registration: a pull request with more than 100 reviews fails this scan.
+  # on_registration: the history scan is slow and must not hold /v1/ready.
   - from: github:github.com/spicehq/docs/reviews
     name: spicehq_docs.reviews
     description: Spice Cloud documentation pull request reviews
