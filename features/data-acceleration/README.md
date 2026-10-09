@@ -53,13 +53,13 @@ For sources that expose a monotonically-increasing version column (e.g. `updated
 **Behavior**
 
 - **Initial load**: Spice loads all records from the source where `time_column > now() - refresh_data_window`.
-- **Incremental refresh**: On each `refresh_check_interval`, Spice queries the source for records where `time_column` is newer than the most recent value already in the accelerated store, and appends them. If `primary_key` is set, matching rows are upserted instead of duplicated.
-- **Overlap window**: Use `refresh_append_overlap` to widen the incremental query to `time_column > max(time_column) - refresh_append_overlap`. This re-reads a small trailing window on every refresh to tolerate clock skew between the source and the runtime, and to pick up late-arriving writes whose `time_column` is slightly behind the refresh boundary. Combined with `primary_key` upserts, any rows re-read in the overlap are deduplicated rather than duplicated — so no records are lost near the refresh boundary and no duplicates are introduced.
+- **Incremental refresh**: On each `refresh_check_interval`, Spice queries the source for records where `time_column` is newer than the most recent value already in the accelerated store, and appends them. If `primary_key` is set, a row that matches a key already stored is upserted.
+- **Overlap window**: Use `refresh_append_overlap` to widen the incremental query to `time_column > max(time_column) - refresh_append_overlap`. This re-reads a small trailing window on every refresh to tolerate clock skew between the source and the runtime, and to pick up late-arriving writes whose `time_column` is slightly behind the refresh boundary. A `primary_key` with `on_conflict: upsert` replaces the stored row when the re-read matches a key already in the accelerator.
 - **Retention**: On each `retention_check_interval`, rows where `time_column` is older than `retention_period` are removed from the accelerated store, bounding storage and aging out data that is no longer needed.
 
 **Handling deletes**
 
-For sources that do not emit a change feed (e.g. HTTP APIs), the recommended pattern is **soft deletes**: the source marks removed records with a `deleted` flag (and bumps `time_column`). The incremental refresh picks up the tombstone via the normal append path, the upsert replaces the live row with its soft-deleted version, and `retention_period` eventually evicts it from the accelerated store. Queries should filter `WHERE deleted = false` (or use a [view](../../building-blocks/views/)) to hide soft-deleted rows. This avoids the cost of periodic full snapshots.
+For sources that do not emit a change feed (e.g. HTTP APIs), the recommended pattern is **soft deletes**: the source marks removed records with a `deleted` flag (and bumps `time_column`). The incremental refresh picks up the tombstone via the normal append path, the upsert replaces the live row with its soft-deleted version, and `retention_period` eventually evicts it from the accelerated store. On Cayenne, that replacement succeeds when the refresh contains the key once; see [Duplicate keys in one Cayenne refresh](#duplicate-keys-in-one-cayenne-refresh). Queries should filter `WHERE deleted = false` (or use a [view](../../building-blocks/views/)) to hide soft-deleted rows. This avoids the cost of periodic full snapshots.
 
 If soft deletes are not available, schedule a periodic `refresh_mode: full` snapshot to reconcile hard deletes by atomically replacing the accelerated contents. For sources that emit a complete change feed (e.g. Debezium, Kafka), use [`refresh_mode: changes`](../../building-blocks/data-connectors/debezium.md) instead to propagate inserts, updates, and deletes in real time.
 
@@ -89,6 +89,31 @@ datasets:
       retention_period: 90d
       retention_sql: DELETE FROM pulls WHERE deleted_at IS NOT NULL
 ```
+
+#### Duplicate keys in one Cayenne refresh <a href="#duplicate-keys-in-one-cayenne-refresh" id="duplicate-keys-in-one-cayenne-refresh"></a>
+
+On [Cayenne](../../building-blocks/data-accelerators/cayenne.md), `on_conflict` collapses duplicate primary keys inside a single incoming batch. `upsert` keeps the last row in that batch. The same primary key in two batches of one refresh fails the refresh:
+
+```text
+Incoming data contains duplicate primary key across batches
+```
+
+A cold load, or an overlap window that returns two versions of a key, can place those versions in different batches. For a source that does that, append without `primary_key` and `on_conflict`, and expose the current row from a [view](../../building-blocks/views/index.md):
+
+```sql
+SELECT *
+FROM (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (PARTITION BY id ORDER BY updated_at DESC) AS rn
+  FROM pulls
+) latest
+WHERE rn = 1
+```
+
+An upsert of a key that is already stored still replaces that row. The failure above is two copies of the key in the incoming data of one refresh.
+
+For an Iceberg source, how much data each append poll reads depends on the table layout. See [Append refresh and file layout](../../building-blocks/data-connectors/iceberg.md#append-refresh-and-file-layout).
 
 ### Indexes
 

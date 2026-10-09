@@ -16,7 +16,7 @@ Spice records detailed information about runtime operations through trace IDs, t
 #### Debugging and Troubleshooting
 
 * Trace AI chat completion steps and tool interactions to identify why a request isn't responding as expected
-* Investigate failed queries and other task errors
+* Investigate failed queries and other task errors. A rising [`query_failures`](task-history.md#diagnosing-query-failures) count is the signal; the error text is in the client response, in the DEBUG query log, and in [task history](task-history.md#diagnosing-query-failures). Pin a request to those records with a [`spice-trace-id`](task-history.md#client-trace-ids) header.
 
 #### Performance Analysis
 
