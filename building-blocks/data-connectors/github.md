@@ -1,6 +1,5 @@
 ---
 description: 'GitHub Data Connector Documentation'
-tags: ['data-connector', 'github', 'sql', 'api', 'integration']
 ---
 
 # GitHub Data Connector

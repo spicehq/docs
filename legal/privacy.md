@@ -56,8 +56,7 @@ You have the right at any time to prevent us from contacting you for marketing p
 * shall not give any third-party access to Customer Data. Notwithstanding the foregoing, Company may disclose Customer Data as required by applicable law or by proper legal or governmental authority. Company shall give Customer prompt notice of any such legal or governmental demand and reasonably cooperate with Customer in any effort to seek a protective order or otherwise to contest such required disclosure, at Customer’s expense.
 
 \
-(b) _Customer’s Rights_. Unless otherwise stated in this Agreement, Customer possesses and retains all right, title, and interest in and to Customer Data, and Company’s use and possession thereof is solely on Customer’s behalf.\
-
+(b) _Customer’s Rights_. Unless otherwise stated in this Agreement, Customer possesses and retains all right, title, and interest in and to Customer Data, and Company’s use and possession thereof is solely on Customer’s behalf.<br>
 
 ### VI. LINKS TO OTHER WEBSITES
 

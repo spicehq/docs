@@ -1,9 +1,5 @@
 ---
 description: 'MySQL Data Connector Documentation'
-tags:
-  - data-connectors
-  - mysql
-  - relational
 ---
 
 # MySQL Data Connector
@@ -17,11 +13,13 @@ datasets:
   - from: mysql:mytable
     name: my_dataset
     params:
-      mysql_host: my_db_host
+      mysql_host: localhost
       mysql_tcp_port: 3306
       mysql_db: my_database
       mysql_user: my_user
       mysql_pass: ${secrets:mysql_pass}
+      mysql_pool_min: 10
+      mysql_pool_max: 100
 ```
 
 ## Configuration
@@ -31,6 +29,10 @@ datasets:
 The `from` field takes the form `mysql:database_name.table_name` where `database_name` is the fully-qualified table name in the SQL server.
 
 If the `database_name` is omitted in the `from` field, the connector will use the database specified in the `mysql_db` parameter. If the `mysql_db` parameter is not provided, it will default to the user's default database.
+
+{% hint style="info" %}
+Unquoted identifiers are normalized to lowercase. To reference a table or database with mixed-case characters, wrap each case-sensitive part in double quotes: `mysql:my_database."MixedCaseTable"`. See [Identifier Case Sensitivity](README.md#identifier-case-sensitivity-and-quoting).
+{% endhint %}
 
 These two examples are identical:
 
@@ -75,9 +77,13 @@ SELECT COUNT(*) FROM cool_dataset;
 +----------+
 ```
 
+The dataset name cannot be a reserved keyword or any of the following keywords that are reserved by MySQL:
+
+- `PARTITION`
+
 ### `params`
 
-The MySQL data connector can be configured by providing the following `params`. Use the [secret replacement syntax](../secret-stores/index.md) to load the secret from a secret store, e.g. `${secrets:my_mysql_conn_string}`.
+The MySQL data connector can be configured by providing the following `params`. Use the secret replacement syntax to load the secret from a secret store, e.g. `${secrets:my_mysql_conn_string}`.
 
 | Parameter Name            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -87,8 +93,54 @@ The MySQL data connector can be configured by providing the following `params`. 
 | `mysql_db`                | The name of the database to connect to.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `mysql_user`              | The MySQL username.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `mysql_pass`              | The password to connect with.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `mysql_sslmode`           | Optional. Specifies the SSL/TLS behavior for the connection, supported values:<br /> <ul><li>`required`: (default) This mode requires an SSL connection. If a secure connection cannot be established, server will not connect.</li><li>`preferred`: This mode will try to establish a secure SSL connection if possible, but will connect insecurely if the server does not support SSL.</li><li>`disabled`: This mode will not attempt to use an SSL connection, even if the server supports it.</li></ul> |
-| `mysql_sslrootcert`       | Optional parameter specifying the path to a custom PEM certificate that the connector will trust.                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `mysql_sslmode`           | Optional. Specifies the SSL/TLS behavior for the connection, supported values: `required` (default) - requires an SSL connection, `preferred` - tries SSL but connects insecurely if not supported, `disabled` - does not use SSL. |
+| `mysql_sslrootcert`       | Optional parameter specifying the path to a custom PEM certificate that the connector will trust.                                                                                                                                                                                                                                                                                                            |
+| `mysql_time_zone`         | Optional. Specifies connection time zone. Default is `UTC`. Accepts fixed offsets (e.g., `+02:00`), IANA time zone names (e.g., `America/Los_Angeles`) if supported by the MySQL server, `system` (MySQL server host's OS time zone), or `local_system` (local runtime OS time zone). |
+| `mysql_pool_min`          | The minimum number of connections to keep open in the pool, lazily created when requested. Default: `10`                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `mysql_pool_max`          | The maximum number of connections to allow in the pool. Default: `100`                                                                                                                                                                                                                                                                                                                                                                                       |
+
+### `metrics`
+
+The MySQL data connector supports the following optional component metrics:
+
+| Metric Name | Type | Description |
+| ----------- | ---- | ----------- |
+| `connection_count` | Gauge | Gauge of active connections to the database server |
+| `connections_in_pool` | Gauge | Gauge of active connections that are idling in the pool |
+| `active_wait_requests` | Gauge | Gauge of requests that are waiting for a connection to be returned to the pool |
+| `create_failed` | Counter | Counter of connections that failed to be created |
+| `discarded_superfluous_connection` | Counter | Counter of connections that were closed because there were already enough idle connections in the pool |
+| `discarded_unestablished_connection` | Counter | Counter of connections that were closed because they could not be established |
+| `dirty_connection_return` | Counter | Counter of connections that were returned to the pool but were dirty (ie. open transactions, pending queries, etc) |
+| `discarded_expired_connection` | Counter | Counter of connections that were discarded because they were expired by the pool constraints (i.e. TTL expired) |
+| `resetting_connection` | Counter | Counter of connections that were reset |
+| `discarded_error_during_cleanup` | Counter | Counter of connections that were discarded because they returned an error during cleanup |
+| `connection_returned_to_pool` | Counter | Counter of connections that were returned to the pool |
+
+These metrics are not enabled by default, enable them by setting the `metrics` parameter:
+
+```yaml
+datasets:
+  - from: mysql:mytable
+    name: my_dataset
+    metrics:
+      - name: connection_count
+      - name: connections_in_pool
+      - name: active_wait_requests
+      - name: create_failed
+      - name: discarded_superfluous_connection
+      - name: discarded_unestablished_connection
+      - name: dirty_connection_return
+      - name: discarded_expired_connection
+      - name: resetting_connection
+      - name: discarded_error_during_cleanup
+      - name: connection_returned_to_pool
+    params:
+      mysql_host: localhost
+      mysql_tcp_port: 3306
+      mysql_user: my_user
+      mysql_pass: ${secrets:mysql_pass}
+```
 
 ## Types
 
@@ -125,10 +177,8 @@ The table below shows the MySQL data types supported, along with the type mappin
 | `ENUM`       | `Dictionary(UInt16, Utf8)`     |
 | `BIT`        | `UInt64`                       |
 
-{% hint style="note" %}
-
-- The MySQL `TIMESTAMP` value is [retrieved as a UTC time value](https://dev.mysql.com/doc/refman/8.4/en/datetime.html).
-
+{% hint style="info" %}
+The MySQL `TIMESTAMP` value is [retrieved as a UTC time value](https://dev.mysql.com/doc/refman/8.4/en/datetime.html) by default. Use the `mysql_time_zone` configuration parameter to specify the desired time zone for interpreting `TIMESTAMP` values during data retrieval.
 {% endhint %}
 
 ## Examples
@@ -140,7 +190,7 @@ datasets:
   - from: mysql:path.to.my_dataset
     name: my_dataset
     params:
-      mysql_host: my_db_host
+      mysql_host: localhost
       mysql_tcp_port: 3306
       mysql_db: my_database
       mysql_user: my_user
@@ -154,7 +204,7 @@ datasets:
   - from: mysql:path.to.my_dataset
     name: my_dataset
     params:
-      mysql_host: my_db_host
+      mysql_host: localhost
       mysql_tcp_port: 3306
       mysql_db: my_database
       mysql_user: my_user
@@ -170,7 +220,7 @@ datasets:
   - from: mysql:path.to.my_dataset
     name: my_dataset
     params:
-      mysql_connection_string: mysql://${secrets:my_user}:${secrets:my_password}@my_db_host:3306/my_db
+      mysql_connection_string: mysql://${secrets:my_user}:${secrets:my_password}@localhost:3306/my_db
 ```
 
 ### Connecting to the default database
@@ -180,8 +230,24 @@ datasets:
   - from: mysql:mytable
     name: my_dataset
     params:
-      mysql_host: my_db_host
+      mysql_host: localhost
       mysql_tcp_port: 3306
       mysql_user: my_user
       mysql_pass: ${secrets:mysql_pass}
+```
+
+### With custom connection pool settings
+
+```yaml
+datasets:
+  - from: mysql:path.to.my_dataset
+    name: my_dataset
+    params:
+      mysql_host: localhost
+      mysql_tcp_port: 3306
+      mysql_db: my_database
+      mysql_user: my_user
+      mysql_pass: ${secrets:mysql_pass}
+      mysql_pool_min: 5
+      mysql_pool_max: 10
 ```

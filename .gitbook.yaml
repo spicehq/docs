@@ -1,4 +1,1 @@
 root: ./
-
-redirects:
-  copilot: integrations/github-copilot.md

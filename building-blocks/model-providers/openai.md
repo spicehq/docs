@@ -1,7 +1,8 @@
 ---
 description: 'Instructions for using language models hosted on OpenAI or compatible services with Spice.'
 ---
-# OpenAI (or Compatible) Language Models
+
+# OpenAI Language Models
 
 To use a language model hosted on OpenAI (or compatible), specify the `openai` path in the `from` field.
 
@@ -14,7 +15,7 @@ models:
     params:
       openai_api_key: ${ secrets:OPENAI_API_KEY } # Required for official OpenAI models
       tools: auto # Optional. Connect the model to datasets via SQL query/vector search tools
-      system_prompt: "You are a helpful assistant." # Optional.
+      system_prompt: 'You are a helpful assistant.' # Optional.
 
       # Optional parameters
       endpoint: https://api.openai.com/v1 # Override to use a compatible provider (i.e. NVidia NIM)
@@ -23,7 +24,11 @@ models:
 
       # Override default chat completion request parameters
       openai_temperature: 0.1
-      openai_response_format: { "type": "json_object" }
+      openai_response_format: { 'type': 'json_object' }
+
+      # OpenAI Responses API configuration
+      responses_api: enabled
+      openai_responses_tools: web_search, code_interpreter
 ```
 
 ## Configuration
@@ -54,25 +59,29 @@ curl -H "Authorization: Bearer $OPENAI_API_KEY" https://api.openai.com/v1/models
 
 ### `name`
 
-The model name. This will be used as the model ID within Spice and Spice's endpoints (i.e. `https://data.spiceai.io/v1/models`). This can be set to the same value as the model ID in the `from` field.
+The model name. This will be used as the model ID within Spice and Spice's endpoints (i.e. `http://localhost:8090/v1/models`). This can be set to the same value as the model ID in the `from` field.
 
 ### `params`
 
-| Param                    | Description                   | Default                     |
-| ------------------------ | ----------------------------- | --------------------------- |
-| `endpoint`               | The OpenAI API base endpoint. Can be overridden to use a compatible provider (i.e. Nvidia NIM). | `https://api.openai.com/v1` |
-| `tools`                  | Which [tools] should be made available to the model. Set to `auto` to use all available tools. | -    |
-| `system_prompt`          | An additional system prompt used for all chat completions to this model. | -    |
-| `openai_api_key`         | The OpenAI API key.           | -                           |
-| `openai_org_id`          | The OpenAI organization ID.   | -                           |
-| `openai_project_id`      | The OpenAI project ID.        | -                           |
-| `openai_temperature`     | Set the default temperature to use on chat completions.  | -                           |
-| `openai_response_format` | An object specifying the format that the model must output, see [structured outputs].  | -                           |
+| Param                     | Description                                                                                        | Default                     |
+| ------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------- |
+| `endpoint`                | The OpenAI API base endpoint. Can be overridden to use a compatible provider (i.e. Nvidia NIM).    | `https://api.openai.com/v1` |
+| `tools`                   | Which [tools] should be made available to the model. Set to `auto` to use all available tools.     | -                           |
+| `system_prompt`           | An additional system prompt used for all chat completions to this model.                           | -                           |
+| `openai_api_key`          | The OpenAI API key.                                                                                | -                           |
+| `openai_org_id`           | The OpenAI organization ID.                                                                        | -                           |
+| `openai_project_id`       | The OpenAI project ID.                                                                             | -                           |
+| `openai_temperature`      | Set the default temperature to use on chat completions.                                            | -                           |
+| `openai_response_format`  | An object specifying the format that the model must output, see [structured outputs].              | -                           |
+| `openai_reasoning_effort` | For reasoning models, like `o1`, this parameter specifies the reasoning effort used for the model. | -                           |
+| `openai_usage_tier`       | The [OpenAI usage tier](https://platform.openai.com/settings/organization/limits) for the account. This parameter sets the maximum number of concurrent requests based on OpenAI's published limits per tier. Valid values are `free`, `tier1`, `tier2`, `tier3`, `tier4`, or `tier5`. | `tier1`                     |
+| `responses_api`           | `enabled` or `disabled`. Whether to enable invoking this model from the `/v1/responses` HTTP endpoint using [OpenAI's Responses API](https://platform.openai.com/docs/api-reference/responses). When using OpenAI-compatible providers, ensure the provider supports OpenAI's Responses API. | `disabled` |
+| `openai_responses_tools`  | Comma-separated list of OpenAI-hosted tools exposed via the Responses API for this model.  These hosted tools are **not** available from the `/v1/chat/completions` HTTP endpoint. Supported tools: `code_interpreter`, `web_search`. | -                           |
 
 [tools]: ../../features/large-language-models/tools.md
 [structured outputs]: https://platform.openai.com/docs/guides/structured-outputs
 
-See [Large Language Models](../../features/large-language-models) for additional configuration options.
+See [Large Language Models](../../features/large-language-models/index.md) for additional configuration options.
 
 - [Tools](../../features/large-language-models/tools.md)
 - [Memory](../../features/large-language-models/memory.md)
@@ -85,7 +94,7 @@ Spice supports several OpenAI compatible providers. Specify the appropriate endp
 
 ### Azure OpenAI
 
-Follow [Azure AI Models](./azure) instructions.
+Follow [Azure AI Models](./azure.md) instructions.
 
 ### Groq
 
@@ -112,8 +121,6 @@ models:
       endpoint: https://my_nim_host.com/v1
       openai_api_key: ${ secrets:SPICE_NIM_API_KEY }
 ```
-
-View the Spice cookbook for an example of setting up NVidia NIM with Spice [here](https://github.com/spiceai/cookbook/tree/trunk/nvidia-nim/ec2).
 
 ### Parasail
 

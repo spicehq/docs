@@ -1,12 +1,8 @@
 ---
-tags:
-  - data-connectors
-  - dynamodb
-  - nosql
-description: DynamoDB Data Connector Documentation
+description: 'DynamoDB Data Connector Documentation'
 ---
 
-# DynamoDB
+# DynamoDB Data Connector
 
 Amazon DynamoDB is a fully managed NoSQL database service that provides fast and predictable performance with seamless scalability. This connector enables using DynamoDB tables as data sources for federated SQL queries in Spice.
 

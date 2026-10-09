@@ -33,15 +33,61 @@ Spice supports three modes to refresh/update locally accelerated data from a con
 | `append`  | Append/add data to the dataset on each refresh       | Append-only, immutable datasets, such as time-series or log data |
 | `changes` | Apply incremental changes                            | Customer order lifecycle table                                   |
 
+`refresh_mode: changes` streams committed inserts, updates, and deletes from the source's own changelog. See [Database Replication and CDC](../database-replication-and-cdc.md) for supported sources and configuration.
+
 #### Example - Accelerate with arrow accelerator under full refresh mode <a href="#example" id="example"></a>
 
 ```yaml
 datasets:
-  - from: databricks:my_dataset
-    name: accelerated_dataset
+  - from: databricks:taxi_trips
+    name: taxi_trips
     acceleration:
       refresh_mode: full
       refresh_check_interval: 10m
+```
+
+### Incremental Ingestion <a href="#incremental-ingestion" id="incremental-ingestion"></a>
+
+For sources that expose a monotonically-increasing version column (e.g. `updated_at`, `lastUpdateTime`), Spice can incrementally ingest only new or modified records using `time_column` together with `refresh_mode: append` and a `refresh_check_interval`. Combined with `retention_period`, old records are automatically evicted so the accelerated replica stays bounded in size.
+
+**Behavior**
+
+- **Initial load**: Spice loads all records from the source where `time_column > now() - refresh_data_window`.
+- **Incremental refresh**: On each `refresh_check_interval`, Spice queries the source for records where `time_column` is newer than the most recent value already in the accelerated store, and appends them. If `primary_key` is set, matching rows are upserted instead of duplicated.
+- **Overlap window**: Use `refresh_append_overlap` to widen the incremental query to `time_column > max(time_column) - refresh_append_overlap`. This re-reads a small trailing window on every refresh to tolerate clock skew between the source and the runtime, and to pick up late-arriving writes whose `time_column` is slightly behind the refresh boundary. Combined with `primary_key` upserts, any rows re-read in the overlap are deduplicated rather than duplicated — so no records are lost near the refresh boundary and no duplicates are introduced.
+- **Retention**: On each `retention_check_interval`, rows where `time_column` is older than `retention_period` are removed from the accelerated store, bounding storage and aging out data that is no longer needed.
+
+**Handling deletes**
+
+For sources that do not emit a change feed (e.g. HTTP APIs), the recommended pattern is **soft deletes**: the source marks removed records with a `deleted` flag (and bumps `time_column`). The incremental refresh picks up the tombstone via the normal append path, the upsert replaces the live row with its soft-deleted version, and `retention_period` eventually evicts it from the accelerated store. Queries should filter `WHERE deleted = false` (or use a [view](../../building-blocks/views/)) to hide soft-deleted rows. This avoids the cost of periodic full snapshots.
+
+If soft deletes are not available, schedule a periodic `refresh_mode: full` snapshot to reconcile hard deletes by atomically replacing the accelerated contents. For sources that emit a complete change feed (e.g. Debezium, Kafka), use [`refresh_mode: changes`](../../building-blocks/data-connectors/debezium.md) instead to propagate inserts, updates, and deletes in real time.
+
+#### Example - Incrementally ingest the last 90 days of GitHub pull requests <a href="#example" id="example"></a>
+
+Checks for new and updated records every 15 minutes, with a 5-minute overlap to cover clock skew and late arrivals. Rows updated in the source are upserted via `primary_key` + `on_conflict: upsert`, and soft-deleted rows (`deleted_at IS NOT NULL`) are evicted by `retention_sql` in addition to the time-based `retention_period`:
+
+```yaml
+datasets:
+  - from: github:github.com/spiceai/spiceai/pulls
+    name: pulls
+    params:
+      github_token: ${secrets:GITHUB_TOKEN}
+      github_query_mode: search
+    time_column: updated_at
+    acceleration:
+      enabled: true
+      refresh_mode: append
+      refresh_check_interval: 15m
+      refresh_append_overlap: 5m
+      refresh_data_window: 90d
+      primary_key: id
+      on_conflict:
+        id: upsert
+      retention_check_enabled: true
+      retention_check_interval: 1h
+      retention_period: 90d
+      retention_sql: DELETE FROM pulls WHERE deleted_at IS NOT NULL
 ```
 
 ### Indexes
@@ -52,8 +98,8 @@ Database indexes are essential for optimizing query performance. Configure index
 
 ```yaml
 datasets:
-  - from: spice.ai/eth.recent_blocks
-    name: eth.recent_blocks
+  - from: databricks:taxi_trips
+    name: taxi_trips
     acceleration:
       enabled: true
       engine: sqlite
@@ -72,8 +118,8 @@ Constraints are specified using [column references](https://docs.spiceai.org/#co
 
 ```yaml
 datasets:
-  - from: spice.ai/eth.recent_blocks
-    name: eth.recent_blocks
+  - from: databricks:taxi_trips
+    name: taxi_trips
     acceleration:
       enabled: true
       engine: sqlite

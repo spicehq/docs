@@ -1,16 +1,12 @@
 ---
 description: 'Memory Data Connector Documentation'
-tags:
-  - data-connectors
-  - memory
-  - in-memory
 ---
 
 # Memory Data Connector
 
 The Memory Data Connector enables configuring an in-memory dataset for tables used, or produced by the Spice runtime. Only certain tables, with predefined schemas, can be defined by the connector. These are:
 
-- `store`: Defines a table that LLMs, with [memory tooling](/docs/features/large-language-models/memory), can store data in. Requires `mode: read_write`.
+- `store`: Defines a table that LLMs, with memory tooling, can store data in. Requires `mode: read_write`.
 
 ### Examples
 

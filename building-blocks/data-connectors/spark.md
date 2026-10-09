@@ -1,10 +1,8 @@
 ---
-description: Apache Spark Connector Documentation
+description: 'Apache Spark Data Connector Documentation'
 ---
 
-# Spark
-
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
+# Spark Data Connector
 
 Apache Spark as a connector for federated SQL query against a Spark Cluster using [Spark Connect](https://spark.apache.org/docs/latest/spark-connect-overview.html)
 
@@ -15,6 +13,10 @@ datasets:
     params:
       spark_remote: sc://my-spark-endpoint
 ```
+
+{% hint style="info" %}
+Unquoted identifiers are normalized to lowercase. To reference a table with mixed-case characters, wrap each case-sensitive part in double quotes: `spark:my_catalog."MySchema"."MyTable"`. See [Identifier Case Sensitivity](README.md#identifier-case-sensitivity-and-quoting).
+{% endhint %}
 
 ## Configuration
 

@@ -24,6 +24,10 @@ datasets:
 
 The `from` field for the Databricks connector takes the form `databricks:catalog.schema.table` where `catalog.schema.table` is the fully-qualified path to the table to read from.
 
+{% hint style="info" %}
+Unquoted identifiers are normalized to lowercase. To reference a table, schema, or catalog with mixed-case characters, wrap each case-sensitive part in double quotes: `databricks:my_catalog."MySchema"."MyTable"`. See [Identifier Case Sensitivity](README.md#identifier-case-sensitivity-and-quoting).
+{% endhint %}
+
 ### `name`
 
 The dataset name. This will be used as the table name within Spice.

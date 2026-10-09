@@ -1,10 +1,8 @@
 ---
-description: Flight SQL Data Connector Documentation
+description: 'Flight SQL Data Connector Documentation'
 ---
 
-# FlightSQL
-
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
+# FlightSQL Data Connector
 
 Connect to any Flight SQL compatible server (e.g. Influx 3.0, CnosDB, other Spice runtimes!) as a connector for federated SQL queries.
 
@@ -22,6 +20,10 @@ Connect to any Flight SQL compatible server (e.g. Influx 3.0, CnosDB, other Spic
 ### `from`
 
 The `from` field takes the form `flightsql:dataset` where `dataset` is the fully qualified name of the dataset to read from.
+
+{% hint style="info" %}
+Unquoted identifiers are normalized to lowercase. To reference a dataset with mixed-case characters, wrap each case-sensitive part in double quotes: `flightsql:my_catalog."MySchema"."MyTable"`. See [Identifier Case Sensitivity](README.md#identifier-case-sensitivity-and-quoting).
+{% endhint %}
 
 ### `name`
 

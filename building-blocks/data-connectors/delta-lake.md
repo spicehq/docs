@@ -1,12 +1,8 @@
 ---
-tags:
-  - data-connectors
-  - delta-lake
-  - data-lake
-description: Delta Lake Data Connector Documentation
+description: 'Delta Lake Data Connector Documentation'
 ---
 
-# Delta Lake
+# Delta Lake Data Connector
 
 Delta Lake data connector connector enables SQL queries from [Delta Lake](https://delta.io/) tables.
 

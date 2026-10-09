@@ -57,7 +57,7 @@ SELECT COUNT(*) FROM cool_dataset;
 | `file_format`               | Specifies the data file format. Required if the format cannot be inferred from the `from` path. Refer to [Object Store File Formats](/building-blocks/data-connectors#object-store-file-formats) for details. |
 | `hive_partitioning_enabled` | Enable partitioning using hive-style partitioning from the folder structure. Defaults to `false`                                                                                                                  |
 
-For CSV-specific parameters, see [CSV Parameters](/docs/reference/file_format.md#csv).
+For CSV-specific parameters, see [CSV Parameters](../../reference/file-format.md#csv).
 
 ## Trigger data refresh on file change
 
@@ -119,4 +119,3 @@ When using the File Data connector without acceleration, data is loaded into mem
 
 Memory limitations can be mitigated by storing acceleration data on disk, which is supported by [`duckdb`](../data-accelerators/duckdb.md) and [`sqlite`](../data-accelerators/sqlite.md) accelerators by specifying `mode: file`.
 {% endhint %}
-
