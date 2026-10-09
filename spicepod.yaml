@@ -138,6 +138,7 @@ datasets:
     params:
       spiceai_api_key: ${secrets:SPICEAI_API_KEY}
       spiceai_endpoint: https://us-east-1-prod-aws-flight.spiceai.io
+      spiceai_region: us-east-1
     metadata:
       instructions: |
         Documents are stored in Markdown in the 'content' column. The 'path' column contains the file path.
@@ -207,6 +208,7 @@ datasets:
     params:
       spiceai_api_key: ${secrets:SPICEAI_API_KEY}
       spiceai_endpoint: https://us-east-1-prod-aws-flight.spiceai.io
+      spiceai_region: us-east-1
     metadata:
       instructions: |
         Documents are stored in Markdown in the 'content' column. The 'path' column contains the file path.
