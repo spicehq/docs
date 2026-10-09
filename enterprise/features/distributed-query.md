@@ -281,7 +281,7 @@ Each partition has a single owning executor (1:1 assignment in `cluster.json`). 
 Acceleration snapshots are a **Spice.ai Enterprise** feature. See [Acceleration Snapshots](acceleration-snapshots.md) for the full reference. They are not available in Spice.ai OSS.
 {% endhint %}
 
-Cayenne supports object-store-backed acceleration snapshots that integrate naturally with cluster mode, allowing a newly started executor to bootstrap from the shared object store rather than re-fetching from the federated source:
+Cayenne supports object-store-backed acceleration snapshots that integrate naturally with cluster mode, allowing a newly started executor to bootstrap from the shared object store rather than re-fetching from the federated source. Each snapshot object is a full copy of the accelerated dataset on standard object storage (S3, GCS, or ADLS). The Cayenne S3 Express One Zone data tier (`cayenne_file_path`, `cayenne_s3_*`) is a different store. See [Snapshot contents](acceleration-snapshots.md#snapshot-contents) and [Snapshot location](acceleration-snapshots.md#snapshot-location).
 
 ```yaml
 acceleration:

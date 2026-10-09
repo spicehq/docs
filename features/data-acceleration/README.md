@@ -25,15 +25,46 @@ datasets:
 
 ### Refresh Modes <a href="#refresh-modes" id="refresh-modes"></a>
 
-Spice supports three modes to refresh/update locally accelerated data from a connected data source. `full` is the default mode. Refer to [Data Refresh](https://docs.spiceai.org/components/data-accelerators/data-refresh) documentation for detailed refresh usage and configuration.
+Spice supports several modes to refresh/update locally accelerated data from a connected data source. `full` is the default mode. Refer to [Data Refresh](https://spiceai.org/docs/features/data-acceleration/data-refresh) documentation for detailed refresh usage and configuration.
 
 | Mode      | Description                                          | Example                                                          |
 | --------- | ---------------------------------------------------- | ---------------------------------------------------------------- |
 | `full`    | Replace/overwrite the entire dataset on each refresh | A table of users                                                 |
 | `append`  | Append/add data to the dataset on each refresh       | Append-only, immutable datasets, such as time-series or log data |
 | `changes` | Apply incremental changes                            | Customer order lifecycle table                                   |
+| `caching` | Cache HTTP responses in the accelerator, keyed by request metadata | An HTTP API read through Spice                            |
 
 `refresh_mode: changes` streams committed inserts, updates, and deletes from the source's own changelog. See [Database Replication and CDC](../database-replication-and-cdc.md) for supported sources and configuration.
+
+`refresh_mode: caching` applies to [HTTP(S) datasets](https://spiceai.org/docs/components/data-connectors/https). A query that identifies a request (path, query, and body) is served from the accelerator while the cached entry is inside `caching_ttl`. When `caching_ttl` is omitted it defaults to `30s`. After that fresh window, `caching_stale_while_revalidate_ttl` is how long Spice may still return the accelerator copy while it refreshes the origin in the background. See [Caching refresh mode](https://spiceai.org/docs/features/data-acceleration/refresh-modes/caching) and [Read-through cache](https://spiceai.org/docs/use-cases/caching/read-through-cache).
+
+#### Availability-first HTTP caching <a href="#availability-first-http-caching" id="availability-first-http-caching"></a>
+
+When the goal is to prefer the origin and use the accelerator only if the origin fails, set a zero fresh window and a zero stale-while-revalidate window, and enable stale-if-error:
+
+```yaml
+datasets:
+  - from: https://api.example.com
+    name: api_cache
+    params:
+      file_format: json
+      allowed_request_paths: '/v1/**'
+      request_query_filters: enabled
+    acceleration:
+      enabled: true
+      refresh_mode: caching
+      params:
+        caching_ttl: 0s
+        caching_stale_while_revalidate_ttl: 0s
+        caching_stale_if_error: enabled # or a finite duration, such as 10m
+        caching_max_size: 512MiB
+```
+
+`caching_ttl: 0s` is a fresh window of length zero, so a stored entry is already expired on the next keyed read. `caching_stale_while_revalidate_ttl: 0s` closes the window in which Spice would return that expired accelerator copy while the origin is still being refreshed. Together they send the read to the origin whenever the origin can answer. The accelerator is consulted when the origin fails (including a `429` or `5xx` after the connector's own retries) and `caching_stale_if_error` allows the fallback.
+
+A positive `caching_stale_while_revalidate_ttl` still serves the accelerator for that long after the fresh window, including when `caching_ttl` is `0s`. Set both durations to `0s` for the origin-first pattern. The fallback is available only after a successful origin response has been stored. A query with no request filters reads the accelerator as stored and does not run this origin check.
+
+`caching_stale_if_error: enabled` serves that fallback with no age limit, and the expiry sweep keeps the entry for a failing origin. Pair `enabled` with `caching_max_size`, `caching_max_items`, or a retention rule (`retention_period` or `retention_sql`) so the accelerator stays bounded. A finite duration such as `caching_stale_if_error: 10m` serves the fallback only while the entry is at most that far past `caching_ttl`, and the sweep can evict entries older than that on its own.
 
 #### Example - Accelerate with arrow accelerator under full refresh mode <a href="#example" id="example"></a>
 
