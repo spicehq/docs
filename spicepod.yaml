@@ -251,6 +251,24 @@ datasets:
       refresh_jitter_enabled: true
       refresh_jitter_max: 5m
 
+  # Reviews carry PullRequestReview.state. pulls.review_comments does not.
+  # on_registration: the history scan is slow and must not hold /v1/ready.
+  - from: github:github.com/spicehq/docs/reviews
+    name: spicehq_docs.reviews
+    description: Spice Cloud documentation pull request reviews
+    params:
+      github_client_id: ${secrets:GITHUB_SPICEHQ_CLIENT_ID}
+      github_private_key: ${secrets:GITHUB_SPICEHQ_PRIVATE_KEY}
+      github_installation_id: ${secrets:GITHUB_SPICEHQ_INSTALLATION_ID}
+    time_column: submitted_at
+    time_format: timestamp
+    ready_state: on_registration
+    acceleration:
+      enabled: true
+      refresh_check_interval: 4h
+      refresh_jitter_enabled: true
+      refresh_jitter_max: 5m
+
 embeddings:
   - from: openai
     name: openai_embeddings
